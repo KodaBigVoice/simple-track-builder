@@ -35,6 +35,16 @@ With the Pen or Line tool, click the end of an open path to keep drawing from it
 - **Grid:** staggered slots behind the start line, 8 m apart, with pole on the inside of Turn 1 (or left/right if you choose). The panel warns if the grid doesn't fit on the straight.
 - **Pit lane:** draw an open path from the track to the track, then click it with the Race tool and choose **Make pit lane**. Its ends snap to the track edge. Set the lane width and box length; boxes sit on the side away from the track (flip if needed), and you can drag the row of boxes along the lane.
 
+### Kerbs & DRS
+
+- **Automatic kerbs:** every bend tighter than 250 m (adjustable) gets a red-and-white kerb on the inside at the apex and on the outside at the exit. Set the kerb width, or switch kerbs off for a single turn with the **K** toggle in the Turns tab.
+- **DRS zones:** up to four. **Add DRS zone** puts one on the longest straight without a zone, with a detection point before the preceding corner; drag its detection, activation and end points along the track.
+
+### Run-off and your own shapes
+
+- **Automatic run-off** on the outside of each bend tighter than 300 m: mixed (tarmac then gravel), all tarmac or all gravel, with adjustable depth and optional tyre barriers at the edge. Switch it off for a single turn with the **R** toggle in the Turns tab.
+- **Draw your own:** draw a shape with the Pen or Line tool, click it with the Race tool and choose what it is: grass, gravel, tarmac run-off, sand, a grandstand, or a concrete wall, armco, tyre wall or catch fence. Grandstand rows face the track automatically.
+
 These markers follow the track as you edit it, and they're included in the SVG export (pit lane, numbered pit boxes and grid slots, each with its car position and heading).
 
 ## Panel
