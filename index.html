@@ -14,7 +14,7 @@
 :root{
   --bg:#FFFFFF; --panel:#FFFFFF; --canvas:#F5F5F3; --ink:#121212; --muted:#5C5C5A;
   --line:#E4E4E1; --grid-minor:#ECECE9; --grid-major:#D9D9D5; --hover:#F1F1EE;
-  --accent:#D4231A; --on-accent:#FFFFFF; --warn:#B45309; --sector:#1D5FD1;
+  --accent:#D4231A; --on-accent:#FFFFFF; --warn:#B45309; --sector:#1D5FD1; --pit:#55554F; --pitbox:#C9C9C4; --building:#E2E2DD;
   --f-sans:'Archivo','Helvetica Neue',Arial,sans-serif;
   --f-mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
 }
@@ -22,13 +22,13 @@
   :root:not([data-theme="light"]){
     --bg:#0E0E0F; --panel:#111112; --canvas:#18181A; --ink:#F2F2F0; --muted:#A3A3A0;
     --line:#2A2A2D; --grid-minor:#202023; --grid-major:#2E2E32; --hover:#1F1F22;
-    --warn:#FBBF24; --sector:#2F6FE0; color-scheme:dark;
+    --warn:#FBBF24; --sector:#2F6FE0; --pit:#B5B5AF; --pitbox:#3A3A3E; --building:#26262A; color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
   --bg:#0E0E0F; --panel:#111112; --canvas:#18181A; --ink:#F2F2F0; --muted:#A3A3A0;
   --line:#2A2A2D; --grid-minor:#202023; --grid-major:#2E2E32; --hover:#1F1F22;
-  --warn:#FBBF24; --sector:#2F6FE0; color-scheme:dark;
+  --warn:#FBBF24; --sector:#2F6FE0; --pit:#B5B5AF; --pitbox:#3A3A3E; --building:#26262A; color-scheme:dark;
 }
 html,body{height:100%}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-sans);font-size:14px;overflow:hidden}
@@ -101,10 +101,16 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
 .rul{stroke:var(--accent);stroke-width:1.4;fill:none}
 .arw{fill:none;stroke:var(--canvas);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke;opacity:.85}
 .chq{fill:var(--canvas)}
+.trk.pitl{stroke:var(--pit)}
+.pbox{fill:var(--pitbox);stroke:var(--canvas);stroke-width:1;vector-effect:non-scaling-stroke}
+.garage{fill:var(--building)}
+.gridl{fill:none;stroke:var(--canvas);stroke-width:1.4;vector-effect:non-scaling-stroke}
+.carm{fill:var(--accent)}
 .secl{stroke:var(--sector);stroke-width:2.5;vector-effect:non-scaling-stroke}
 .pill.sec{fill:var(--sector)}
 .pill.ink{fill:var(--ink)}
 .pill.ink+text{fill:var(--bg)}
+.nlab{font-family:var(--f-mono);font-size:10px;font-weight:500;fill:var(--ink);paint-order:stroke;stroke:var(--canvas);stroke-width:3px}
 .tlab{font-family:var(--f-sans);font-size:12px;font-weight:800;fill:var(--ink);paint-order:stroke;stroke:var(--canvas);stroke-width:4px;stroke-linejoin:round}
 
 /* panel */
@@ -160,6 +166,9 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
 .tname:hover{border-bottom-color:var(--line)}
 .tname:focus{outline:none;border-bottom-color:var(--accent)}
 .tmeta{font-family:var(--f-mono);font-size:12px;color:var(--muted);white-space:nowrap}
+.seg.wide{display:flex}
+.seg.wide button{flex:1}
+.pick{display:flex;flex-direction:column;gap:8px;padding:12px;border:1px solid var(--line)}
 .check{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
 .check input{width:16px;height:16px;accent-color:var(--accent);margin:0}
 .srow{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:8px;align-items:baseline;width:100%;text-align:left;border:0;border-bottom:1px solid var(--line);background:transparent;padding:9px 0;font-size:14px}
@@ -487,13 +496,20 @@ function samplePiece(pc){
 }
 
 /* ---------------- race layer: everything placed by distance along the race path ---------------- */
-function defaultRace(){return {loop:null,reversed:false,start:null,sectors:null,arrows:true,numbers:true,turnMin:15,names:{}};}
+function defaultRace(){return {loop:null,reversed:false,start:null,sectors:null,arrows:true,numbers:true,turnMin:15,names:{},cars:20,
+  grid:{pole:'auto',first:8,gap:8},pit:{path:null,width:10,boxLen:14,depth:9,centre:null,flipSide:false}};}
 function cleanRace(r){
   const d=defaultRace(); if(!r||typeof r!=='object') return d;
   const pt=a=>Array.isArray(a)&&a.length===2&&isFinite(a[0])&&isFinite(a[1])?[+a[0],+a[1]]:null;
   d.loop=typeof r.loop==='string'?r.loop:null; d.reversed=!!r.reversed; d.start=pt(r.start);
   d.sectors=Array.isArray(r.sectors)&&r.sectors.length===2&&pt(r.sectors[0])&&pt(r.sectors[1])?[pt(r.sectors[0]),pt(r.sectors[1])]:null;
   d.arrows=r.arrows!==false; d.numbers=r.numbers!==false; d.turnMin=isFinite(r.turnMin)?clamp(+r.turnMin,1,90):15;
+  if(isFinite(r.cars)) d.cars=clamp(Math.round(+r.cars),0,60);
+  const g=r.grid||{}; if(['auto','left','right'].includes(g.pole)) d.grid.pole=g.pole;
+  if(isFinite(g.first)) d.grid.first=clamp(+g.first,0,100); if(isFinite(g.gap)) d.grid.gap=clamp(+g.gap,4,40);
+  const q=r.pit||{}; if(typeof q.path==='string') d.pit.path=q.path;
+  if(isFinite(q.width)) d.pit.width=clamp(+q.width,3,30); if(isFinite(q.boxLen)) d.pit.boxLen=clamp(+q.boxLen,6,40);
+  if(isFinite(q.depth)) d.pit.depth=clamp(+q.depth,4,30); d.pit.centre=pt(q.centre); d.pit.flipSide=!!q.flipSide;
   if(r.names&&typeof r.names==='object') for(const k in r.names) if(typeof r.names[k]==='string'&&r.names[k].trim()) d.names[k]=r.names[k].slice(0,60);
   return d;
 }
@@ -578,12 +594,58 @@ function computeRace(){
     const sorted=[s0,...sectors].map(x=>dist(s0,x)).sort((a,c)=>a-c);
     sectorLens=[sorted[1]-sorted[0],sorted[2]-sorted[1],L-sorted[2]];
   }
-  return {p,b,line,L,s0,rev,order,turns,closed:p.closed,cwGeo,clockwise:p.closed?(cwGeo!==rev):null,sectors,sectorLens,dist};
+  const travelTan=sv=>{const a=lineAt(line,sv);return rev?V.mul(a.tan,-1):a.tan;};
+  /* grid: slots behind the start line, staggered, pole on the inside of T1 unless set */
+  const W=state.doc.width,N=r.cars||0,gr=r.grid;
+  let pole=gr.pole;
+  if(pole==='auto') pole=turns.length&&turns[0].dir==='Right'?'right':'left';
+  const fs=rev?-1:1,grid=[];
+  if(r.start) for(let i=0;i<N;i++){
+    const d=gr.first+i*gr.gap,sv=s0-fs*d,at=lineAt(line,sv),t=travelTan(sv),left=[t[1],-t[0]];
+    const sideSign=((i%2===0)===(pole==='left'))?1:-1;
+    grid.push({n:i+1,pt:V.add(at.pt,V.mul(left,sideSign*W/4)),t,side:sideSign});
+  }
+  let gridAvail=0;
+  if(r.start){
+    const k0p=pieceAt(line,s0),pcs=b.pieces,inK=rev?((k0p+1<line.pk.length?line.pk[k0p+1]:L)-s0):(s0-line.pk[k0p]);
+    gridAvail=inK;
+    if(pcs[k0p].line||Math.abs(pieceAngle(pcs[k0p]))<0.17){
+      for(let q=1;q<n;q++){
+        const k=p.closed?(rev?(k0p+q)%n:(k0p-q+n)%n):(rev?k0p+q:k0p-q);
+        if(k<0||k>=n) break;
+        const pc=pcs[k]; if(!(pc.line||Math.abs(pieceAngle(pc))<0.17)) break;
+        gridAvail+=pc.len;
+      }
+    }else gridAvail=0;
+  }
+  const gridNeed=N?gr.first+(N-1)*gr.gap+5:0;
+  /* pit lane */
+  let pit=null;
+  const pp=r.pit.path&&r.pit.path!==p.id?getPath(r.pit.path):null;
+  if(pp&&pp.nodes.length>=2){
+    const pb=state.bakes.get(pp.id);
+    if(pb&&pb.pieces.length){
+      const pl=buildLine(pb,false),mid=lineAt(pl,pl.L/2),pr=lineProject(line,mid.pt);
+      const ds=V.dot(mid.tan,travelTan(pr.s))>=0?1:-1;
+      const tp=V.mul(mid.tan,ds),lp=[tp[1],-tp[0]];
+      let side=Math.sign(V.dot(V.sub(mid.pt,pr.pt),lp))||1; if(r.pit.flipSide) side=-side;
+      const cs=r.pit.centre?lineProject(pl,r.pit.centre).s:pl.L/2;
+      const bl=r.pit.boxLen,pw=r.pit.width,dp=r.pit.depth,tot=N*bl,boxes=[];
+      for(let j=0;j<N;j++){
+        const sv=cs+ds*(-tot/2+bl*(j+0.5)),at=lineAt(pl,sv),t=V.mul(at.tan,ds),nl=V.mul([t[1],-t[0]],side);
+        boxes.push({n:j+1,c:V.add(at.pt,V.mul(nl,pw/2+dp/2)),t,nl,car:V.add(at.pt,V.mul(nl,pw/2+dp/2))});
+      }
+      const entry=ds>0?pl.pts[0]:pl.pts[pl.pts.length-1],exit=ds>0?pl.pts[pl.pts.length-1]:pl.pts[0];
+      pit={p:pp,b:pb,line:pl,ds,side,cs,boxes,entry,exit,need:tot+60,fits:tot+60<=pl.L,width:pw};
+    }
+  }
+  return {p,b,line,L,s0,rev,order,turns,closed:p.closed,cwGeo,clockwise:p.closed?(cwGeo!==rev):null,sectors,sectorLens,dist,travelTan,grid,gridAvail,gridNeed,pole,pit};
 }
 function snapRaceMarks(){
   const R=state.race,r=state.doc.race; if(!R||!r) return;
   if(r.start) r.start=lineProject(R.line,r.start).pt;
   if(r.sectors) r.sectors=r.sectors.map(q=>lineProject(R.line,q).pt);
+  if(R.pit&&r.pit.centre) r.pit.centre=lineProject(R.pit.line,r.pit.centre).pt;
 }
 
 /* ---------------- example circuit ---------------- */
@@ -591,7 +653,11 @@ function exampleDoc(){
   const raw=[[0,0,40],[800,0,60],[860,-180,35],[600,-260,50],[600,-430,40],[820,-520,30],[760,-640,45],[120,-640,90],[-60,-480,70],[-60,-150,50]];
   const pid=uid(),race=defaultRace();
   race.loop=pid; race.start=[520,0]; race.sectors=[[840,-420],[-60,-560]];
-  return {id:uid(),name:'Example circuit',width:12,example:true,race,paths:[{id:pid,closed:true,nodes:raw.map(r=>({x:r[0],y:r[1],hi:null,ho:null,smooth:false,r:r[2]}))}]};
+  const pitId=uid(); race.pit.path=pitId;
+  const pit=[[50,-6,0],[150,-32,40],[650,-32,40],[750,-6,0]];
+  return {id:uid(),name:'Example circuit',width:12,example:true,race,paths:[
+    {id:pid,closed:true,nodes:raw.map(r=>({x:r[0],y:r[1],hi:null,ho:null,smooth:false,r:r[2]}))},
+    {id:pitId,closed:false,nodes:pit.map(r=>({x:r[0],y:r[1],hi:null,ho:null,smooth:false,r:r[2]}))}]};
 }
 function blankDoc(){return {id:uid(),name:'Untitled circuit',width:12,race:defaultRace(),paths:[]};}
 function uid(){return 't'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);}
@@ -602,7 +668,7 @@ const state={
   sel:{path:null,nodes:new Set(),piece:null},
   penPath:null, ruler:null, drag:null, hover:null, cursorS:null,
   space:false, mod:false, alt:false, shift:false, snap:false, dirty:false,
-  bakes:new Map(), race:null, listTab:'segs',
+  bakes:new Map(), race:null, listTab:'segs', raceTab:'layout',
   roundR:50, lineLen:100,
   arc:{len:200,r:120,ang:90,dir:'right',heading:0,ghost:'arc'}
 };
@@ -938,6 +1004,7 @@ function raceHandleAt(sp){
   const R=state.race,r=state.doc.race; if(!R) return null;
   if(r.start&&V.dist(sp,toS(lineAt(R.line,R.s0).pt))<=10) return 'start';
   if(R.sectors) for(let i=0;i<R.sectors.length;i++) if(V.dist(sp,toS(lineAt(R.line,R.sectors[i]).pt))<=10) return i;
+  if(R.pit&&R.pit.boxes.length&&V.dist(sp,toS(lineAt(R.pit.line,R.pit.cs).pt))<=10) return 'pitc';
   return null;
 }
 function raceDown(sp,wp){
@@ -951,7 +1018,26 @@ function raceDown(sp,wp){
     if(!r.start){r.start=lineProject(R.line,wp).pt;markDirty();}
     return;
   }
-  if(hp.path.nodes.length>=2){r.loop=hp.path.id;r.start=null;r.sectors=null;r.reversed=false;markDirty();toast('Race layout moved to this path.');}
+  state.sel={path:hp.path.id,nodes:new Set(),piece:null};
+}
+function makeRaceTrack(p){
+  const r=state.doc.race;
+  r.loop=p.id;r.start=null;r.sectors=null;r.reversed=false;
+  if(r.pit.path===p.id){r.pit.path=null;r.pit.centre=null;}
+  commit();
+}
+function makePitLane(p){
+  const r=state.doc.race,R=state.race; if(!R||p===R.p) return;
+  r.pit.path=p.id;r.pit.centre=null;r.pit.flipSide=false;
+  const W=state.doc.width;let snapped=0;
+  if(!p.closed) [0,p.nodes.length-1].forEach(i=>{
+    const nd=p.nodes[i],pr=lineProject(R.line,[nd.x,nd.y]);
+    if(pr.dist>W*3+40) return;
+    const at=lineAt(R.line,pr.s),nn=[-at.tan[1],at.tan[0]],side=Math.sign(V.dot(V.sub([nd.x,nd.y],at.pt),nn))||1;
+    moveNode(nd,V.sub(V.add(at.pt,V.mul(nn,side*W/2)),[nd.x,nd.y]));snapped++;
+  });
+  commit();
+  toast(snapped===2?'Pit lane set. Both ends now meet the track edge.':'Pit lane set. Draw its ends close to the track so they join up.');
 }
 function lineAddTyped(){
   const ap=state.penPath&&getPath(state.penPath)||(selPath()&&!selPath().closed?selPath():null);
@@ -1098,7 +1184,11 @@ function onMove(e){
   }else if(d.type==='marquee'){d.sp1=sp;}
   else if(d.type==='raceMark'){
     const R=state.race,r=state.doc.race;
-    if(R){const q=lineProject(R.line,wp).pt;if(d.key==='start') r.start=q; else if(r.sectors) r.sectors[d.key]=q;markDirty();}
+    if(R){
+      if(d.key==='pitc'){if(R.pit) r.pit.centre=lineProject(R.pit.line,wp).pt;}
+      else{const q=lineProject(R.line,wp).pt;if(d.key==='start') r.start=q; else if(r.sectors) r.sectors[d.key]=q;}
+      markDirty();
+    }
   }
   else if(d.type==='round'){
     const b=state.bakes.get(d.p.id),c=b&&b.corners[d.j];
@@ -1192,6 +1282,11 @@ function fit(){
 /* ---------------- render ---------------- */
 let raf=0;
 function render(){if(!raf) raf=requestAnimationFrame(()=>{raf=0;draw();});}
+function rectD(c,t,n,ha,hc){
+  const a=V.add(V.add(c,V.mul(t,ha)),V.mul(n,hc)),b=V.add(V.sub(c,V.mul(t,ha)),V.mul(n,hc)),d=V.sub(V.sub(c,V.mul(t,ha)),V.mul(n,hc)),e=V.sub(V.add(c,V.mul(t,ha)),V.mul(n,hc));
+  const f=q=>(+q[0].toFixed(2))+','+(+q[1].toFixed(2));
+  return `M${f(a)} L${f(b)} L${f(d)} L${f(e)} Z `;
+}
 function pill(x,y,text,cls){
   const w=text.length*6.7+14;
   return `<g><rect class="${cls||'pill'}" x="${(x-w/2).toFixed(1)}" y="${(y-10).toFixed(1)}" width="${w.toFixed(1)}" height="20"></rect><text class="pill-t" x="${x.toFixed(1)}" y="${(y+4).toFixed(1)}" text-anchor="middle">${esc(text)}</text></g>`;
@@ -1208,7 +1303,21 @@ function draw(){
         `<pattern id="gmaj" patternUnits="userSpaceOnUse" width="${b}" height="${b}" x="${mod(tx,b)}" y="${mod(ty,b)}"><path class="g2" d="M${b} 0H0V${b}"></path></pattern></defs>`+
         `<rect width="100%" height="100%" fill="url(#gmin)"></rect><rect width="100%" height="100%" fill="url(#gmaj)"></rect>`;
   s+=`<g transform="matrix(${z} 0 0 ${z} ${tx} ${ty})">`;
+  const PT=R&&R.pit;
+  if(PT){
+    const pw=PT.width,dp=rr.pit.depth,bl=rr.pit.boxLen;
+    let gar='',box='',car='';
+    for(const bx of PT.boxes){
+      gar+=rectD(V.add(bx.c,V.mul(bx.nl,dp/2+6)),bx.t,bx.nl,bl/2,6);
+      box+=rectD(bx.c,bx.t,bx.nl,bl/2-0.25,dp/2);
+      car+=rectD(bx.car,bx.t,bx.nl,2.4,1);
+    }
+    s+=`<path class="garage" d="${gar}"></path><path class="pbox" d="${box}"></path>`;
+    s+=`<path class="trk pitl" stroke-width="${pw}" d="${piecesD(PT.b.pieces,false)}"></path>`;
+    if(W*z>=4) s+=`<path class="carm" d="${car}"></path>`;
+  }
   for(const p of doc.paths){
+    if(PT&&p===PT.p) continue;
     const bk=state.bakes.get(p.id);
     if(p.nodes.length===1){const n=p.nodes[0];s+=`<circle class="dot" cx="${n.x}" cy="${n.y}" r="${W/2}"></circle>`;continue;}
     s+=`<path class="trk" stroke-width="${W}" d="${piecesD(bk.pieces,p.closed)}"></path>`;
@@ -1217,7 +1326,7 @@ function draw(){
   const sp=selPath(),sb=sp&&state.bakes.get(sp.id);
   if(sb&&state.sel.piece!=null&&sb.pieces[state.sel.piece]){
     const d=piecesD(sb.pieces,false,state.sel.piece,state.sel.piece+1);
-    s+=`<path class="trk hl" stroke-width="${W}" stroke-linecap="butt" d="${d}"></path><path class="cl" d="${d}"></path>`;
+    s+=`<path class="trk hl" stroke-width="${PT&&sp===PT.p?PT.width:W}" stroke-linecap="butt" d="${d}"></path><path class="cl" d="${d}"></path>`;
   }
   const hv=state.hover;
   if(!state.drag&&hv&&hv.act==='piece'&&!(hv.p.id===state.sel.path&&hv.k===state.sel.piece)){
@@ -1236,13 +1345,22 @@ function draw(){
   }
   if(R){
     const ln=R.line;
-    if(rr.arrows&&W*z>=5){
-      const step=Math.max(W*4,190/z),h=Math.min(W*0.32,11/z);
-      for(let sx=step/2;sx<ln.L;sx+=step){
-        const at=lineAt(ln,R.rev?ln.L-sx:sx),t=R.rev?V.mul(at.tan,-1):at.tan,nn=[-t[1],t[0]];
-        const tip=V.add(at.pt,V.mul(t,h*0.5)),b=V.sub(at.pt,V.mul(t,h*0.5));
-        s+=`<path class="arw" d="M${V.add(b,V.mul(nn,h*0.7))} L${tip} L${V.sub(b,V.mul(nn,h*0.7))}"></path>`;
+    if(rr.arrows&&W*z>=4){
+      const sv=R.s0+(R.rev?-1:1)*Math.max(W*2.2,R.closed?0:W*1.5),at=lineAt(ln,sv),t=R.travelTan(sv),nn=[-t[1],t[0]],h=W*0.55;
+      let d='';
+      for(const off of [0,h*0.55]){const tip=V.add(at.pt,V.mul(t,h*0.5+off)),b0=V.sub(at.pt,V.mul(t,h*0.5-off));d+=`M${V.add(b0,V.mul(nn,h*0.7))} L${tip} L${V.sub(b0,V.mul(nn,h*0.7))} `;}
+      s+=`<path class="arw" d="${d}"></path>`;
+    }
+    if(R.grid.length&&W*z>=3){
+      let gl='',gc='';
+      for(const g of R.grid){
+        const t=g.t,nn=[t[1],-t[0]],hw=W/4-0.6,front=V.add(g.pt,V.mul(t,3.2));
+        const a1=V.add(front,V.mul(nn,hw)),a2=V.sub(front,V.mul(nn,hw)),o=V.mul(nn,g.side*hw),b1=V.add(front,o),b2=V.sub(b1,V.mul(t,2.2));
+        gl+=`M${a1} L${a2} M${b1} L${b2} `;
+        gc+=rectD(g.pt,t,nn,2.4,1);
       }
+      s+=`<path class="gridl" d="${gl}"></path>`;
+      if(state.tool==='race') s+=`<path class="carm" d="${gc}"></path>`;
     }
     const across=(sv,cls)=>{const at=lineAt(ln,sv),nn=[-at.tan[1],at.tan[0]],a=V.add(at.pt,V.mul(nn,W/2)),c=V.sub(at.pt,V.mul(nn,W/2));return `<line class="${cls}" x1="${a[0]}" y1="${a[1]}" x2="${c[0]}" y2="${c[1]}"></line>`;};
     if(R.sectors) R.sectors.forEach(sv=>{s+=across(sv,'secl');});
@@ -1339,9 +1457,16 @@ function draw(){
     const markLbl=(sv,txt,cls)=>{const at=lineAt(ln,sv),nn=[-at.tan[1],at.tan[0]],q=V.add(toS(at.pt),V.mul(nn,offS+8));s+=pill(q[0],q[1],txt,cls);};
     if(R.sectors){const ord=R.sectors.map((sv,i)=>({sv,d:R.dist(R.s0,sv)})).sort((a,c)=>a.d-c.d);ord.forEach((o,i)=>markLbl(o.sv,'S'+(i+2),'pill sec'));}
     if(rr.start) markLbl(R.s0,'START','pill ink');
+    if(R.pit){
+      const PT=R.pit,o=PT.width*z/2+16;
+      for(const [pt,txt] of [[PT.entry,'PIT IN'],[PT.exit,'PIT OUT']]){const q=toS(pt);s+=pill(q[0],q[1]-o,txt,'pill ink');}
+      if(z*rr.pit.boxLen>=22) for(const bx of PT.boxes){const q=toS(V.add(bx.c,V.mul(bx.nl,rr.pit.depth/2+6)));s+=`<text class="nlab" x="${q[0].toFixed(1)}" y="${(q[1]+4).toFixed(1)}" text-anchor="middle">${bx.n}</text>`;}
+    }
+    if(z*rr.grid.gap>=26&&tool==='race') for(const g of R.grid){const q=toS(V.add(g.pt,V.mul([g.t[1],-g.t[0]],g.side*(W/4+3))));s+=`<text class="nlab" x="${q[0].toFixed(1)}" y="${(q[1]+4).toFixed(1)}" text-anchor="middle">${g.n}</text>`;}
     if(tool==='race'){
-      const hs=[];if(rr.start) hs.push(R.s0);if(R.sectors) hs.push(...R.sectors);
-      for(const sv of hs){const q=toS(lineAt(ln,sv).pt);s+=`<circle class="wdg" cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="6"></circle>`;}
+      const hs=[];if(rr.start) hs.push(lineAt(ln,R.s0).pt);if(R.sectors) hs.push(...R.sectors.map(sv=>lineAt(ln,sv).pt));
+      if(R.pit&&R.pit.boxes.length) hs.push(lineAt(R.pit.line,R.pit.cs).pt);
+      for(const pt of hs){const q=toS(pt);s+=`<circle class="wdg" cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="6"></circle>`;}
       if(!rr.start&&hv&&hv.act==='raceStart'){const q=toS(hv.pt);s+=`<circle class="wdg on" cx="${q[0]}" cy="${q[1]}" r="5"></circle>`;}
     }
   }
@@ -1431,7 +1556,7 @@ function renderPanel(){
   const one=s&&state.sel.nodes.size===1?[...state.sel.nodes][0]:null;
   const oneInfo=one!=null&&s.nodes[one]?(s.nodes[one].smooth?'s':'c')+(cornerOf(s,one)?'k':''):'';
   const pcInfo=t==='select'&&s&&state.sel.piece!=null?'p'+state.sel.piece:'';
-  const rr=state.doc.race||{},raceKey=t==='race'?[!!rr.start,!!rr.sectors,rr.reversed,rr.arrows,rr.numbers,rr.loop,state.race?state.race.closed:''].join(','):'';
+  const rr=state.doc.race||{},raceKey=t==='race'?[!!rr.start,!!rr.sectors,rr.reversed,rr.arrows,rr.numbers,rr.loop,state.race?state.race.closed:'',state.raceTab,rr.grid&&rr.grid.pole,rr.pit&&rr.pit.path,!!(state.race&&state.race.pit),state.race&&state.race.clockwise].join(','):'';
   const key=[raceKey,t,state.sel.path,[...state.sel.nodes].join(','),state.penPath?'d':'',state.ruler?'r':'',s?s.closed:'',s?s.nodes.length:'',state.arc.dir,state.arc.ghost,oneInfo,pcInfo].join('|');
   if(key!==ctxKey){ctxKey=key;$('ctx').innerHTML=ctxHTML(t,s);}
   refreshCtx(t,s);
@@ -1453,17 +1578,44 @@ function ctxHTML(t,s){
       <div class="row"><button class="btn" data-act="lineAdd">Add straight · Enter</button>${state.penPath?'<button class="btn" data-act="finish">Finish</button>':''}</div>`;
   }
   if(t==='race'){
-    const R=state.race,r=state.doc.race;
-    if(!R) return `<h3>Race layout</h3><p>Close a loop first, or click any path to use it as the race track.</p>`;
+    const R=state.race,r=state.doc.race,sp=selPath();
+    const other=sp&&(!R||sp!==R.p)?sp:null;
+    let pick='';
+    if(other){
+      const isPit=r.pit.path===other.id;
+      pick=`<div class="pick"><h3>Selected path</h3><div class="row">${other.nodes.length>=3&&other.closed||!R?'<button class="btn" data-act="makeRace">Make race track</button>':''}${R&&!isPit&&!other.closed?'<button class="btn" data-act="makePit">Make pit lane</button>':''}${isPit?'<button class="btn" data-act="unPit">Stop using as pit lane</button>':''}</div></div>`;
+    }
+    if(!R) return `<h3>Race layout</h3><p>Close a loop first, then click it with this tool. Any path can be made the race track.</p>${pick}`;
+    const tabs=`<div class="seg wide" role="group" aria-label="Race settings"><button data-act="rtLayout" aria-pressed="${state.raceTab!=='pits'}">Layout</button><button data-act="rtPits" aria-pressed="${state.raceTab==='pits'}">Grid &amp; pits</button></div>`;
+    if(state.raceTab==='pits'){
+      const pitTxt=R.pit?'':`<p>Draw the pit lane as an open path with the Pen or Line tool, from the track to the track. Then click it with this tool and choose <b>Make pit lane</b>.</p>`;
+      return `${tabs}${pick}
+        <div class="field"><label for="carsIn">Cars</label><span class="in"><input class="num" id="carsIn" type="number" min="0" max="60" step="1" data-act="cars"></span></div>
+        <p>Sets both the grid slots and the pit boxes.</p>
+        <h3>Grid</h3>
+        ${r.start?'':'<p>Place the start line first. The grid forms up behind it.</p>'}
+        <div class="field"><span>Pole</span><div class="seg" role="group" aria-label="Pole side"><button data-act="poleAuto" aria-pressed="${r.grid.pole==='auto'}">Auto</button><button data-act="poleL" aria-pressed="${r.grid.pole==='left'}">Left</button><button data-act="poleR" aria-pressed="${r.grid.pole==='right'}">Right</button></div></div>
+        <div class="field"><label for="gridGap">Slot spacing</label><span class="in"><input class="num" id="gridGap" type="number" min="4" max="40" step="1" data-act="gridGap"> m</span></div>
+        <div class="kv"><span>Grid length</span><span data-live="gridLen"></span></div>
+        <div class="note" data-live="gridNote"></div>
+        <h3>Pit lane</h3>
+        ${pitTxt}
+        ${R.pit?`<div class="kv"><span>Pit lane length</span><span data-live="pitLen"></span></div>
+        <div class="field"><label for="pitW">Lane width</label><span class="in"><input class="num" id="pitW" type="number" min="3" max="30" step="0.5" data-act="pitW"> m</span></div>
+        <div class="field"><label for="boxLen">Box length</label><span class="in"><input class="num" id="boxLen" type="number" min="6" max="40" step="1" data-act="boxLen"> m</span></div>
+        <div class="row"><button class="btn" data-act="pitFlip">Boxes on the other side</button><button class="btn" data-act="pitCentre">Centre the boxes</button></div>
+        <p>Drag the circle on the pit lane to slide the row of boxes along it.</p>
+        <div class="note" data-live="pitNote"></div>`:''}`;
+    }
     const dirBtns=R.closed?`<button data-act="raceCW" aria-pressed="${!!R.clockwise}">Clockwise</button><button data-act="raceCCW" aria-pressed="${!R.clockwise}">Anticlockwise</button>`:`<button data-act="raceFwd" aria-pressed="${!r.reversed}">Forward</button><button data-act="raceRev" aria-pressed="${!!r.reversed}">Reverse</button>`;
-    return `<h3>Race layout</h3>
+    return `${tabs}${pick}
       <div class="field"><span>Direction</span><div class="seg" role="group" aria-label="Direction of travel">${dirBtns}</div></div>
       <div class="kv"><span>Start / finish</span><span data-live="sfState"></span></div>
       ${r.start?'<p>Drag the circle on the chequered line to move it along the track.</p>':'<p>Click the track to place the start line, or put it on the longest straight.</p>'}
       <div class="row"><button class="btn" data-act="startStraight">On the longest straight</button></div>
       ${R.closed?`<label class="check"><input type="checkbox" data-act="sectorsOn" ${r.sectors?'checked':''}> Sector lines</label>
       ${r.sectors?'<div class="kv"><span>S1 · S2 · S3</span><span data-live="secLens"></span></div><button class="btn" data-act="sectorThirds">Reset to equal thirds</button>':''}`:''}
-      <label class="check"><input type="checkbox" data-act="arrowsOn" ${r.arrows?'checked':''}> Direction arrows</label>
+      <label class="check"><input type="checkbox" data-act="arrowsOn" ${r.arrows?'checked':''}> Direction arrow</label>
       <label class="check"><input type="checkbox" data-act="numbersOn" ${r.numbers?'checked':''}> Turn numbers</label>
       <div class="field"><label for="turnMin">Number bends from</label><span class="in"><input class="num" id="turnMin" type="number" min="1" max="90" step="1" data-act="turnMin"> °</span></div>`;
   }
@@ -1543,6 +1695,11 @@ function refreshCtx(t,s){
     setLive('sfState',r.start?'Placed':'Not placed');
     if(R.sectorLens) setLive('secLens',R.sectorLens.map(x=>(x/1000).toFixed(2)).join(' · ')+' km');
     setVal('turnMin',r.turnMin);
+    setVal('carsIn',r.cars);setVal('gridGap',r.grid.gap);
+    setLive('gridLen',R.gridNeed?Math.round(R.gridNeed)+' m':'—');
+    setLive('gridNote',r.start&&R.gridNeed>R.gridAvail+0.5?'The grid needs '+Math.round(R.gridNeed)+' m but the straight behind the line has '+Math.round(R.gridAvail)+' m. Move the start line forward or space the slots closer.':'');
+    if(R.pit){setVal('pitW',r.pit.width);setVal('boxLen',r.pit.boxLen);setLive('pitLen',Math.round(R.pit.line.L)+' m');
+      setLive('pitNote',R.pit.fits?'':'The boxes need about '+Math.round(R.pit.need)+' m of pit lane. Lengthen the lane, shorten the boxes or reduce the cars.');}
   }
 }
 $('ctx').addEventListener('click',e=>{
@@ -1569,6 +1726,13 @@ $('ctx').addEventListener('click',e=>{
   else if(act==='addArc'){if(s&&!s.closed){applyArc(s,Math.max(1,state.arc.r),clamp(state.arc.ang,1,359),state.arc.dir);state.sel.nodes=new Set([s.nodes.length-1]);commit();}}
   else if(act==='clearRuler'){state.ruler=null;}
   else if(act==='lineAdd'){lineAddTyped();return;}
+  else if(act==='rtLayout'||act==='rtPits'){state.raceTab=act==='rtPits'?'pits':'layout';}
+  else if(act==='makeRace'){if(s) makeRaceTrack(s);}
+  else if(act==='makePit'){if(s) makePitLane(s);}
+  else if(act==='unPit'){state.doc.race.pit.path=null;state.doc.race.pit.centre=null;commit();}
+  else if(act==='poleAuto'||act==='poleL'||act==='poleR'){state.doc.race.grid.pole={poleAuto:'auto',poleL:'left',poleR:'right'}[act];commit();}
+  else if(act==='pitFlip'){state.doc.race.pit.flipSide=!state.doc.race.pit.flipSide;commit();}
+  else if(act==='pitCentre'){state.doc.race.pit.centre=null;commit();}
   else if(act.startsWith('race')||act==='startStraight'||act==='sectorThirds'){
     const R=state.race,r=state.doc.race; if(!R) return;
     if(act==='raceCW') r.reversed=!R.cwGeo;
@@ -1597,6 +1761,14 @@ $('ctx').addEventListener('input',e=>{
     else if(act==='arrowsOn') r.arrows=el.checked;
     else if(act==='numbersOn') r.numbers=el.checked;
     commit(); render(); return;
+  }
+  if(act==='cars'||act==='gridGap'||act==='pitW'||act==='boxLen'){
+    const v=parseFloat(el.value),r=state.doc.race; if(!isFinite(v)||!r) return;
+    if(act==='cars') r.cars=clamp(Math.round(v),0,60);
+    else if(act==='gridGap'){if(v<4) return;r.grid.gap=clamp(v,4,40);}
+    else if(act==='pitW'){if(v<3) return;r.pit.width=clamp(v,3,30);}
+    else if(act==='boxLen'){if(v<6) return;r.pit.boxLen=clamp(v,6,40);}
+    markDirty();render();return;
   }
   if(act==='turnMin'){const v=parseFloat(el.value);if(isFinite(v)&&v>=1&&v<=90&&state.doc.race){state.doc.race.turnMin=v;markDirty();render();}return;}
   const v=parseFloat(el.value); if(!isFinite(v)) return;
@@ -1759,6 +1931,13 @@ function raceSVG(W){
   let out='';
   if(r.start) out+=`  <g id="start-finish" stroke="#FFFFFF" stroke-width="1">\n${across(R.s0,'start')}  </g>\n`;
   if(R.sectors){const ord=R.sectors.slice().sort((a,c)=>R.dist(R.s0,a)-R.dist(R.s0,c));out+=`  <g id="sectors" stroke="#1D5FD1" stroke-width="1">\n${ord.map((sv,i)=>across(sv,'sector-'+(i+2))).join('')}  </g>\n`;}
+  const f2=q=>(+q[0].toFixed(2))+','+(+q[1].toFixed(2));
+  if(R.pit){
+    const PT=R.pit,bl=r.pit.boxLen,dp=r.pit.depth;
+    out+=`  <g id="pitlane" fill="none" stroke="#55554F" stroke-width="${PT.width}" stroke-linejoin="round" stroke-linecap="butt" data-width="${PT.width}">\n    <path d="${piecesD(PT.b.pieces,false)}" data-direction="${PT.ds>0?'forward':'reverse'}"/>\n  </g>\n`;
+    out+=`  <g id="pit-boxes" fill="#C9C9C4" stroke="#FFFFFF" stroke-width="0.3">\n${PT.boxes.map(bx=>`    <path id="pit-${bx.n}" d="${rectD(bx.c,bx.t,bx.nl,bl/2-0.25,dp/2).trim()}" data-car="${f2(bx.car)}" data-heading="${f2(bx.t)}"/>\n`).join('')}  </g>\n`;
+  }
+  if(R.grid.length) out+=`  <g id="grid" fill="#D4231A">\n${R.grid.map(g=>`    <path id="grid-${g.n}" d="${rectD(g.pt,g.t,[g.t[1],-g.t[0]],2.4,1).trim()}" data-car="${f2(g.pt)}" data-heading="${f2(g.t)}"/>\n`).join('')}  </g>\n`;
   if(R.turns.length) out+=`  <g id="turns" font-family="sans-serif" font-size="${Math.max(8,W)}" font-weight="700" fill="#111111" text-anchor="middle">\n${R.turns.map(t=>{const q=V.add(t.pt,V.mul(t.out,W*1.6));return `    <text x="${q[0].toFixed(1)}" y="${q[1].toFixed(1)}">${esc(t.name||'T'+t.n)}</text>\n`;}).join('')}  </g>\n`;
   return out;
 }
@@ -1769,6 +1948,7 @@ function buildSVG(){
   for(const {p,b} of bakes){
     for(const pc of b.pieces) for(const q of samplePiece(pc)){x0=Math.min(x0,q[0]);y0=Math.min(y0,q[1]);x1=Math.max(x1,q[0]);y1=Math.max(y1,q[1]);}
     const d=piecesD(b.pieces,p.closed);
+    if(state.race&&state.race.pit&&state.race.pit.p===p) continue;
     body+=`    <path d="${d}"/>\n`; cl+=`    <path d="${d}"/>\n`;
     if(p.closed&&!lap) lap=b.total;
   }

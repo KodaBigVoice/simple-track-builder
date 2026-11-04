@@ -24,12 +24,18 @@ With the Pen or Line tool, click the end of an open path to keep drawing from it
 
 ## Race layout
 
-- **Direction of travel:** arrows along the track; set it clockwise or anticlockwise.
+- **Direction of travel:** one arrow just past the start line; set it clockwise or anticlockwise.
 - **Start/finish:** a chequered line you drag along the track, or drop on the longest straight in one click.
 - **Sectors:** two sector lines (equal thirds to start), with each sector's length shown.
 - **Turn numbers:** every bend of 15° or more (adjustable) is numbered in the direction of travel. You can name turns in the panel's **Turns** tab.
 
-These markers follow the track as you edit it, and they're included in the SVG export.
+### Grid & pits
+
+- **Cars:** one number sets both the grid slots and the pit boxes (20 by default).
+- **Grid:** staggered slots behind the start line, 8 m apart, with pole on the inside of Turn 1 (or left/right if you choose). The panel warns if the grid doesn't fit on the straight.
+- **Pit lane:** draw an open path from the track to the track, then click it with the Race tool and choose **Make pit lane**. Its ends snap to the track edge. Set the lane width and box length; boxes sit on the side away from the track (flip if needed), and you can drag the row of boxes along the lane.
+
+These markers follow the track as you edit it, and they're included in the SVG export (pit lane, numbered pit boxes and grid slots, each with its car position and heading).
 
 ## Panel
 
