@@ -15,6 +15,7 @@ It's a single self-contained `index.html` with no build step. Open it in a brows
 | Arc | R | Add exact straights and arcs (radius, angle, left/right) to the end of an open path |
 | Round corners | C | Drag a corner's dot inwards, or type a radius; corners share a straight sensibly with their neighbours |
 | Split | X | Cut the track at a point; a loop opens, an open path becomes two |
+| Width | W | Width points along the race track: the width morphs from one point to the next, with each side set separately |
 | Race layout | T | Direction of travel, start/finish line and sector lines, all placed by dragging along the track |
 | Measure | M | Ruler that snaps to points; Shift locks to 45° |
 
@@ -49,11 +50,34 @@ These markers follow the track as you edit it, and they're included in the SVG e
 
 ## Reference layers (real-world tracks)
 
-A project file can carry locked reference layers: building footprints, road edges, bridges and similar real-world limits. They're drawn under the track for guidance and can't be selected or moved.
+A project file can carry locked reference layers: building footprints, road edges, bridges and similar real-world limits, and optionally terrain heights. They're drawn under the track for guidance and can't be selected or moved.
 
 - **Open file** with a project that includes a `reference` block to load them. The **Reference layers** section in the panel lists each layer with a show/hide toggle, marked as a hard limit or an estimate.
 - They're stored per track in this browser (IndexedDB), and **Save as file** writes them back into the project file. On another browser or device, open the project file to bring them back.
-- `examples/hyde-park-circuit.json` is the Hyde Park Circuit project: the lap traced from real road centrelines, start/finish on Exhibition Road, the pit lane along its west side with garages in Kensington Gardens, and building and road-edge layers. Map data © OpenStreetMap contributors (ODbL).
+- `examples/hyde-park-circuit.json` is the Hyde Park Circuit project: the lap traced from real road centrelines with width points for the real road widths, start/finish on Exhibition Road, the pit lane along its west side with boxes in Kensington Gardens, building, road-edge and bridge layers, and LIDAR terrain. Map data © OpenStreetMap contributors (ODbL). Contains Environment Agency information © Environment Agency and/or database right.
+
+## Track width
+
+The race track is still one path. Its width can vary along it using width points:
+
+- With the **Width** tool, click the track to add a point. Drag its centre to slide it along the track, and drag an edge square to change the width. Alt-drag moves one side only.
+- Each point has a left and a right half-width. **Keep both sides equal** links them.
+- **Blend:** between points the width morphs smoothly by default. **Linear** gives straight edges into a point, which is how to make a sharp apex you clip.
+- Points stay with the stretch of track they're on when you edit elsewhere. Kerbs, run-off, the grid, start and sector lines and pit-lane ends all follow the real edges.
+- With no width points, the whole track uses the **Track width** setting as before.
+
+## Elevation and checks
+
+- If a project's reference includes **terrain**, the track's height follows the ground wherever you move it. Dips such as cuttings and basements are filtered out, and bridge decks are levelled between their abutments. The panel shows the elevation profile, the climb per lap and the steepest gradients.
+- **Checks** run live: track edges inside a building (or another hard limit), corners tighter than a minimum radius, track narrower than a minimum width, and gradients steeper than a maximum. Set the limits in the panel; flagged stretches are highlighted on the track, and clicking one zooms to it.
+
+## Track Pack
+
+**Tracks → Export Track Pack** writes a `.zip` for building the track in Assetto Corsa:
+
+- `track.json`: the full specification, with the centreline every metre (position, height, left and right half-widths, heading), start line, sectors, turns, kerbs, run-off, grid, pit lane and boxes, DRS zones, walls and surfaces, plus any reference layers and terrain.
+- `ui/ui_track.json`, `data/surfaces.ini`, `data/drs_zones.ini`, `map.png` and `data/map.ini`.
+- `track.svg` and a README.
 
 ## Panel
 
