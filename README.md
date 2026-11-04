@@ -15,11 +15,21 @@ It's a single self-contained `index.html` with no build step. Open it in a brows
 | Arc | R | Add exact straights and arcs (radius, angle, left/right) to the end of an open path |
 | Round corners | C | Drag a corner's dot inwards, or type a radius; corners share a straight sensibly with their neighbours |
 | Split | X | Cut the track at a point; a loop opens, an open path becomes two |
+| Race layout | T | Direction of travel, start/finish line and sector lines, all placed by dragging along the track |
 | Measure | M | Ruler that snaps to points; Shift locks to 45° |
 
 Other shortcuts: Ctrl/Cmd+Z undo, Ctrl/Cmd+Shift+Z redo, Space-drag to pan, scroll or pinch to zoom, Ctrl/Cmd+0 to fit, arrow keys nudge 1 m (Shift for 10 m), Delete removes the selection, Enter or Esc finishes a path.
 
 With the Pen or Line tool, click the end of an open path to keep drawing from it, and click another open end to join the two.
+
+## Race layout
+
+- **Direction of travel:** arrows along the track; set it clockwise or anticlockwise.
+- **Start/finish:** a chequered line you drag along the track, or drop on the longest straight in one click.
+- **Sectors:** two sector lines (equal thirds to start), with each sector's length shown.
+- **Turn numbers:** every bend of 15° or more (adjustable) is numbered in the direction of travel. You can name turns in the panel's **Turns** tab.
+
+These markers follow the track as you edit it, and they're included in the SVG export.
 
 ## Panel
 
