@@ -53,6 +53,7 @@ These markers follow the track as you edit it, and they're included in the SVG e
 A project file can carry locked reference layers: building footprints, road edges, bridges and similar real-world limits, and optionally terrain heights. They're drawn under the track for guidance and can't be selected or moved.
 
 - **Open file** with a project that includes a `reference` block to load them. The **Reference layers** section in the panel lists each layer with a show/hide toggle, marked as a hard limit or an estimate.
+- **Road lines** can be **Subtle** (dashed, under the track) or **Very visible** (bright, drawn above the track so you can trace against them). The choice is remembered in this browser.
 - They're stored per track in this browser (IndexedDB), and **Save as file** writes them back into the project file. On another browser or device, open the project file to bring them back.
 - `examples/hyde-park-circuit.json` is the Hyde Park Circuit project: the lap traced from real road centrelines with width points for the real road widths, start/finish on Exhibition Road, the pit lane along its west side with boxes in Kensington Gardens, building, road-edge and bridge layers, and LIDAR terrain. Map data © OpenStreetMap contributors (ODbL). Contains Environment Agency information © Environment Agency and/or database right.
 
