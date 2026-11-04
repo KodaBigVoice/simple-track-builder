@@ -14,7 +14,7 @@
 :root{
   --bg:#FFFFFF; --panel:#FFFFFF; --canvas:#F5F5F3; --ink:#121212; --muted:#5C5C5A;
   --line:#E4E4E1; --grid-minor:#ECECE9; --grid-major:#D9D9D5; --hover:#F1F1EE;
-  --accent:#D4231A; --on-accent:#FFFFFF; --warn:#B45309; --sector:#1D5FD1; --pit:#55554F; --pitbox:#C9C9C4; --building:#E2E2DD; --grass:#CFE3BF; --gravel:#E5D8B4; --runoff:#B9B9B4; --sand:#EEDFB8; --stand:#A9BBD0; --stand-row:#7F93AD; --concrete:#7A7A74; --armco:#9A9A96; --drs:#15803D;
+  --accent:#D4231A; --on-accent:#FFFFFF; --warn:#B45309; --sector:#1D5FD1; --pit:#55554F; --pitbox:#C9C9C4; --building:#E2E2DD; --grass:#CFE3BF; --gravel:#E5D8B4; --runoff:#B9B9B4; --sand:#EEDFB8; --stand:#A9BBD0; --stand-row:#7F93AD; --concrete:#7A7A74; --armco:#9A9A96; --drs:#15803D; --ref-bld:#DCDCD6; --ref-bld-edge:#C4C4BE; --ref-water:#BFD7E6; --ref-road:#8E8E88; --ref-bridge:#6B6B66;
   --f-sans:'Archivo','Helvetica Neue',Arial,sans-serif;
   --f-mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
 }
@@ -22,13 +22,13 @@
   :root:not([data-theme="light"]){
     --bg:#0E0E0F; --panel:#111112; --canvas:#18181A; --ink:#F2F2F0; --muted:#A3A3A0;
     --line:#2A2A2D; --grid-minor:#202023; --grid-major:#2E2E32; --hover:#1F1F22;
-    --warn:#FBBF24; --sector:#2F6FE0; --pit:#B5B5AF; --pitbox:#3A3A3E; --building:#26262A; --grass:#22331F; --gravel:#4B4330; --runoff:#3A3A3E; --sand:#544A33; --stand:#34465C; --stand-row:#4C6584; --concrete:#8C8C86; --armco:#C9C9C4; --drs:#22C55E; color-scheme:dark;
+    --warn:#FBBF24; --sector:#2F6FE0; --pit:#B5B5AF; --pitbox:#3A3A3E; --building:#26262A; --grass:#22331F; --gravel:#4B4330; --runoff:#3A3A3E; --sand:#544A33; --stand:#34465C; --stand-row:#4C6584; --concrete:#8C8C86; --armco:#C9C9C4; --drs:#22C55E; --ref-bld:#2B2B30; --ref-bld-edge:#3A3A40; --ref-water:#1E3442; --ref-road:#6E6E6A; --ref-bridge:#A3A3A0; color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
   --bg:#0E0E0F; --panel:#111112; --canvas:#18181A; --ink:#F2F2F0; --muted:#A3A3A0;
   --line:#2A2A2D; --grid-minor:#202023; --grid-major:#2E2E32; --hover:#1F1F22;
-  --warn:#FBBF24; --sector:#2F6FE0; --pit:#B5B5AF; --pitbox:#3A3A3E; --building:#26262A; --grass:#22331F; --gravel:#4B4330; --runoff:#3A3A3E; --sand:#544A33; --stand:#34465C; --stand-row:#4C6584; --concrete:#8C8C86; --armco:#C9C9C4; --drs:#22C55E; color-scheme:dark;
+  --warn:#FBBF24; --sector:#2F6FE0; --pit:#B5B5AF; --pitbox:#3A3A3E; --building:#26262A; --grass:#22331F; --gravel:#4B4330; --runoff:#3A3A3E; --sand:#544A33; --stand:#34465C; --stand-row:#4C6584; --concrete:#8C8C86; --armco:#C9C9C4; --drs:#22C55E; --ref-bld:#2B2B30; --ref-bld-edge:#3A3A40; --ref-water:#1E3442; --ref-road:#6E6E6A; --ref-bridge:#A3A3A0; color-scheme:dark;
 }
 html,body{height:100%}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-sans);font-size:14px;overflow:hidden}
@@ -62,6 +62,30 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
 
 /* stage */
 .stage-wrap{flex:1 1 auto;min-height:0;position:relative;background:var(--canvas);overflow:hidden}
+#refStage{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
+#refStage .ref-buildings{fill:var(--ref-bld);stroke:var(--ref-bld-edge);stroke-width:1px;vector-effect:non-scaling-stroke}
+#refStage .ref-water{fill:var(--ref-water)}
+#refStage .ref-bridges{fill:none;stroke:var(--ref-bridge);stroke-width:1.5px;stroke-dasharray:6 3;vector-effect:non-scaling-stroke}
+#refStage .ref-roads{fill:none;stroke:var(--ref-road);stroke-width:1px;stroke-dasharray:4 4;vector-effect:non-scaling-stroke;opacity:.8}
+#refStage .ref-other{fill:none;stroke:var(--muted);stroke-width:1px;vector-effect:non-scaling-stroke}
+.refrow{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.refrow .src{font-size:12px;color:var(--muted)}
+.refnote{font-size:12px;color:var(--muted);margin:0}
+#elevSvg{width:100%;height:96px;display:block;background:var(--canvas);border:1px solid var(--line)}
+#elevSvg .ef{fill:var(--accent);opacity:.12}
+#elevSvg .el{fill:none;stroke:var(--accent);stroke-width:1.5;vector-effect:non-scaling-stroke}
+#elevSvg .eg{stroke:var(--line);stroke-width:1;vector-effect:non-scaling-stroke}
+#elevSvg .et{font:10px var(--f-mono);fill:var(--muted)}
+.chkset{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.chkset label{display:flex;flex-direction:column;gap:2px;font-size:11px;color:var(--muted)}
+.chkset .in{display:flex;align-items:center;gap:4px;color:var(--muted)}
+.chkset .num{width:100%;min-width:0}
+.ckrow{display:flex;align-items:center;gap:8px;width:100%;text-align:left;border:0;border-bottom:1px solid var(--line);background:transparent;padding:6px 2px;font-size:13px}
+.ckrow:hover{background:var(--hover)}
+.ckrow .ix{font-family:var(--f-mono);font-size:12px;color:var(--muted);min-width:56px}
+.ckrow .ck{width:8px;height:8px;border-radius:50%;background:var(--warn);flex-shrink:0}
+.ckok{font-size:13px;color:var(--muted);margin:0}
+.chkhl{fill:none;stroke:var(--warn);stroke-linecap:round;stroke-linejoin:round;opacity:.55}
 #stage{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none;user-select:none;-webkit-user-select:none}
 .scalebar{position:absolute;left:20px;bottom:44px;display:flex;align-items:flex-end;gap:10px;font-family:var(--f-mono);font-size:11px;color:var(--ink);pointer-events:none}
 .scalebar .bar{display:flex;height:6px}
@@ -81,6 +105,18 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
 .g2{fill:none;stroke:var(--grid-major);stroke-width:1}
 .trk{fill:none;stroke:var(--ink);stroke-linejoin:round;stroke-linecap:round}
 .trk.hl{stroke:var(--accent)}
+.trkf{fill:var(--ink);stroke:none}
+.wkl{stroke:var(--accent);stroke-width:2}
+.wkl.on{stroke-width:3}
+.wkh{fill:var(--bg);stroke:var(--accent);stroke-width:2}
+.wkh.on{fill:var(--accent)}
+.wkc{fill:var(--accent);stroke:var(--bg);stroke-width:2}
+.wghost{stroke:var(--accent);stroke-width:1.5;stroke-dasharray:4 3}
+.wrow{display:flex;align-items:center;gap:8px;width:100%;text-align:left;border:0;background:transparent;padding:6px 4px;border-bottom:1px solid var(--line);font-size:13px}
+.wrow.on{background:var(--hover);font-weight:600}
+.wrow .ix{min-width:58px;white-space:nowrap;color:var(--muted);font-family:var(--f-mono);font-size:12px}
+.wrow .wv{margin-left:auto;font-family:var(--f-mono);font-size:12px}
+.wlist{max-height:240px;overflow:auto}
 .trk.wn{stroke:var(--warn)}
 .dot{fill:var(--ink)}
 .cl{fill:none;stroke:#FFFFFF;stroke-width:1;vector-effect:non-scaling-stroke}
@@ -224,7 +260,9 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
 .lrow .del.arm{color:var(--on-accent);background:var(--accent)}
 .lib-foot{padding:10px 14px;font-size:12px;color:var(--muted)}
 .lib-files{display:flex;gap:8px;padding:12px 14px 0}
+.lib-files{flex-wrap:wrap}
 .lib-files .btn{flex:1}
+#packBtn{flex-basis:100%}
 .panel>*{flex-shrink:0}
 
 .toast{position:fixed;left:50%;bottom:calc(48px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;font-size:13px;z-index:20;max-width:min(520px,calc(100vw - 32px))}
@@ -258,6 +296,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
       <button class="tb" data-tool="arc" title="Straights &amp; arcs  R"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M4 20A16 16 0 0 1 20 4"></path></svg><span class="lbl">Arc</span><span class="key">R</span></button>
       <button class="tb" data-tool="round" title="Round corners  C"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M4 21V12a8 8 0 0 1 8-8h9"></path></svg><span class="lbl">Round</span><span class="key">C</span></button>
       <button class="tb" data-tool="split" title="Split  X"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="6" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><path d="M8.5 7.5L20 18M8.5 16.5L20 6"></path></svg><span class="lbl">Split</span><span class="key">X</span></button>
+      <button class="tb" data-tool="width" title="Track width  W"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M3 5c6 2 12 2 18 0M3 19c6-3 12-3 18 0"></path><path d="M12 7.5v8M10 9.5l2-2 2 2M10 13.5l2 2 2-2"></path></svg><span class="lbl">Width</span><span class="key">W</span></button>
       <button class="tb" data-tool="race" title="Race layout  T"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4"></path><path d="M5 4h13l-2.5 4L18 12H5"></path></svg><span class="lbl">Race</span><span class="key">T</span></button>
       <button class="tb" data-tool="measure" title="Measure  M"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><rect x="2" y="8" width="20" height="8" rx="1.5"></rect><path d="M6 8v3M10 8v4M14 8v3M18 8v4"></path></svg><span class="lbl">Measure</span><span class="key">M</span></button>
       <div class="grow"></div>
@@ -270,6 +309,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
       <button class="tb export" id="exportBtn" title="Export SVG"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"></path></svg><span>Export SVG</span></button>
     </nav>
     <div class="stage-wrap" id="stageWrap">
+      <svg id="refStage" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"></svg>
       <svg id="stage" xmlns="http://www.w3.org/2000/svg" role="application" aria-label="Track drawing canvas"></svg>
       <div class="empty" id="emptyMsg" hidden><strong>Start drawing</strong>Choose the Pen and click to place points. Drag as you click to make a curve. Click your first point to close the loop.</div>
       <div class="scalebar" aria-hidden="true"><div class="bar"><i id="sb1"></i><i id="sb2"></i></div><span id="sbLbl">200 m</span></div>
@@ -294,6 +334,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
       <div class="lib-files">
         <button class="btn" id="saveFileBtn">Save as file</button>
         <button class="btn" id="openFileBtn">Open file</button>
+        <button class="btn" id="packBtn">Export Track Pack</button>
       </div>
       <div class="lib-foot" id="libFoot"></div>
     </div>
@@ -309,6 +350,29 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
 
     <div class="sect">
       <div class="field"><label for="widthIn">Track width</label><span class="in"><input class="num" id="widthIn" type="number" min="2" max="60" step="0.5" value="12"> m</span></div>
+    </div>
+
+    <div class="sect" id="refSect" hidden>
+      <div class="refrow"><b>Reference layers</b><span class="src">Locked</span></div>
+      <div class="sect" id="refList"></div>
+      <p class="refnote" id="refNote"></p>
+    </div>
+
+    <div class="sect" id="elevSect" hidden>
+      <div class="refrow"><b>Elevation</b><span class="src" id="elevRange"></span></div>
+      <svg id="elevSvg" viewBox="0 0 300 96" preserveAspectRatio="none" role="img" aria-label="Elevation profile around the lap"></svg>
+      <div class="kv"><span>Climb per lap</span><span id="elevClimb"></span></div>
+      <div class="kv"><span>Steepest up · down</span><span id="elevGrad"></span></div>
+    </div>
+
+    <div class="sect" id="chkSect" hidden>
+      <div class="refrow"><b>Checks</b><span class="src" id="chkCount"></span></div>
+      <div class="chkset">
+        <label>Min radius<span class="in"><input class="num" id="ckR" type="number" min="0" max="500" step="1" data-ck="minR"> m</span></label>
+        <label>Min width<span class="in"><input class="num" id="ckW" type="number" min="0" max="60" step="0.5" data-ck="minW"> m</span></label>
+        <label>Max gradient<span class="in"><input class="num" id="ckG" type="number" min="0" max="50" step="0.5" data-ck="maxGrad"> %</span></label>
+      </div>
+      <div id="chkList"></div>
     </div>
 
     <div class="segs">
@@ -521,7 +585,7 @@ function samplePiece(pc){
 /* ---------------- race layer: everything placed by distance along the race path ---------------- */
 function defaultRace(){return {loop:null,reversed:false,start:null,sectors:null,arrows:true,numbers:true,turnMin:15,names:{},cars:20,
   grid:{pole:'auto',first:8,gap:8},pit:{path:null,width:10,boxLen:14,depth:9,centre:null,flipSide:false},
-  kerbs:{on:true,maxR:250,width:1.5,off:{}},drs:[],
+  kerbs:{on:true,maxR:250,width:1.5,off:{}},drs:[],widths:[],checks:{minR:10,minW:6,maxGrad:8},
   runoff:{on:true,depth:35,tarmac:15,type:'mixed',maxR:300,barriers:true,off:{}}};}
 function cleanRace(r){
   const d=defaultRace(); if(!r||typeof r!=='object') return d;
@@ -542,6 +606,8 @@ function cleanRace(r){
   if(isFinite(ro.depth)) d.runoff.depth=clamp(+ro.depth,5,200); if(isFinite(ro.tarmac)) d.runoff.tarmac=clamp(+ro.tarmac,0,200);
   if(['mixed','tarmac','gravel'].includes(ro.type)) d.runoff.type=ro.type; if(isFinite(ro.maxR)) d.runoff.maxR=clamp(+ro.maxR,10,2000); d.runoff.off=offMap(ro.off);
   if(r.names&&typeof r.names==='object') for(const k in r.names) if(typeof r.names[k]==='string'&&r.names[k].trim()) d.names[k]=r.names[k].slice(0,60);
+  if(Array.isArray(r.widths)) d.widths=r.widths.slice(0,400).map(k=>k&&pt(k.pt)&&isFinite(k.l)&&isFinite(k.r)?{pt:pt(k.pt),l:clamp(+k.l,0.5,40),r:clamp(+k.r,0.5,40),ease:k.ease==='linear'?'linear':'smooth',link:k.link!==false}:null).filter(Boolean);
+  const ck=r.checks||{}; if(isFinite(ck.minR)) d.checks.minR=clamp(+ck.minR,0,500); if(isFinite(ck.minW)) d.checks.minW=clamp(+ck.minW,0,60); if(isFinite(ck.maxGrad)) d.checks.maxGrad=clamp(+ck.maxGrad,0,50);
   return d;
 }
 function buildLine(b,closed){
@@ -626,6 +692,26 @@ function computeRace(){
     sectorLens=[sorted[1]-sorted[0],sorted[2]-sorted[1],L-sorted[2]];
   }
   const travelTan=sv=>{const a=lineAt(line,sv);return rev?V.mul(a.tan,-1):a.tan;};
+  /* width: keyframes along the track; a = half-width on the line's left ([tan.y,-tan.x]), b = on its right */
+  const Wd=state.doc.width;
+  const wkf=(r.widths||[]).map((k,i)=>({i,s:lineProject(line,k.pt).s,a:rev?k.r:k.l,b:rev?k.l:k.r,lin:k.ease==='linear'})).sort((x,y)=>x.s-y.s);
+  const hw=sv=>{
+    const m=wkf.length; if(!m) return {a:Wd/2,b:Wd/2};
+    sv=lineMod(line,sv);
+    let lo=0,hi=m-1,j=-1; while(lo<=hi){const md=(lo+hi)>>1;if(wkf[md].s<=sv){j=md;lo=md+1;}else hi=md-1;}
+    let k0,k1,u;
+    if(p.closed){
+      k0=j<0?wkf[m-1]:wkf[j]; k1=j<0?wkf[0]:wkf[(j+1)%m];
+      if(m===1) return {a:k0.a,b:k0.b};
+      let span=k1.s-k0.s; if(span<=0) span+=L; let dd=sv-k0.s; if(dd<0) dd+=L; u=span>0?dd/span:0;
+    }else{
+      if(j<0) return {a:wkf[0].a,b:wkf[0].b}; if(j>=m-1) return {a:wkf[m-1].a,b:wkf[m-1].b};
+      k0=wkf[j];k1=wkf[j+1];u=(sv-k0.s)/((k1.s-k0.s)||1);
+    }
+    const e=(k0.lin||k1.lin)?clamp(u,0,1):smooth01(u);
+    return {a:k0.a+(k1.a-k0.a)*e,b:k0.b+(k1.b-k0.b)*e};
+  };
+  const hwT=sv=>{const h=hw(sv);return rev?{l:h.b,r:h.a}:{l:h.a,r:h.b};};
   /* grid: slots behind the start line, staggered, pole on the inside of T1 unless set */
   const W=state.doc.width,N=r.cars||0,gr=r.grid;
   let pole=gr.pole;
@@ -633,8 +719,8 @@ function computeRace(){
   const fs=rev?-1:1,grid=[];
   if(r.start) for(let i=0;i<N;i++){
     const d=gr.first+i*gr.gap,sv=s0-fs*d,at=lineAt(line,sv),t=travelTan(sv),left=[t[1],-t[0]];
-    const sideSign=((i%2===0)===(pole==='left'))?1:-1;
-    grid.push({n:i+1,pt:V.add(at.pt,V.mul(left,sideSign*W/4)),t,side:sideSign});
+    const sideSign=((i%2===0)===(pole==='left'))?1:-1,h=hwT(sv),q=(h.l+h.r)/4;
+    grid.push({n:i+1,pt:V.add(at.pt,V.mul(left,(h.l-h.r)/2+sideSign*q)),t,side:sideSign,q});
   }
   let gridAvail=0;
   if(r.start){
@@ -696,9 +782,10 @@ function computeRace(){
     runoffs.push({turn:t.n,geo:t.geo,d0:t.dS-40,d1:t.dE+50});
   }
   /* DRS */
+  const prof=lineProfile(line,'race:'+p.id);
   const drs=(r.drs||[]).map((zn,i)=>({i,dDet:dOf(lineProject(line,zn.d).s),dAct:dOf(lineProject(line,zn.a).s),dEnd:dOf(lineProject(line,zn.e).s)}));
   return {p,b,line,L,s0,rev,fs,order,turns,closed:p.closed,cwGeo,clockwise:p.closed?(cwGeo!==rev):null,sectors,sectorLens,dist,travelTan,grid,gridAvail,gridNeed,pole,pit,
-    sOf,dOf,entryS,exitS,outward,kerbs,runoffs,drs};
+    sOf,dOf,entryS,exitS,outward,kerbs,runoffs,drs,hw,hwT,wkf,varW:wkf.length>0,prof,zAt:prof?(sv=>prof.at(lineMod(line,sv))):null,gAt:prof?(sv=>prof.gAt(lineMod(line,sv))):null};
 }
 function autoDrs(){
   const R=state.race,r=state.doc.race; if(!R) return false;
@@ -718,6 +805,7 @@ function snapRaceMarks(){
   if(r.sectors) r.sectors=r.sectors.map(q=>lineProject(R.line,q).pt);
   if(R.pit&&r.pit.centre) r.pit.centre=lineProject(R.pit.line,r.pit.centre).pt;
   if(r.drs) r.drs=r.drs.map(z=>({d:lineProject(R.line,z.d).pt,a:lineProject(R.line,z.a).pt,e:lineProject(R.line,z.e).pt}));
+  if(r.widths) for(const k of r.widths) k.pt=lineProject(R.line,k.pt).pt;
 }
 
 /* ---------------- example circuit ---------------- */
@@ -738,12 +826,12 @@ function uid(){return 't'+Date.now().toString(36)+Math.random().toString(36).sli
 
 /* ---------------- state ---------------- */
 const state={
-  doc:null, view:{z:0.5,tx:0,ty:0}, tool:'pen',
+  doc:null, view:{z:0.5,tx:0,ty:0}, tool:'pen', ref:null,
   sel:{path:null,nodes:new Set(),piece:null},
   penPath:null, ruler:null, drag:null, hover:null, cursorS:null,
   space:false, mod:false, alt:false, shift:false, snap:false, dirty:false,
   bakes:new Map(), race:null, listTab:'segs', raceTab:'layout',
-  roundR:50, lineLen:100,
+  roundR:50, lineLen:100, wsel:null, flash:null,
   arc:{len:200,r:120,ang:90,dir:'right',heading:0,ghost:'arc'}
 };
 const stage=document.getElementById('stage');
@@ -772,6 +860,7 @@ function commit(){
 }
 function restore(){
   state.doc=JSON.parse(hist.stack[hist.i]);
+  if(state.wsel!=null&&!(state.doc.race&&state.doc.race.widths&&state.doc.race.widths[state.wsel])) state.wsel=null;
   const p=selPath();
   if(!p) state.sel={path:null,nodes:new Set(),piece:null};
   else state.sel.nodes=new Set([...state.sel.nodes].filter(i=>i<p.nodes.length));
@@ -1036,6 +1125,7 @@ function onDown(e){
   else if(tool==='round') roundDown(sp,wp,e);
   else if(tool==='arc') arcDown(sp,wp,e);
   else if(tool==='measure') measureDown(sp,wp,e);
+  else if(tool==='width') widthDown(sp,wp,e);
   render();
 }
 function penDown(sp,wp,e,lineMode){
@@ -1120,7 +1210,7 @@ function makePitLane(p){
     const nd=p.nodes[i],pr=lineProject(R.line,[nd.x,nd.y]);
     if(pr.dist>W*3+40) return;
     const at=lineAt(R.line,pr.s),nn=[-at.tan[1],at.tan[0]],side=Math.sign(V.dot(V.sub([nd.x,nd.y],at.pt),nn))||1;
-    moveNode(nd,V.sub(V.add(at.pt,V.mul(nn,side*W/2)),[nd.x,nd.y]));snapped++;
+    const h=R.hw(pr.s);moveNode(nd,V.sub(V.add(at.pt,V.mul(nn,side*(side>0?h.b:h.a))),[nd.x,nd.y]));snapped++;
   });
   commit();
   toast(snapped===2?'Pit lane set. Both ends now meet the track edge.':'Pit lane set. Draw its ends close to the track so they join up.');
@@ -1185,7 +1275,7 @@ function selectDown(sp,wp,e){
   if(hp){
     state.sel={path:hp.path.id,nodes:new Set(),piece:hp.k};
     const rr0=state.doc.race,isRace=state.race&&state.race.p===hp.path;
-    state.drag={type:'movePath',p:hp.path,w0:wp,sp0:sp,orig:JSON.parse(JSON.stringify(hp.path.nodes)),moved:false,race:isRace&&rr0?{start:rr0.start,sectors:rr0.sectors}:null};
+    state.drag={type:'movePath',p:hp.path,w0:wp,sp0:sp,orig:JSON.parse(JSON.stringify(hp.path.nodes)),moved:false,race:isRace&&rr0?{start:rr0.start,sectors:rr0.sectors,widths:(rr0.widths||[]).map(k=>k.pt)}:null};
   }else{state.sel={path:null,nodes:new Set(),piece:null};state.drag={type:'none'};}
 }
 function roundDown(sp,wp,e){
@@ -1213,6 +1303,50 @@ function arcDown(sp,wp,e){
   state.doc.paths.push(np);
   state.sel={path:np.id,nodes:new Set([0]),piece:null};
   markDirty();commit();state.drag={type:'none'};
+}
+/* width tool: keyframes along the race track */
+function wkfGeom(R,k){
+  const sv=lineProject(R.line,k.pt).s,at=lineAt(R.line,sv),t=R.travelTan(sv),left=[t[1],-t[0]],h=R.hwT(sv);
+  return {sv,c:at.pt,left,L:V.add(at.pt,V.mul(left,h.l)),Rt:V.sub(at.pt,V.mul(left,h.r)),h};
+}
+function widthHit(sp){
+  const R=state.race,r=state.doc.race; if(!R) return null;
+  let best=null,bd=9;
+  (r.widths||[]).forEach((k,i)=>{
+    const g=wkfGeom(R,k);
+    for(const [pt,act,side] of [[g.L,'wedge','l'],[g.Rt,'wedge','r'],[g.c,'wkf',null]]){const d=V.dist(sp,toS(pt));if(d<bd){bd=d;best={act,i,side};}}
+  });
+  if(best) return best;
+  const w=toW(sp),pr=lineProject(R.line,w),h=R.hw(pr.s);
+  if(pr.dist<=Math.max(h.a,h.b)+6/state.view.z) return {act:'wadd',s:pr.s,pt:pr.pt};
+  return null;
+}
+function widthDown(sp,wp,e){
+  state.drag={type:'none'};
+  const R=state.race,r=state.doc.race; if(!R){toast('Make a closed loop the race track first, then set its width here.');return;}
+  const h=widthHit(sp);
+  if(!h){state.wsel=null;return;}
+  if(h.act==='wadd'){
+    const t=R.hwT(h.s);
+    r.widths.push({pt:h.pt,l:+t.l.toFixed(2),r:+t.r.toFixed(2),ease:'smooth',link:Math.abs(t.l-t.r)<0.05});
+    state.wsel=r.widths.length-1;markDirty();commit();
+    state.drag={type:'wkfMove',i:state.wsel,sp0:sp,moved:false};return;
+  }
+  state.wsel=h.i;
+  state.drag=h.act==='wedge'?{type:'wkfEdge',i:h.i,side:h.side,sp0:sp,moved:false}:{type:'wkfMove',i:h.i,sp0:sp,moved:false};
+}
+function widthDrag(d,wp,e){
+  const R=state.race,r=state.doc.race,k=r&&r.widths[d.i]; if(!R||!k) return;
+  if(d.type==='wkfMove'){k.pt=lineProject(R.line,wp).pt;markDirty();return;}
+  const g=wkfGeom(R,k);let v=V.dot(V.sub(wp,g.c),g.left);if(d.side==='r') v=-v;
+  v=Math.max(0.5,v); v=e.shiftKey?Math.round(v*2)/2:Math.round(v*10)/10;
+  if(k.link&&!e.altKey){k.l=v;k.r=v;} else k[d.side]=v;
+  markDirty();
+}
+function widthRange(R){
+  if(!R.varW) return [state.doc.width,state.doc.width];
+  let lo=Infinity,hi=0;for(let sv=0;sv<R.L;sv+=4){const h=R.hw(sv),w=h.a+h.b;lo=Math.min(lo,w);hi=Math.max(hi,w);}
+  return [lo,hi];
 }
 function measureDown(sp,wp){
   const a=snapToAnchor(sp)||snapPt(wp);
@@ -1262,7 +1396,7 @@ function onMove(e){
     }
     if(d.type==='movePath'){
       d.p.nodes=d.orig.map(n=>{const c=JSON.parse(JSON.stringify(n));moveNode(c,dd);return c;});
-      if(d.race){const r=state.doc.race;if(d.race.start) r.start=V.add(d.race.start,dd);if(d.race.sectors) r.sectors=d.race.sectors.map(q=>V.add(q,dd));}
+      if(d.race){const r=state.doc.race;if(d.race.start) r.start=V.add(d.race.start,dd);if(d.race.sectors) r.sectors=d.race.sectors.map(q=>V.add(q,dd));if(d.race.widths&&r.widths) r.widths.forEach((k,i)=>{if(d.race.widths[i]) k.pt=V.add(d.race.widths[i],dd);});}
     }else{
       for(const k in d.orig){const c=JSON.parse(JSON.stringify(d.orig[k]));moveNode(c,dd);d.p.nodes[k]=c;}
     }
@@ -1277,6 +1411,7 @@ function onMove(e){
       markDirty();
     }
   }
+  else if(d.type==='wkfMove'||d.type==='wkfEdge'){widthDrag(d,wp,e);}
   else if(d.type==='round'){
     const b=state.bakes.get(d.p.id),c=b&&b.corners[d.j];
     if(c){
@@ -1333,6 +1468,7 @@ function updateHover(sp){
   else if(tool==='direct'||tool==='select'){const hp=hitPiece(sp);if(hp) state.hover={act:'piece',p:hp.path,k:hp.k};}
   else if(tool==='round'){const p=selPath();const c=p&&hitWidget(sp,p);if(c) state.hover={act:'widget',p,j:c.j};else{const hp=hitPiece(sp);if(hp) state.hover={act:'piece',p:hp.path,k:hp.k};}}
   else if(tool==='arc'){const hp=hitPiece(sp);if(hp) state.hover={act:'piece',p:hp.path,k:hp.k};}
+  else if(tool==='width'){state.hover=widthHit(sp);}
   updateCursor();
 }
 function updateCursor(){
@@ -1341,6 +1477,7 @@ function updateCursor(){
   if(state.space||(state.drag&&state.drag.type==='pan')) c=state.drag?'grabbing':'grab';
   else if(t==='pen'||t==='line'||t==='measure'||t==='split') c='crosshair';
   else if(t==='arc') c=(state.hover&&state.hover.act==='piece')?'pointer':'crosshair';
+  else if(t==='width') c=state.hover?(state.hover.act==='wadd'?'copy':state.hover.act==='wedge'?'ew-resize':'grab'):'default';
   else if(state.hover&&state.hover.act==='raceHandle') c='grab';
   else if(state.hover&&(state.hover.act==='piece'||state.hover.act==='widget'||state.hover.act==='raceStart')) c='pointer';
   stage.style.cursor=c;
@@ -1371,8 +1508,18 @@ let raf=0;
 function render(){if(!raf) raf=requestAnimationFrame(()=>{raf=0;draw();});}
 function bandPts(R,d0,d1,geo,off){
   const n=Math.max(2,Math.ceil((d1-d0)/2)),pts=[];
-  for(let i=0;i<=n;i++){const u=i/n,at=lineAt(R.line,R.sOf(d0+(d1-d0)*u)),o=R.outward(geo,at.tan);pts.push(V.add(at.pt,V.mul(o,off(u))));}
+  for(let i=0;i<=n;i++){const u=i/n,sv=R.sOf(d0+(d1-d0)*u),at=lineAt(R.line,sv),o=R.outward(geo,at.tan),h=R.hw(sv),H={out:geo>0?h.a:h.b,in:geo>0?h.b:h.a};pts.push(V.add(at.pt,V.mul(o,off(u,H))));}
   return pts;
+}
+/* filled outline of the race track at its varying width */
+function trackOutline(R,step){
+  const ln=R.line,L=ln.L,n=Math.max(8,Math.ceil(L/(step||2))),A=[],B=[];
+  for(let i=0;i<=n;i++){
+    if(R.closed&&i===n) break;
+    const sv=L*i/n,at=lineAt(ln,sv),nA=[at.tan[1],-at.tan[0]],h=R.hw(sv);
+    A.push(V.add(at.pt,V.mul(nA,h.a)));B.push(V.sub(at.pt,V.mul(nA,h.b)));
+  }
+  return {A,B,d:R.closed?polyD(A,true)+' '+polyD(B,true):polyD(A.concat(B.slice().reverse()),true)};
 }
 const polyD=(pts,close)=>pts.length?'M'+pts.map(q=>(+q[0].toFixed(2))+','+(+q[1].toFixed(2))).join(' L')+(close?' Z':''):'';
 const smooth01=x=>{x=clamp(x,0,1);return x*x*(3-2*x);};
@@ -1380,9 +1527,9 @@ const taper=u=>smooth01(u/0.18)*smooth01((1-u)/0.3);
 function runoffShapes(R,ro,W){
   const kw=0,out=[];
   for(const z of R.runoffs){
-    const inner=bandPts(R,z.d0,z.d1,z.geo,()=>W/2);
-    const full=bandPts(R,z.d0,z.d1,z.geo,u=>W/2+ro.depth*taper(u));
-    const tar=ro.type==='gravel'?null:bandPts(R,z.d0,z.d1,z.geo,u=>W/2+(ro.type==='tarmac'?ro.depth:Math.min(ro.tarmac,ro.depth))*taper(u));
+    const inner=bandPts(R,z.d0,z.d1,z.geo,(u,H)=>H.out);
+    const full=bandPts(R,z.d0,z.d1,z.geo,(u,H)=>H.out+ro.depth*taper(u));
+    const tar=ro.type==='gravel'?null:bandPts(R,z.d0,z.d1,z.geo,(u,H)=>H.out+(ro.type==='tarmac'?ro.depth:Math.min(ro.tarmac,ro.depth))*taper(u));
     const gravel=ro.type==='tarmac'?null:full.concat(inner.slice().reverse());
     const tarmac=tar?tar.concat(inner.slice().reverse()):null;
     const n=full.length,edge=full.slice(Math.floor(n*0.08),Math.ceil(n*0.92));
@@ -1446,14 +1593,26 @@ function draw(){
     if(p.role) continue;
     const bk=state.bakes.get(p.id);
     if(p.nodes.length===1){const n=p.nodes[0];s+=`<circle class="dot" cx="${n.x}" cy="${n.y}" r="${W/2}"></circle>`;continue;}
+    if(R&&R.varW&&p===R.p){s+=`<path class="trkf" fill-rule="evenodd" d="${trackOutline(R,Math.max(1,2/Math.max(z,0.25))).d}"></path>`;continue;}
     s+=`<path class="trk" stroke-width="${W}" d="${piecesD(bk.pieces,p.closed)}"></path>`;
     bk.pieces.forEach((pc,k)=>{if(pc.minR<W/2) s+=`<path class="trk wn" stroke-width="${W}" stroke-linecap="butt" d="${piecesD(bk.pieces,false,k,k+1)}"></path>`;});
+  }
+  /* flagged stretches from the checks */
+  if(R&&doc.race&&doc.race.checks){
+    const list=computeChecks(R),fl=state.flash&&state.flash.until>Date.now()?state.flash:null;let cd='';
+    for(const q of list){
+      const pts=[];for(let d=q.d0;d<=q.d1+0.01;d+=Math.max(1,(q.d1-q.d0)/40)) pts.push(lineAt(R.line,R.sOf(d)).pt);
+      if(pts.length<2) pts.push(lineAt(R.line,R.sOf(q.d0+1)).pt);
+      cd+=polyD(pts)+' ';
+    }
+    if(cd) s+=`<path class="chkhl" stroke-width="${Math.max(6/z,W*1.6)}" d="${cd}"></path>`;
+    if(fl){const pts=[];for(let d=fl.d0;d<=fl.d1+0.01;d+=Math.max(1,(fl.d1-fl.d0)/40)) pts.push(lineAt(R.line,R.sOf(d)).pt);if(pts.length>1) s+=`<path class="chkhl" style="opacity:.9" stroke-width="${Math.max(10/z,W*2.4)}" d="${polyD(pts)}"></path>`;}
   }
   /* kerbs, barriers, DRS over the track */
   if(R){
     const kw=rr.kerbs.width;
     let kd='';
-    for(const k of R.kerbs) kd+=polyD(bandPts(R,k.d0,k.d1,k.geo,()=>k.side*(W/2+kw/2)))+' ';
+    for(const k of R.kerbs) kd+=polyD(bandPts(R,k.d0,k.d1,k.geo,(u,H)=>k.side*((k.side>0?H.out:H.in)+kw/2)))+' ';
     if(kd) s+=`<path class="kerb" stroke-width="${kw}" d="${kd}"></path><path class="kerb-w" stroke-width="${kw}" d="${kd}"></path>`;
     for(const z of R.drs){
       let d1=z.dEnd;if(d1<z.dAct) d1+=R.L;
@@ -1498,7 +1657,7 @@ function draw(){
     if(R.grid.length&&W*z>=3){
       let gl='',gc='';
       for(const g of R.grid){
-        const t=g.t,nn=[t[1],-t[0]],hw=W/4-0.6,front=V.add(g.pt,V.mul(t,3.2));
+        const t=g.t,nn=[t[1],-t[0]],hw=(g.q||W/4)-0.6,front=V.add(g.pt,V.mul(t,3.2));
         const a1=V.add(front,V.mul(nn,hw)),a2=V.sub(front,V.mul(nn,hw)),o=V.mul(nn,g.side*hw),b1=V.add(front,o),b2=V.sub(b1,V.mul(t,2.2));
         gl+=`M${a1} L${a2} M${b1} L${b2} `;
         gc+=rectD(g.pt,t,nn,2.4,1);
@@ -1506,14 +1665,14 @@ function draw(){
       s+=`<path class="gridl" d="${gl}"></path>`;
       if(state.tool==='race') s+=`<path class="carm" d="${gc}"></path>`;
     }
-    const across=(sv,cls)=>{const at=lineAt(ln,sv),nn=[-at.tan[1],at.tan[0]],a=V.add(at.pt,V.mul(nn,W/2)),c=V.sub(at.pt,V.mul(nn,W/2));return `<line class="${cls}" x1="${a[0]}" y1="${a[1]}" x2="${c[0]}" y2="${c[1]}"></line>`;};
+    const across=(sv,cls)=>{const at=lineAt(ln,sv),nn=[-at.tan[1],at.tan[0]],h=R.hw(sv),a=V.add(at.pt,V.mul(nn,h.b)),c=V.sub(at.pt,V.mul(nn,h.a));return `<line class="${cls}" x1="${a[0]}" y1="${a[1]}" x2="${c[0]}" y2="${c[1]}"></line>`;};
     if(R.sectors) R.sectors.forEach(sv=>{s+=across(sv,'secl');});
     if(rr.start){
-      const at=lineAt(ln,R.s0),t=at.tan,nn=[-t[1],t[0]],k=Math.max(4,Math.round(W/1.5)),q=W/k;
+      const at=lineAt(ln,R.s0),t=at.tan,nn=[-t[1],t[0]],h0=R.hw(R.s0),Wl=h0.a+h0.b,k=Math.max(4,Math.round(Wl/1.5)),q=Wl/k;
       let d='';
       for(let row=0;row<2;row++) for(let i=0;i<k;i++){
         if((i+row)%2) continue;
-        const o=V.add(at.pt,V.add(V.mul(nn,-W/2+i*q),V.mul(t,(row-1)*q)));
+        const o=V.add(at.pt,V.add(V.mul(nn,-h0.a+i*q),V.mul(t,(row-1)*q)));
         const a1=V.add(o,V.mul(nn,q)),a2=V.add(a1,V.mul(t,q)),a3=V.add(o,V.mul(t,q));
         d+=`M${o} L${a1} L${a2} L${a3} Z `;
       }
@@ -1573,6 +1732,21 @@ function draw(){
       }
     }
   }
+  if(tool==='width'&&R){
+    const ws=rr.widths||[];
+    ws.forEach((k,i)=>{
+      const g=wkfGeom(R,k),A=toS(g.L),B=toS(g.Rt),C=toS(g.c),on=i===state.wsel;
+      s+=`<line class="wkl${on?' on':''}" x1="${A[0]}" y1="${A[1]}" x2="${B[0]}" y2="${B[1]}"></line>`;
+      for(const [P,sd] of [[A,'l'],[B,'r']]){const hot=hv&&hv.act==='wedge'&&hv.i===i&&hv.side===sd;s+=`<rect class="wkh${on||hot?' on':''}" x="${(P[0]-4.5).toFixed(1)}" y="${(P[1]-4.5).toFixed(1)}" width="9" height="9"></rect>`;}
+      s+=`<circle class="wkc" cx="${C[0].toFixed(1)}" cy="${C[1].toFixed(1)}" r="${on?6:5}"></circle>`;
+      const show=on||(hv&&hv.i===i&&hv.act!=='wadd')||(state.drag&&state.drag.i===i);
+      if(show) s+=pill(C[0],C[1]-Math.max(22,(g.h.l+g.h.r)*z/2+18),'L '+g.h.l.toFixed(1)+' · R '+g.h.r.toFixed(1)+' m'+(k.ease==='linear'?' · linear':''));
+    });
+    if(hv&&hv.act==='wadd'&&!state.drag){
+      const at=lineAt(R.line,hv.s),t=R.travelTan(hv.s),left=[t[1],-t[0]],h=R.hwT(hv.s),A=toS(V.add(at.pt,V.mul(left,h.l))),B=toS(V.sub(at.pt,V.mul(left,h.r)));
+      s+=`<line class="wghost" x1="${A[0]}" y1="${A[1]}" x2="${B[0]}" y2="${B[1]}"></line>`+pill((A[0]+B[0])/2,Math.min(A[1],B[1])-18,'Add width point · '+(h.l+h.r).toFixed(1)+' m');
+    }
+  }
   if(state.drag&&state.drag.type==='marquee'){
     const d=state.drag,x=Math.min(d.sp0[0],d.sp1[0]),y=Math.min(d.sp0[1],d.sp1[1]);
     s+=`<rect class="mq" x="${x}" y="${y}" width="${Math.abs(d.sp1[0]-d.sp0[0])}" height="${Math.abs(d.sp1[1]-d.sp0[1])}"></rect>`;
@@ -1607,7 +1781,7 @@ function draw(){
       for(const [pt,txt] of [[PT.entry,'PIT IN'],[PT.exit,'PIT OUT']]){const q=toS(pt);s+=pill(q[0],q[1]-o,txt,'pill ink');}
       if(z*rr.pit.boxLen>=22) for(const bx of PT.boxes){const q=toS(V.add(bx.c,V.mul(bx.nl,rr.pit.depth/2+6)));s+=`<text class="nlab" x="${q[0].toFixed(1)}" y="${(q[1]+4).toFixed(1)}" text-anchor="middle">${bx.n}</text>`;}
     }
-    if(z*rr.grid.gap>=26&&tool==='race') for(const g of R.grid){const q=toS(V.add(g.pt,V.mul([g.t[1],-g.t[0]],g.side*(W/4+3))));s+=`<text class="nlab" x="${q[0].toFixed(1)}" y="${(q[1]+4).toFixed(1)}" text-anchor="middle">${g.n}</text>`;}
+    if(z*rr.grid.gap>=26&&tool==='race') for(const g of R.grid){const q=toS(V.add(g.pt,V.mul([g.t[1],-g.t[0]],g.side*((g.q||W/4)+3))));s+=`<text class="nlab" x="${q[0].toFixed(1)}" y="${(q[1]+4).toFixed(1)}" text-anchor="middle">${g.n}</text>`;}
     if(tool==='race'){
       const hs=[];if(rr.start) hs.push(lineAt(ln,R.s0).pt);if(R.sectors) hs.push(...R.sectors.map(sv=>lineAt(ln,sv).pt));
       if(R.pit&&R.pit.boxes.length&&state.raceTab==='pits') hs.push(lineAt(R.pit.line,R.pit.cs).pt);
@@ -1617,6 +1791,7 @@ function draw(){
     }
   }
   stage.innerHTML=s;
+  const rg=refStage.firstElementChild; if(rg) rg.setAttribute('transform',`matrix(${z} 0 0 ${z} ${tx} ${ty})`);
 
   /* chrome */
   $('emptyMsg').hidden=doc.paths.length>0;
@@ -1659,10 +1834,11 @@ function renderPanel(){
   const nTurns=R?R.turns.length:bends;
   const parts=[];
   if(p){parts.push(straights+' straight'+(straights===1?'':'s'),nTurns+' turn'+(nTurns===1?'':'s'));}
-  parts.push(state.doc.width+' m wide');
+  if(R&&R.varW){const wr=widthRange(R);parts.push(wr[0].toFixed(1)+'–'+wr[1].toFixed(1)+' m wide');} else parts.push(state.doc.width+' m wide');
   if(R&&R.closed) parts.push(R.clockwise?'clockwise':'anticlockwise');
   if(p&&!p.closed&&p.nodes.length>1) parts.push('open');
   $('lapSub').textContent=parts.join(' · ');
+  renderRealPanel(R);
   document.querySelectorAll('[data-tab]').forEach(t=>t.setAttribute('aria-pressed',String(t.dataset.tab===state.listTab)));
   $('segsRight').textContent=state.listTab==='turns'?'Angle · R':'Length';
 
@@ -1703,7 +1879,8 @@ function renderPanel(){
   const oneInfo=one!=null&&s.nodes[one]?(s.nodes[one].smooth?'s':'c')+(cornerOf(s,one)?'k':''):'';
   const pcInfo=t==='select'&&s&&state.sel.piece!=null?'p'+state.sel.piece:'';
   const rr=state.doc.race||{},raceKey=t==='race'?[!!rr.start,!!rr.sectors,rr.reversed,rr.arrows,rr.numbers,rr.loop,state.race?state.race.closed:'',state.raceTab,rr.grid&&rr.grid.pole,rr.kerbs&&rr.kerbs.on,rr.runoff&&rr.runoff.on,rr.runoff&&rr.runoff.type,rr.drs&&rr.drs.length,(selPath()||{}).role,(selPath()||{}).kind,rr.pit&&rr.pit.path,!!(state.race&&state.race.pit),state.race&&state.race.clockwise].join(','):'';
-  const key=[raceKey,t,state.sel.path,[...state.sel.nodes].join(','),state.penPath?'d':'',state.ruler?'r':'',s?s.closed:'',s?s.nodes.length:'',state.arc.dir,state.arc.ghost,oneInfo,pcInfo].join('|');
+  const wKey=t==='width'?[state.wsel,(rr.widths||[]).length,state.wsel!=null&&rr.widths&&rr.widths[state.wsel]?[rr.widths[state.wsel].ease,rr.widths[state.wsel].link].join(':'):'',!!state.race].join(','):'';
+  const key=[raceKey,wKey,t,state.sel.path,[...state.sel.nodes].join(','),state.penPath?'d':'',state.ruler?'r':'',s?s.closed:'',s?s.nodes.length:'',state.arc.dir,state.arc.ghost,oneInfo,pcInfo].join('|');
   if(key!==ctxKey){ctxKey=key;$('ctx').innerHTML=ctxHTML(t,s);}
   refreshCtx(t,s);
 }
@@ -1795,6 +1972,24 @@ function ctxHTML(t,s){
       <label class="check"><input type="checkbox" data-act="numbersOn" ${r.numbers?'checked':''}> Turn numbers</label>
       <div class="field"><label for="turnMin">Number bends from</label><span class="in"><input class="num" id="turnMin" type="number" min="1" max="90" step="1" data-act="turnMin"> °</span></div>`;
   }
+  if(t==='width'){
+    const R=state.race,r=state.doc.race;
+    if(!R) return `<h3>Track width</h3><p>Close a loop and make it the race track with the Race tool. Then set its width at any point here.</p>`;
+    const ws=r.widths||[],k=state.wsel!=null?ws[state.wsel]:null;
+    const list=ws.length?`<div class="wlist">${ws.map((q,i)=>({q,i,d:R.dOf(lineProject(R.line,q.pt).s)})).sort((a,b)=>a.d-b.d).map(o=>`<button class="wrow${o.i===state.wsel?' on':''}" data-act="wsel:${o.i}"><span class="ix">${fmtLen(o.d)}</span><span>${(o.q.l+o.q.r).toFixed(1)} m</span><span class="wv">L ${o.q.l.toFixed(1)} · R ${o.q.r.toFixed(1)}${o.q.ease==='linear'?' · lin':''}</span></button>`).join('')}</div>`:'';
+    const tips=`<ul><li><b>Click the track</b> to add a width point</li><li><b>Drag its centre</b> to slide it along the track</li><li><b>Drag an edge square</b> to change the width; <b>Alt</b> moves one side only</li><li>Between points the width morphs from one to the next</li></ul>`;
+    if(!k) return `<h3>Track width</h3>${ws.length?'':`<p>The whole track is ${state.doc.width} m wide. Add width points to vary it.</p>`}${tips}${list}${ws.length?'<button class="btn" data-act="wclear">Remove all width points</button>':''}`;
+    return `<h3>Width point</h3>
+      <div class="kv"><span>Distance from start</span><span data-live="wdist"></span></div>
+      <div class="field"><label for="wL">Left half</label><span class="in"><input class="num" id="wL" type="number" min="0.5" max="40" step="0.1" data-act="wL"> m</span></div>
+      <div class="field"><label for="wR">Right half</label><span class="in"><input class="num" id="wR" type="number" min="0.5" max="40" step="0.1" data-act="wR"> m</span></div>
+      <div class="kv"><span>Total width</span><span data-live="wtot"></span></div>
+      <label class="check"><input type="checkbox" data-act="wlink" ${k.link?'checked':''}> Keep both sides equal</label>
+      <div class="field"><span>Blend</span><div class="seg" role="group" aria-label="Blend into this point"><button data-act="wease:smooth" aria-pressed="${k.ease!=='linear'}">Smooth</button><button data-act="wease:linear" aria-pressed="${k.ease==='linear'}">Linear</button></div></div>
+      <p>Smooth eases the width in and out. Linear gives straight edges into this point, for sharp apexes.</p>
+      <div class="row"><button class="btn" data-act="wdel">Delete point</button><button class="btn" data-act="wdesel">Done</button></div>
+      <h3>All width points</h3>${list}`;
+  }
   if(t==='split') return `<h3>Split</h3><p>Click anywhere on the track, or on a point, to cut it there. A closed loop opens at the cut; an open path becomes two.</p><p>Then use the Pen or Line tool on a cut end to add a section, and click another end to join it back up.</p>`;
   if(t==='direct'){
     if(s&&state.sel.nodes.size===1){
@@ -1866,6 +2061,10 @@ function refreshCtx(t,s){
   }
   if(t==='select'&&s){const b=state.bakes.get(s.id),pc=b&&state.sel.piece!=null&&b.pieces[state.sel.piece];if(pc) setLive('selLen',pc.len.toFixed(1)+' m');}
   if(t==='pen'&&state.penPath){const ap=getPath(state.penPath);setLive('pts',ap?ap.nodes.length:0);}
+  if(t==='width'&&state.race&&state.wsel!=null){
+    const k=state.doc.race.widths[state.wsel];
+    if(k){setVal('wL',+k.l.toFixed(2));setVal('wR',+k.r.toFixed(2));setLive('wtot',(k.l+k.r).toFixed(1)+' m');setLive('wdist',fmtLen(state.race.dOf(lineProject(state.race.line,k.pt).s)));}
+  }
   if(t==='race'&&state.race){
     const R=state.race,r=state.doc.race;
     setLive('sfState',r.start?'Placed':'Not placed');
@@ -1905,6 +2104,11 @@ $('ctx').addEventListener('click',e=>{
   else if(act==='clearRuler'){state.ruler=null;}
   else if(act==='lineAdd'){lineAddTyped();return;}
   else if(act.startsWith('rt:')){state.raceTab=act.slice(3);}
+  else if(act.startsWith('wsel:')){state.wsel=+act.slice(5);}
+  else if(act==='wdesel'){state.wsel=null;}
+  else if(act==='wdel'){const r=state.doc.race;if(state.wsel!=null&&r.widths[state.wsel]){r.widths.splice(state.wsel,1);state.wsel=null;commit();}}
+  else if(act==='wclear'){state.doc.race.widths=[];state.wsel=null;commit();}
+  else if(act.startsWith('wease:')){const k=state.doc.race.widths[state.wsel];if(k){k.ease=act.slice(6);commit();}}
   else if(act==='drsAdd'){if(autoDrs()) commit(); else toast(state.doc.race.drs.length>=4?'Four DRS zones is the maximum.':'There’s no straight of 250 m or more without a zone.');}
   else if(act.startsWith('drsDel:')){state.doc.race.drs.splice(+act.slice(7),1);commit();}
   else if(act.startsWith('roType:')){state.doc.race.runoff.type=act.slice(7);commit();}
@@ -1944,6 +2148,7 @@ $('ctx').addEventListener('input',e=>{
     else if(act==='kerbsOn') r.kerbs.on=el.checked;
     else if(act==='roOn') r.runoff.on=el.checked;
     else if(act==='roBar') r.runoff.barriers=el.checked;
+    else if(act==='wlink'){const k=r.widths[state.wsel];if(k){k.link=el.checked;if(el.checked){const m=+((k.l+k.r)/2).toFixed(2);k.l=m;k.r=m;}}}
     commit(); render(); return;
   }
   if(['kerbR','kerbW','roDepth','roTar','roR'].includes(act)){
@@ -1963,6 +2168,7 @@ $('ctx').addEventListener('input',e=>{
     else if(act==='boxLen'){if(v<6) return;r.pit.boxLen=clamp(v,6,40);}
     markDirty();render();return;
   }
+  if(act==='wL'||act==='wR'){const v=parseFloat(el.value),k=state.doc.race&&state.doc.race.widths[state.wsel];if(!k||!isFinite(v)||v<0.5) return;const c=clamp(v,0.5,40);if(k.link){k.l=c;k.r=c;}else k[act==='wL'?'l':'r']=c;markDirty();render();return;}
   if(act==='turnMin'){const v=parseFloat(el.value);if(isFinite(v)&&v>=1&&v<=90&&state.doc.race){state.doc.race.turnMin=v;markDirty();render();}return;}
   const v=parseFloat(el.value); if(!isFinite(v)) return;
   const s=selPath();
@@ -2085,7 +2291,7 @@ window.addEventListener('keydown',e=>{
   if(e.key===' '){e.preventDefault();if(!state.space){state.space=true;updateCursor();render();}return;}
   if(mod) return;
   if(e.target&&e.target.closest&&e.target.closest('.lib')) return;
-  const map={v:'select',a:'direct',p:'pen',l:'line',r:'arc',c:'round',x:'split',t:'race',m:'measure'};
+  const map={v:'select',a:'direct',p:'pen',l:'line',r:'arc',c:'round',x:'split',t:'race',m:'measure',w:'width'};
   const k=e.key.toLowerCase();
   if(map[k]&&!e.altKey){setTool(map[k]);return;}
   if(e.key==='Escape'||e.key==='Enter'){
@@ -2095,6 +2301,7 @@ window.addEventListener('keydown',e=>{
   }
   if(e.key==='Delete'||e.key==='Backspace'){
     e.preventDefault();
+    if(effTool()==='width'){const r=state.doc.race;if(r&&state.wsel!=null&&r.widths[state.wsel]){r.widths.splice(state.wsel,1);state.wsel=null;commit();render();}return;}
     const s=selPath(); if(!s) return;
     const t=effTool();
     if(t==='round'){for(const j of state.sel.nodes) s.nodes[j].r=0;commit();render();return;}
@@ -2162,7 +2369,7 @@ function shapesSVG(){
 function raceSVG(W){
   const R=state.race,r=state.doc.race; if(!R) return '';
   const f=q=>(+q[0].toFixed(2))+' '+(+q[1].toFixed(2));
-  const across=(sv,id)=>{const at=lineAt(R.line,sv),nn=[-at.tan[1],at.tan[0]],a=V.add(at.pt,V.mul(nn,W/2)),c=V.sub(at.pt,V.mul(nn,W/2));const t=R.rev?V.mul(at.tan,-1):at.tan;return `    <line id="${id}" x1="${f(a).split(' ')[0]}" y1="${f(a).split(' ')[1]}" x2="${f(c).split(' ')[0]}" y2="${f(c).split(' ')[1]}" data-distance="${R.dist(R.s0,sv).toFixed(1)}" data-heading="${f(t)}"/>\n`;};
+  const across=(sv,id)=>{const at=lineAt(R.line,sv),nn=[-at.tan[1],at.tan[0]],h=R.hw(sv),a=V.add(at.pt,V.mul(nn,h.b)),c=V.sub(at.pt,V.mul(nn,h.a));const t=R.rev?V.mul(at.tan,-1):at.tan;return `    <line id="${id}" x1="${f(a).split(' ')[0]}" y1="${f(a).split(' ')[1]}" x2="${f(c).split(' ')[0]}" y2="${f(c).split(' ')[1]}" data-distance="${R.dist(R.s0,sv).toFixed(1)}" data-heading="${f(t)}"/>\n`;};
   let out='';
   if(r.start) out+=`  <g id="start-finish" stroke="#FFFFFF" stroke-width="1">\n${across(R.s0,'start')}  </g>\n`;
   if(R.sectors){const ord=R.sectors.slice().sort((a,c)=>R.dist(R.s0,a)-R.dist(R.s0,c));out+=`  <g id="sectors" stroke="#1D5FD1" stroke-width="1">\n${ord.map((sv,i)=>across(sv,'sector-'+(i+2))).join('')}  </g>\n`;}
@@ -2174,21 +2381,23 @@ function raceSVG(W){
   }
   if(R.grid.length) out+=`  <g id="grid" fill="#D4231A">\n${R.grid.map(g=>`    <path id="grid-${g.n}" d="${rectD(g.pt,g.t,[g.t[1],-g.t[0]],2.4,1).trim()}" data-car="${f2(g.pt)}" data-heading="${f2(g.t)}"/>\n`).join('')}  </g>\n`;
   const kw=r.kerbs.width,pd=pts=>polyD(pts.map(q=>[+q[0].toFixed(2),+q[1].toFixed(2)]));
-  if(R.kerbs.length) out+=`  <g id="kerbs" fill="none" stroke="#D4231A" stroke-width="${kw}" stroke-linecap="butt" data-width="${kw}">\n${R.kerbs.map((k,i)=>`    <path id="kerb-${i+1}" d="${pd(bandPts(R,k.d0,k.d1,k.geo,()=>k.side*(W/2+kw/2)))}" data-turn="T${k.turn}" data-side="${k.side<0?'inside':'outside'}"/>\n`).join('')}  </g>\n`;
+  if(R.kerbs.length) out+=`  <g id="kerbs" fill="none" stroke="#D4231A" stroke-width="${kw}" stroke-linecap="butt" data-width="${kw}">\n${R.kerbs.map((k,i)=>`    <path id="kerb-${i+1}" d="${pd(bandPts(R,k.d0,k.d1,k.geo,(u,H)=>k.side*((k.side>0?H.out:H.in)+kw/2)))}" data-turn="T${k.turn}" data-side="${k.side<0?'inside':'outside'}"/>\n`).join('')}  </g>\n`;
   if(R.drs.length) out+=`  <g id="drs" fill="none" stroke="#15803D" stroke-width="${W*0.9}" stroke-opacity="0.4">\n${R.drs.map(z=>{let d1=z.dEnd;if(d1<z.dAct) d1+=R.L;return `    <path id="drs-${z.i+1}" d="${pd(bandPts(R,z.dAct,d1,1,()=>0))}" data-detection="${z.dDet.toFixed(1)}" data-activation="${z.dAct.toFixed(1)}" data-end="${z.dEnd.toFixed(1)}" data-lap="${R.L.toFixed(1)}"/>\n`;}).join('')}  </g>\n`;
   if(R.turns.length) out+=`  <g id="turns" font-family="sans-serif" font-size="${Math.max(8,W)}" font-weight="700" fill="#111111" text-anchor="middle">\n${R.turns.map(t=>{const q=V.add(t.pt,V.mul(t.out,W*1.6));return `    <text x="${q[0].toFixed(1)}" y="${q[1].toFixed(1)}">${esc(t.name||'T'+t.n)}</text>\n`;}).join('')}  </g>\n`;
   return out;
 }
 function buildSVG(){
   const doc=state.doc,W=doc.width;
-  let x0=Infinity,y0=Infinity,x1=-Infinity,y1=-Infinity,body='',cl='',lap=0;
+  let x0=Infinity,y0=Infinity,x1=-Infinity,y1=-Infinity,body='',cl='',surf='',lap=0;
   const bakes=doc.paths.map(p=>({p,b:bake(p)})).filter(o=>o.p.nodes.length>=2);
   for(const {p,b} of bakes){
     for(const pc of b.pieces) for(const q of samplePiece(pc)){x0=Math.min(x0,q[0]);y0=Math.min(y0,q[1]);x1=Math.max(x1,q[0]);y1=Math.max(y1,q[1]);}
     const d=piecesD(b.pieces,p.closed);
     if(state.race&&state.race.pit&&state.race.pit.p===p) continue;
     if(p.role) continue;
-    body+=`    <path d="${d}"/>\n`; cl+=`    <path d="${d}"/>\n`;
+    cl+=`    <path d="${d}"/>\n`;
+    if(state.race&&state.race.varW&&state.race.p===p){surf+=`    <path d="${trackOutline(state.race,1).d}" fill-rule="evenodd" data-varying-width="true"/>\n`;}
+    else body+=`    <path d="${d}"/>\n`;
     if(p.closed&&!lap) lap=b.total;
   }
   if(!isFinite(x0)) return null;
@@ -2197,21 +2406,96 @@ function buildSVG(){
   return `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="${vw}" height="${vh}" viewBox="${vx} ${vy} ${vw} ${vh}">
   <title>${esc(doc.name)}</title>
-  <desc>Scale: 1 unit = 1 metre. Track width ${W} m.${lap?' Lap length '+lap.toFixed(1)+' m.':''} ${state.race&&state.race.closed?' Runs '+(state.race.clockwise?'clockwise':'anticlockwise')+'.':''} Drawn in Circuit Track Editor.</desc>
-${shapes.ground}  <g id="track" fill="none" stroke="#111111" stroke-width="${W}" stroke-linejoin="round" stroke-linecap="round">
+  <desc>Scale: 1 unit = 1 metre. Track width ${state.race&&state.race.varW?'varies ('+widthRange(state.race).map(v=>v.toFixed(1)).join('–')+' m)':W+' m'}.${lap?' Lap length '+lap.toFixed(1)+' m.':''} ${state.race&&state.race.closed?' Runs '+(state.race.clockwise?'clockwise':'anticlockwise')+'.':''} Drawn in Circuit Track Editor.</desc>
+${shapes.ground}${surf?`  <g id="track-surface" fill="#111111" stroke="none">\n${surf}  </g>\n`:''}  <g id="track" fill="none" stroke="#111111" stroke-width="${W}" stroke-linejoin="round" stroke-linecap="round">
 ${body}  </g>
   <g id="centreline" fill="none" stroke="#D4231A" stroke-width="0.5">
 ${cl}  </g>
 ${shapes.top}${raceSVG(W)}</svg>
 `;
 }
+/* ---------------- Track Pack ----------------
+   Everything the Assetto Corsa build needs, decided here: centreline every metre with heights and edge widths,
+   timing lines, grid, pit lane and boxes, kerbs, run-off, DRS, walls, surfaces and the reference layers. */
+const CRC=(()=>{const t=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++) c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0;}return t;})();
+function crc32(b){let c=0xFFFFFFFF;for(let i=0;i<b.length;i++) c=CRC[(c^b[i])&255]^(c>>>8);return (c^0xFFFFFFFF)>>>0;}
+function zipStore(files){
+  const enc=new TextEncoder(),parts=[],cdir=[];let off=0;
+  const u16=v=>[v&255,(v>>>8)&255],u32=v=>[v&255,(v>>>8)&255,(v>>>16)&255,(v>>>24)&255];
+  for(const f of files){
+    const name=enc.encode(f.name),data=typeof f.data==='string'?enc.encode(f.data):f.data,crc=crc32(data);
+    const head=new Uint8Array([0x50,0x4b,3,4,...u16(20),...u16(0x800),...u16(0),...u16(0),...u16(0x21),...u32(crc),...u32(data.length),...u32(data.length),...u16(name.length),...u16(0)]);
+    parts.push(head,name,data);
+    cdir.push(new Uint8Array([0x50,0x4b,1,2,...u16(20),...u16(20),...u16(0x800),...u16(0),...u16(0),...u16(0x21),...u32(crc),...u32(data.length),...u32(data.length),...u16(name.length),...u16(0),...u16(0),...u16(0),...u16(0),...u32(0),...u32(off)]),name);
+    off+=head.length+name.length+data.length;
+  }
+  const csize=cdir.reduce((a,b)=>a+b.length,0);
+  const end=new Uint8Array([0x50,0x4b,5,6,...u16(0),...u16(0),...u16(files.length),...u16(files.length),...u32(csize),...u32(off),...u16(0)]);
+  const all=[...parts,...cdir,end],total=all.reduce((a,b)=>a+b.length,0),out=new Uint8Array(total);let p=0;for(const a of all){out.set(a,p);p+=a.length;}
+  return out;
+}
+async function buildTrackPack(){
+  if(state.dirty) commit();
+  const R=state.race,r=state.doc.race,doc=state.doc;
+  if(!R||!R.closed){toast('Make a closed loop the race track first.');return null;}
+  if(!r.start){toast('Place the start line first (Race tool).');return null;}
+  const r2=v=>Math.round(v*100)/100,r3=v=>Math.round(v*1000)/1000,P=q=>[r2(q[0]),r2(q[1])];
+  const zAt=sv=>R.zAt?r2(R.zAt(sv)):0;
+  const L=R.L,centre=[];
+  for(let d=0;d<L;d+=1){const sv=R.sOf(d),at=lineAt(R.line,sv),t=R.travelTan(sv),h=R.hwT(sv);centre.push([r2(d),r2(at.pt[0]),r2(at.pt[1]),zAt(sv),r2(h.l),r2(h.r),r3(t[0]),r3(t[1])]);}
+  const frac=d=>r3((((d%L)+L)%L)/L);
+  const turns=R.turns.map(t=>({n:t.n,name:t.name||'',dir:t.dir.toLowerCase(),deg:Math.round(t.deg),minRadius:r2(t.minR),from:r2(t.dS),to:r2(t.dE)}));
+  const kerbs=R.kerbs.map(k=>({turn:k.turn,side:k.side<0?'inside':'outside',from:r2(k.d0),to:r2(k.d1),width:r.kerbs.width,
+    pts:bandPts(R,k.d0,k.d1,k.geo,(u,H)=>k.side*((k.side>0?H.out:H.in)+r.kerbs.width/2)).map(P)}));
+  const ROs=runoffShapes(R,r.runoff,doc.width).map(o=>({turn:o.turn,gravel:o.gravel?o.gravel.map(P):null,tarmac:o.tarmac?o.tarmac.map(P):null,barrier:r.runoff.barriers?o.edge.map(P):null}));
+  const slot=(pt,t)=>{const pr=lineProject(R.line,pt);return {x:r2(pt[0]),y:r2(pt[1]),z:zAt(pr.s),heading:[r3(t[0]),r3(t[1])]};};
+  const grid=R.grid.map(g=>({n:g.n,...slot(g.pt,g.t)}));
+  let pit=null;
+  if(R.pit){
+    const PT=R.pit,pp=lineProfile(PT.line,'pit:'+PT.p.id),pl=[];
+    for(let d=0;d<PT.line.L;d+=1){const sv=PT.ds>0?d:PT.line.L-d,at=lineAt(PT.line,sv);pl.push([r2(d),r2(at.pt[0]),r2(at.pt[1]),pp?r2(pp.at(sv)):0]);}
+    pit={width:PT.width,boxLength:r.pit.boxLen,boxDepth:r.pit.depth,entry:r2(R.dOf(lineProject(R.line,PT.entry).s)),exit:r2(R.dOf(lineProject(R.line,PT.exit).s)),
+      centreline:pl,boxes:PT.boxes.map(b=>({n:b.n,x:r2(b.car[0]),y:r2(b.car[1]),z:pp?r2(pp.at(lineProject(PT.line,b.car).s)):0,heading:[r3(b.t[0]),r3(b.t[1])],side:[r3(b.nl[0]),r3(b.nl[1])]}))};
+  }
+  const drs=R.drs.map(z=>({detection:r2(z.dDet),activation:r2(z.dAct),end:r2(z.dEnd)}));
+  const shapes=doc.paths.filter(p=>p.role&&p.nodes.length>=2).map(p=>({role:p.role,kind:p.kind||'',closed:p.closed,pts:pathPoly(p).map(P)}));
+  const wr=widthRange(R),ref=state.ref&&state.ref.data;
+  const spec={format:'circuit-track-pack',version:1,name:doc.name,generator:'Circuit Track Editor',
+    frame:{units:'metres',x:'east',y:'south (map down)',z:'up (height above sea level when terrain is loaded)',origin:ref&&ref.origin||null},
+    length:r2(L),direction:R.clockwise?'clockwise':'anticlockwise',width:{min:r2(wr[0]),max:r2(wr[1])},
+    centrelineColumns:['distance','x','y','z','leftHalfWidth','rightHalfWidth','headingX','headingY'],centreline:centre,
+    start:{distance:0,...slot(lineAt(R.line,R.s0).pt,R.travelTan(R.s0))},
+    sectors:(R.sectors||[]).map(sv=>r2(R.dOf(sv))).sort((a,b)=>a-b),
+    turns,kerbs,kerbWidth:r.kerbs.width,runoff:ROs,grid,pit,drs,shapes,
+    widthKeyframes:(r.widths||[]).map(k=>({distance:r2(R.dOf(lineProject(R.line,k.pt).s)),left:k.l,right:k.r,blend:k.ease})),
+    reference:ref?{attribution:ref.attribution||'',layers:ref.layers.map(l=>({id:l.id,name:l.name,limit:l.limit,polys:l.polys,lines:l.lines})),terrain:ref.terrain||null}:null};
+  const slugName=slug(doc.name),files=[];
+  files.push({name:slugName+'/track.json',data:JSON.stringify(spec)});
+  files.push({name:slugName+'/ui/ui_track.json',data:JSON.stringify({name:doc.name,description:'Built with Circuit Track Editor. '+(L/1000).toFixed(2)+' km, '+R.turns.length+' turns, runs '+(R.clockwise?'clockwise':'anticlockwise')+'.',tags:['circuit','original'],geotags:ref&&ref.origin?[String(ref.origin.lat),String(ref.origin.lon)]:[],country:'',city:'',length:String(Math.round(L)),width:wr[0]===wr[1]?String(wr[0]):Math.round(wr[0])+'-'+Math.round(wr[1]),pitboxes:String(R.pit?R.pit.boxes.length:0),run:R.clockwise?'clockwise':'anticlockwise'},null,2)});
+  const surf=(i,key,o)=>`[SURFACE_${i}]\nKEY=${key}\nFRICTION=${o.f}\nDAMPING=${o.d}\nWAV=${o.wav||''}\nWAV_PITCH=${o.wp||0}\nFF_EFFECT=${o.ff||'NULL'}\nDIRT_ADDITIVE=${o.dirt||0}\nIS_VALID_TRACK=${o.v}\nBLACK_FLAG_TIME=0\nSIN_HEIGHT=${o.sh||0}\nSIN_LENGTH=${o.sl||0}\nIS_PITLANE=${o.pit||0}\nVIBRATION_GAIN=${o.vg||0}\nVIBRATION_LENGTH=${o.vl||0}\n`;
+  files.push({name:slugName+'/data/surfaces.ini',data:[surf(0,'ROAD',{f:0.99,d:0,v:1}),surf(1,'KERB',{f:0.92,d:0,v:1,ff:1,wav:'kerb.wav',wp:1.3,vg:1,vl:0.6}),surf(2,'GRASS',{f:0.6,d:0.1,v:0,wav:'grass.wav',dirt:1,sh:0.03,sl:0.5}),surf(3,'SAND',{f:0.8,d:0.2,v:0,wav:'sand.wav',dirt:1,sh:0.04,sl:0.4}),surf(4,'PIT',{f:0.99,d:0,v:1,pit:1})].join('\n')});
+  if(drs.length) files.push({name:slugName+'/data/drs_zones.ini',data:R.drs.map((z,i)=>`[ZONE_${i}]\nDETECTION=${frac(z.dDet)}\nSTART=${frac(z.dAct)}\nEND=${frac(z.dEnd)}\n`).join('\n')});
+  /* map.png: the outline at 1 px per metre */
+  const ol=trackOutline(R,2),all=ol.A.concat(ol.B);let x0=Infinity,y0=Infinity,x1=-Infinity,y1=-Infinity;for(const q of all){x0=Math.min(x0,q[0]);y0=Math.min(y0,q[1]);x1=Math.max(x1,q[0]);y1=Math.max(y1,q[1]);}
+  const M=20,sc=Math.min(1,1600/Math.max(x1-x0,y1-y0)),cw=Math.ceil((x1-x0)*sc)+2*M,ch=Math.ceil((y1-y0)*sc)+2*M,cv=document.createElement('canvas');cv.width=cw;cv.height=ch;
+  const g=cv.getContext('2d');g.fillStyle='#FFFFFF';const pathOf=pts=>{g.moveTo((pts[0][0]-x0)*sc+M,(pts[0][1]-y0)*sc+M);for(const q of pts) g.lineTo((q[0]-x0)*sc+M,(q[1]-y0)*sc+M);g.closePath();};
+  g.beginPath();pathOf(ol.A);pathOf(ol.B);g.fill('evenodd');
+  const png=await new Promise(res=>cv.toBlob(b=>res(b),'image/png')).then(b=>b?b.arrayBuffer():null);
+  if(png) files.push({name:slugName+'/map.png',data:new Uint8Array(png)});
+  files.push({name:slugName+'/data/map.ini',data:`[PARAMETERS]\nWIDTH=${cw}\nHEIGHT=${ch}\nMARGIN=${M}\nSCALE_FACTOR=${r3(sc)}\nMAX_SIZE=1600\nX_OFFSET=${r2(-x0)}\nZ_OFFSET=${r2(-y0)}\nDRAWING_SIZE=10\n`});
+  const svg=buildSVG(); if(svg) files.push({name:slugName+'/track.svg',data:svg});
+  files.push({name:slugName+'/README.txt',data:`${doc.name} – Track Pack from Circuit Track Editor\n\ntrack.json        The full specification: centreline every metre (x, y, height, left and right half-widths, heading),\n                  start line, sectors, turns, kerbs, run-off, grid, pit lane and boxes, DRS, walls, surfaces${ref?', reference layers and terrain':''}.\n                  Map frame: x east, y south, metres${ref&&ref.origin?' around '+ref.origin.lat+', '+ref.origin.lon:''}.\nui/ui_track.json  Assetto Corsa track info.\ndata/surfaces.ini Road, kerb, grass, sand and pit surfaces.\n${drs.length?'data/drs_zones.ini DRS zones as fractions of the lap.\n':''}map.png, data/map.ini  Track map at up to 1600 px. Content Manager can regenerate this after the build.\ntrack.svg         Layered to-scale drawing for checking.\n\nLap ${(L/1000).toFixed(3)} km, ${R.turns.length} turns, ${R.clockwise?'clockwise':'anticlockwise'}, width ${wr[0].toFixed(1)}–${wr[1].toFixed(1)} m.\n${ref&&ref.attribution?ref.attribution+'.\n':''}${ref&&ref.terrain&&ref.terrain.attribution?ref.terrain.attribution+'.\n':''}`});
+  toast('Track Pack ready: '+files.length+' files.');
+  return {name:slugName+'-trackpack.zip',bytes:zipStore(files)};
+}
 async function offer(filename,data,label){
   if(!downloads&&!window.claude){
-    const ext=filename.split('.').pop(),url=URL.createObjectURL(new Blob([data],{type:ext==='svg'?'image/svg+xml':'application/json'}));
+    const ext=filename.split('.').pop(),url=URL.createObjectURL(new Blob([data],{type:ext==='svg'?'image/svg+xml':ext==='zip'?'application/zip':'application/json'}));
     const a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();
     setTimeout(()=>URL.revokeObjectURL(url),2000);return;
   }
   if(!downloads){
+    if(typeof data!=='string'){toast('Downloads aren’t available in this view. Open the editor in a browser tab to export the Track Pack.');return;}
     try{await navigator.clipboard.writeText(data);toast('Downloads aren’t available here, so the '+label+' was copied to your clipboard.');}
     catch(_){toast('Downloads aren’t available in this view.');}
     return;
@@ -2231,17 +2515,27 @@ $('exportBtn').addEventListener('click',()=>{
 });
 $('saveFileBtn').addEventListener('click',()=>{
   const d=state.doc;
-  offer(slug(d.name)+'.json',JSON.stringify({format:'circuit-track',version:2,name:d.name,width:d.width,race:d.race,paths:d.paths},null,1),'track file');
+  const ref=state.ref&&state.ref.docId===d.id?state.ref.data:null;
+  const out={format:'circuit-track',version:ref?3:2,name:d.name,width:d.width,race:d.race,paths:d.paths};
+  if(ref) out.reference=ref;
+  offer(slug(d.name)+'.json',ref?JSON.stringify(out):JSON.stringify(out,null,1),'track file');
 });
 $('openFileBtn').addEventListener('click',()=>$('fileIn').click());
+$('packBtn').addEventListener('click',async()=>{
+  try{const out=await buildTrackPack();if(!out) return;await offer(out.name,out.bytes,'Track Pack');}
+  catch(err){toast('The Track Pack couldn’t be built. '+((err&&err.message)||''));}
+});
 $('fileIn').addEventListener('change',async e=>{
   const f=e.target.files&&e.target.files[0]; e.target.value='';
   if(!f) return;
   try{
     const j=JSON.parse(await f.text());
     if(!j||!Array.isArray(j.paths)) throw new Error('bad');
-    const doc=docFrom({...j,name:j.name||f.name.replace(/\.json$/i,'')});
-    loadDoc(doc,true); scheduleSave(); toast('Opened '+doc.name+'.');
+    const ref=j.reference?cleanRef(j.reference):null;
+    const doc=docFrom({...j,reference:null,hasRef:!!ref,name:j.name||f.name.replace(/\.json$/i,'')});
+    loadDoc(doc,true,ref); scheduleSave();
+    if(ref) refPut(doc.id,ref).then(ok=>{if(!ok) toast('Opened '+doc.name+'. Reference layers are shown but couldn’t be stored in this browser, so keep the file.');});
+    toast('Opened '+doc.name+(ref?' with '+ref.layers.length+' reference layers.':'.'));
   }catch(_){toast('That file isn’t a Circuit track. Choose a .json file saved from this editor.');}
 });
 function cleanPath(p){
@@ -2258,8 +2552,238 @@ function cleanPath(p){
 const SURF_KINDS={grass:'Grass',gravel:'Gravel',tarmac:'Tarmac run-off',sand:'Sand'};
 const WALL_KINDS={concrete:'Concrete wall',armco:'Armco',tyres:'Tyre wall',fence:'Catch fence'};
 function docFrom(o,id){
-  return {id:id||uid(),name:String(o.name||'Untitled circuit').slice(0,120),width:+o.width||12,updatedAt:o.updatedAt||0,race:cleanRace(o.race),paths:(Array.isArray(o.paths)?o.paths:[]).map(cleanPath).filter(Boolean)};
+  const d={id:id||uid(),name:String(o.name||'Untitled circuit').slice(0,120),width:+o.width||12,updatedAt:o.updatedAt||0,race:cleanRace(o.race),paths:(Array.isArray(o.paths)?o.paths:[]).map(cleanPath).filter(Boolean)};
+  if(o.hasRef||o.reference) d.hasRef=true;
+  return d;
 }
+
+/* ---------------- live checks ---------------- */
+function hardIndex(){
+  const R=state.ref; if(!R||!R.data) return null;
+  if(R.hard) return R.hard;
+  const cell=40,map=new Map(),polys=[];
+  for(const l of R.data.layers){
+    if(l.limit!=='hard'||l.id==='bridges') continue;
+    for(const pg of l.polys){
+      let x0=Infinity,y0=Infinity,x1=-Infinity,y1=-Infinity;for(const q of pg){x0=Math.min(x0,q[0]);y0=Math.min(y0,q[1]);x1=Math.max(x1,q[0]);y1=Math.max(y1,q[1]);}
+      const id=polys.length;polys.push({pg,layer:l.name,x0,y0,x1,y1});
+      for(let i=Math.floor(x0/cell);i<=Math.floor(x1/cell);i++) for(let j=Math.floor(y0/cell);j<=Math.floor(y1/cell);j++){const k=i+','+j;if(!map.has(k)) map.set(k,[]);map.get(k).push(id);}
+    }
+  }
+  R.hard={cell,map,polys};return R.hard;
+}
+function hardHit(H,pt){
+  const ids=H.map.get(Math.floor(pt[0]/H.cell)+','+Math.floor(pt[1]/H.cell)); if(!ids) return null;
+  for(const id of ids){const o=H.polys[id];if(pt[0]<o.x0||pt[0]>o.x1||pt[1]<o.y0||pt[1]>o.y1) continue;if(inPoly(pt,o.pg)) return o;}
+  return null;
+}
+let chkCache={sig:'',list:[]};
+function computeChecks(R){
+  const r=state.doc.race,c=r.checks||{minR:10,minW:6,maxGrad:8},H=hardIndex();
+  const sig=[R.L.toFixed(2),R.line.pts.length,R.line.pts[0],JSON.stringify(r.widths||[]),R.s0.toFixed(1),R.rev,c.minR,c.minW,c.maxGrad,state.doc.width,!!H,R.prof?R.prof.sig:''].join('|');
+  if(chkCache.sig===sig) return chkCache.list;
+  const out=[],step=2,n=Math.max(2,Math.floor(R.L/step));
+  const runs=(test,make)=>{let a=null,worst=null;for(let i=0;i<=n;i++){const d=i*step,v=i<n?test(d):null;if(v){if(a==null){a=d;worst=v;} else if(v.w>worst.w) worst=v;}else if(a!=null){out.push(make(a,d,worst));a=null;}}};
+  // track edges inside buildings or other hard limits
+  if(H) for(const side of ['l','r']){
+    runs(d=>{const sv=R.sOf(d),at=lineAt(R.line,sv),t=R.travelTan(sv),lf=[t[1],-t[0]],h=R.hwT(sv),pt=side==='l'?V.add(at.pt,V.mul(lf,h.l)):V.sub(at.pt,V.mul(lf,h.r));const o=hardHit(H,pt);return o?{w:1,o}:null;},
+      (a,b,w)=>({kind:'hit',d0:a,d1:b,side,txt:(side==='l'?'Left':'Right')+' edge inside '+(w.o.layer.toLowerCase().replace(/s$/,''))}));
+  }
+  if(c.minW>0) runs(d=>{const h=R.hwT(R.sOf(d)),w=h.l+h.r;return w<c.minW-0.01?{w:c.minW-w,v:w}:null;},(a,b,w)=>({kind:'width',d0:a,d1:b,txt:'Narrower than '+c.minW+' m (down to '+w.v.toFixed(1)+' m)'}));
+  if(c.minR>0) for(const t of R.turns) if(t.minR<c.minR) out.push({kind:'radius',d0:t.dS,d1:t.dE,txt:(t.name||'T'+t.n)+' radius '+fmtR(t.minR)+' m'});
+  if(R.prof&&c.maxGrad>0) runs(d=>{const g=R.gAt(R.sOf(d))*(R.rev?-1:1);return Math.abs(g)>c.maxGrad?{w:Math.abs(g),v:g}:null;},(a,b,w)=>({kind:'grad',d0:a,d1:b,txt:(w.v>0?'Climb':'Drop')+' of '+Math.abs(w.v).toFixed(1)+'%'}));
+  out.sort((a,b)=>a.d0-b.d0);
+  chkCache={sig,list:out};return out;
+}
+function renderRealPanel(R){
+  const es=$('elevSect'),cs=$('chkSect');
+  if(!R){es.hidden=true;cs.hidden=true;return;}
+  /* elevation */
+  if(R.prof){
+    es.hidden=false;
+    const n=Math.min(300,Math.floor(R.L/4)),zs=[];
+    for(let i=0;i<=n;i++) zs.push(R.zAt(R.sOf(R.L*i/n)));
+    const lo=Math.min(...zs),hi=Math.max(...zs),pad=Math.max(1,(hi-lo)*0.15),y=v=>88-(v-lo+pad)/(hi-lo+2*pad)*80,x=i=>i/n*300;
+    let d='M'+zs.map((v,i)=>x(i).toFixed(1)+','+y(v).toFixed(1)).join('L'),grid='';
+    const stepZ=hi-lo>20?10:5;for(let g=Math.ceil((lo-pad)/stepZ)*stepZ;g<=hi+pad;g+=stepZ) grid+=`<line class="eg" x1="0" x2="300" y1="${y(g).toFixed(1)}" y2="${y(g).toFixed(1)}"></line><text class="et" x="3" y="${(y(g)-2).toFixed(1)}">${g}</text>`;
+    const html=grid+`<path class="ef" d="${d}L300,96L0,96Z"></path><path class="el" d="${d}"></path>`;
+    const sv=$('elevSvg');if(sv._h!==html){sv.innerHTML=html;sv._h=html;}
+    let climb=0,gu=0,gd=0,du=0,dd=0;
+    for(let i=1;i<=n;i++){const dz=zs[i]-zs[i-1];if(dz>0) climb+=dz;}
+    for(let dd2=0;dd2<R.L;dd2+=4){const g=R.gAt(R.sOf(dd2))*(R.rev?-1:1);if(g>gu){gu=g;du=dd2;}if(g<gd){gd=g;dd=dd2;}}
+    $('elevRange').textContent=lo.toFixed(1)+'–'+hi.toFixed(1)+' m';
+    $('elevClimb').textContent=Math.round(climb)+' m';
+    $('elevGrad').textContent=gu.toFixed(1)+'% · '+Math.abs(gd).toFixed(1)+'%';
+  }else es.hidden=true;
+  /* checks */
+  cs.hidden=false;
+  const c=state.doc.race.checks;
+  for(const [id,k] of [['ckR','minR'],['ckW','minW'],['ckG','maxGrad']]){const el=$(id);if(document.activeElement!==el) el.value=c[k];}
+  $('ckG').disabled=!R.prof;
+  const list=computeChecks(R);
+  $('chkCount').textContent=list.length?list.length+' to look at':'All clear';
+  const html=list.length?list.slice(0,60).map((q,i)=>`<button class="ckrow" data-ckgo="${i}"><span class="ck"></span><span class="ix">${fmtLen(q.d0)}</span><span>${esc(q.txt)}</span></button>`).join('')+(list.length>60?`<p class="ckok">And ${list.length-60} more.</p>`:''):`<p class="ckok">${state.ref&&state.ref.data?'No clashes with buildings, and':'All'} widths, radii${R.prof?' and gradients':''} are within your limits.</p>`;
+  const cl=$('chkList');if(cl._h!==html){cl.innerHTML=html;cl._h=html;}
+}
+$('chkList').addEventListener('click',e=>{
+  const b=e.target.closest('[data-ckgo]'),R=state.race; if(!b||!R) return;
+  const q=chkCache.list[+b.dataset.ckgo]; if(!q) return;
+  const at=lineAt(R.line,R.sOf((q.d0+q.d1)/2)),r=stage.getBoundingClientRect(),span=Math.max(80,q.d1-q.d0+60),z=clamp(Math.min(r.width,r.height)/span*0.6,0.05,20);
+  state.view.z=z;state.view.tx=r.width/2-at.pt[0]*z;state.view.ty=r.height/2-at.pt[1]*z;state.flash={d0:q.d0,d1:q.d1,until:Date.now()+2500};render();setTimeout(render,2600);
+});
+document.querySelector('.chkset').addEventListener('input',e=>{
+  const k=e.target.dataset.ck,v=parseFloat(e.target.value),r=state.doc.race; if(!k||!r||!isFinite(v)||v<0) return;
+  r.checks[k]=v;markDirty();render();
+});
+document.querySelector('.chkset').addEventListener('change',()=>{if(state.dirty) commit();});
+
+/* ---------------- elevation along a line ----------------
+   Heights follow the terrain wherever the line goes. Pits in the ground (cuttings, basements) are filtered out,
+   and where the line crosses a bridge the deck is levelled between its ends. */
+const profCache=new Map();
+function deckPolys(){const R=state.ref;if(!R||!R.data) return [];const l=R.data.layers.find(q=>q.id==='bridges');return l?l.polys:[];}
+function lineProfile(line,key){
+  const G=state.ref&&state.ref.grid; if(!G||!line||line.L<4) return null;
+  const sig=key+'|'+line.L.toFixed(2)+'|'+line.pts.length+'|'+line.pts[0]+'|'+line.pts[line.pts.length>>1];
+  const hit=profCache.get(key); if(hit&&hit.sig===sig) return hit;
+  const step=2,n=Math.max(2,Math.floor(line.L/step)+1),raw=new Float32Array(n),deck=new Uint8Array(n),decks=deckPolys();
+  for(let i=0;i<n;i++){const at=lineAt(line,Math.min(line.L,i*step));raw[i]=terrainAt(G,at.pt[0],at.pt[1]);if(decks.length&&decks.some(pg=>inPoly(at.pt,pg))) deck[i]=1;}
+  // fill gaps, median-reject pits and spikes, then smooth
+  let last=NaN;for(let i=0;i<n;i++){if(!isNaN(raw[i])) last=raw[i]; else if(!isNaN(last)) raw[i]=last;}
+  last=NaN;for(let i=n-1;i>=0;i--){if(!isNaN(raw[i])) last=raw[i]; else raw[i]=last;}
+  if(isNaN(raw[0])) return null;
+  const wrap=line.closed,idx=i=>wrap?((i%n)+n)%n:clamp(i,0,n-1),med=new Float32Array(n),win=[];
+  for(let i=0;i<n;i++){win.length=0;for(let q=-20;q<=20;q++) win.push(raw[idx(i+q)]);win.sort((a,b)=>a-b);med[i]=win[20];}
+  const cl=new Float32Array(n);for(let i=0;i<n;i++) cl[i]=Math.abs(raw[i]-med[i])>0.4?med[i]:raw[i];
+  // bridge decks: level between the abutments, taken as the highest ground within 80 m either side of the mapped bridge
+  for(let i=0;i<n;i++){
+    if(!deck[i]) continue;
+    let j=i;while(j<n&&deck[j]) j++;
+    let a=i-1,b=j;
+    for(let q=1;q<=40;q++){if(cl[idx(i-q)]>cl[idx(a)]) a=i-q;if(cl[idx(j-1+q)]>cl[idx(b)]) b=j-1+q;}
+    const za=cl[idx(a)],zb=cl[idx(b)];
+    for(let q=a+1;q<b;q++) cl[idx(q)]=za+(zb-za)*(q-a)/(b-a);
+    i=Math.max(i,b-1);
+  }
+  const z=new Float32Array(n);for(let i=0;i<n;i++){let t=0;for(let q=-7;q<=7;q++) t+=cl[idx(i+q)];z[i]=t/15;}
+  const g=new Float32Array(n);for(let i=0;i<n;i++){let t=0;for(let q=-12;q<=12;q++){const a=idx(i+q-1),b=idx(i+q+1);t+=(z[b]-z[a])/(2*step);}g[i]=t/25*100;}
+  const out={sig,step,n,z,g,at:sv=>{const f=clamp(sv,0,line.L)/step,i=Math.floor(f),u=f-i;return z[Math.min(n-1,i)]*(1-u)+z[Math.min(n-1,i+1)]*u;},gAt:sv=>g[Math.min(n-1,Math.round(clamp(sv,0,line.L)/step))]};
+  profCache.set(key,out);return out;
+}
+
+/* ---------------- reference layers ----------------
+   Locked real-world context (buildings, road edges, water, bridges) carried with a project.
+   Kept outside the document so undo history stays light; stored per track in IndexedDB and in saved project files. */
+const refStage=$('refStage');
+const REF_CLS={buildings:'ref-buildings',water:'ref-water',bridges:'ref-bridges',roads:'ref-roads'};
+const REF_ORDER=['water','buildings','bridges','roads'];
+function cleanRef(r){
+  if(!r||!Array.isArray(r.layers)) return null;
+  const num=v=>typeof v==='number'&&isFinite(v);
+  const pts=a=>Array.isArray(a)?a.filter(q=>Array.isArray(q)&&q.length>=2&&num(q[0])&&num(q[1])).map(q=>[+q[0],+q[1]]):[];
+  const layers=[];
+  for(const l of r.layers.slice(0,20)){
+    if(!l||typeof l!=='object') continue;
+    const id=typeof l.id==='string'&&/^[a-z0-9_-]{1,30}$/i.test(l.id)?l.id:'layer'+layers.length;
+    const polys=(Array.isArray(l.polys)?l.polys:[]).slice(0,50000).map(pts).filter(q=>q.length>=3);
+    const lines=(Array.isArray(l.lines)?l.lines:[]).slice(0,50000).map(pts).filter(q=>q.length>=2);
+    if(!polys.length&&!lines.length) continue;
+    layers.push({id,name:String(l.name||id).slice(0,60),limit:l.limit==='soft'?'soft':'hard',source:String(l.source||'').slice(0,120),polys,lines});
+  }
+  const o=r.origin&&typeof r.origin==='object'&&num(r.origin.lat)&&num(r.origin.lon)?{lat:+r.origin.lat,lon:+r.origin.lon}:null;
+  const attribution=typeof r.attribution==='string'?r.attribution.slice(0,160).replace(/\.$/,''):'';
+  const out={origin:o,attribution,layers};
+  const t=r.terrain;
+  if(t&&typeof t==='object'&&num(t.x0)&&num(t.y0)&&num(t.step)&&t.step>0&&Number.isInteger(t.nx)&&Number.isInteger(t.ny)&&t.nx>0&&t.ny>0&&t.nx*t.ny<=2e7&&Array.isArray(t.runs)&&typeof t.data==='string')
+    out.terrain={x0:+t.x0,y0:+t.y0,step:+t.step,nx:t.nx,ny:t.ny,unit:num(t.unit)?+t.unit:0.01,runs:t.runs,data:t.data,source:String(t.source||'').slice(0,160),attribution:String(t.attribution||'').slice(0,200),decks:t.decks==='bridges'?'bridges':''};
+  if(!layers.length&&!out.terrain) return null;
+  return out;
+}
+function refMarkup(ref){
+  const f=q=>(+q[0].toFixed(1))+','+(+q[1].toFixed(1));
+  const ord=ref.layers.slice().sort((a,b)=>{const i=REF_ORDER.indexOf(a.id),j=REF_ORDER.indexOf(b.id);return (i<0?9:i)-(j<0?9:j);});
+  return ord.map(l=>{
+    let d='';
+    for(const p of l.polys) d+='M'+p.map(f).join('L')+'Z';
+    for(const p of l.lines) d+='M'+p.map(f).join('L');
+    return `<path class="${REF_CLS[l.id]||'ref-other'}" data-layer="${esc(l.id)}" fill-rule="evenodd" d="${d}"></path>`;
+  }).join('');
+}
+function decodeTerrain(t){
+  try{
+    const bin=atob(t.data),n=bin.length>>1,z=new Float32Array(t.nx*t.ny).fill(NaN),u=t.unit;
+    let k=0;
+    for(const run of t.runs){
+      if(!Array.isArray(run)||run.length<3) continue;
+      const [j,i0,len]=run,base=j*t.nx+i0;
+      for(let q=0;q<len&&k<n;q++,k++){let v=bin.charCodeAt(2*k)|(bin.charCodeAt(2*k+1)<<8);if(v&0x8000) v-=0x10000;z[base+q]=v*u;}
+    }
+    return {x0:t.x0,y0:t.y0,step:t.step,nx:t.nx,ny:t.ny,z};
+  }catch(_){return null;}
+}
+function terrainAt(G,x,y){
+  const fx=(x-G.x0)/G.step,fy=(y-G.y0)/G.step,i=Math.floor(fx),j=Math.floor(fy);
+  if(i<0||j<0||i>=G.nx-1||j>=G.ny-1) return NaN;
+  const u=fx-i,v=fy-j,z=G.z,a=z[j*G.nx+i],b=z[j*G.nx+i+1],c=z[(j+1)*G.nx+i],d=z[(j+1)*G.nx+i+1];
+  let sw=0,sz=0;
+  for(const [val,w] of [[a,(1-u)*(1-v)],[b,u*(1-v)],[c,(1-u)*v],[d,u*v]]) if(!isNaN(val)){sw+=w;sz+=val*w;}
+  return sw>1e-6?sz/sw:NaN;
+}
+function setRef(docId,ref){
+  state.ref=ref?{docId,data:ref,show:{},missing:false,grid:ref.terrain?decodeTerrain(ref.terrain):null,hard:null}:null;
+  if(ref) for(const l of ref.layers) state.ref.show[l.id]=true;
+  refStage.innerHTML=ref?`<g>${refMarkup(ref)}</g>`:'';
+  renderRefPanel(); render();
+}
+function loadRefFor(doc){
+  setRef(doc.id,null);
+  if(!doc.hasRef) return;
+  refGet(doc.id).then(r=>{
+    if(state.doc.id!==doc.id) return;
+    const ref=r&&cleanRef(r);
+    if(ref) setRef(doc.id,ref);
+    else{state.ref={docId:doc.id,data:null,show:{},missing:true};renderRefPanel();}
+  });
+}
+function renderRefPanel(){
+  const sect=$('refSect'),R=state.ref;
+  if(!R){sect.hidden=true;return;}
+  sect.hidden=false;
+  if(R.missing){$('refList').innerHTML='';$('refNote').textContent='This track has reference layers, but they aren’t stored in this browser. Open its project file to bring them back.';return;}
+  $('refList').innerHTML=(R.grid?`<div class="refrow"><span>Terrain</span><span class="src">${R.data.terrain.step} m grid</span></div>`:'')+R.data.layers.map(l=>`<label class="check refrow"><span class="check"><input type="checkbox" data-ref="${esc(l.id)}" ${R.show[l.id]?'checked':''}> ${esc(l.name)}</span><span class="src">${l.limit==='soft'?'estimate':'hard limit'}</span></label>`).join('');
+  $('refNote').textContent='Shown for guidance only. They can’t be selected or moved.'+(R.data.attribution?' '+R.data.attribution+'.':'')+(R.data.terrain&&R.data.terrain.attribution?' '+R.data.terrain.attribution+'.':'');
+  applyRefVisibility();
+}
+function applyRefVisibility(){
+  const R=state.ref; if(!R||!R.data) return;
+  refStage.querySelectorAll('[data-layer]').forEach(el=>{el.style.display=R.show[el.dataset.layer]?'':'none';});
+}
+$('refList').addEventListener('change',e=>{
+  const id=e.target&&e.target.dataset&&e.target.dataset.ref; if(!id||!state.ref) return;
+  state.ref.show[id]=e.target.checked; applyRefVisibility();
+});
+/* IndexedDB store, one record per track id */
+let refDBp=null;
+function refDB(){
+  if(refDBp) return refDBp;
+  refDBp=new Promise(res=>{
+    try{
+      const rq=indexedDB.open('circuit-reference',1);
+      rq.onupgradeneeded=()=>{rq.result.createObjectStore('ref');};
+      rq.onsuccess=()=>res(rq.result); rq.onerror=()=>res(null); rq.onblocked=()=>res(null);
+    }catch(_){res(null);}
+  });
+  return refDBp;
+}
+function refTx(mode,fn){
+  return refDB().then(db=>new Promise(res=>{
+    if(!db){res(null);return;}
+    try{const tx=db.transaction('ref',mode),st=tx.objectStore('ref'),rq=fn(st);tx.oncomplete=()=>res(rq?rq.result:true);tx.onerror=tx.onabort=()=>res(null);}catch(_){res(null);}
+  }));
+}
+const refPut=(id,ref)=>refTx('readwrite',st=>st.put(ref,id)).then(r=>r!==null);
+const refGet=id=>refTx('readonly',st=>st.get(id));
+const refDel=id=>refTx('readwrite',st=>st.delete(id));
 
 /* ---------------- library ---------------- */
 const lib={db:null,items:[],first:true};
@@ -2267,7 +2791,9 @@ function localLib(){try{return JSON.parse(localStorage.getItem('circuit.library'
 function writeLocalLib(o){try{localStorage.setItem('circuit.library',JSON.stringify(o));}catch(_){}}
 function docBody(){
   const d=state.doc,p=focusPath(),b=p&&bake(p);
-  return {name:d.name,width:d.width,race:JSON.parse(JSON.stringify(d.race||defaultRace())),paths:JSON.parse(JSON.stringify(d.paths)),updatedAt:Date.now(),lapLength:b?Math.round(b.total):0};
+  const o={name:d.name,width:d.width,race:JSON.parse(JSON.stringify(d.race||defaultRace())),paths:JSON.parse(JSON.stringify(d.paths)),updatedAt:Date.now(),lapLength:b?Math.round(b.total):0};
+  if(d.hasRef) o.hasRef=true;
+  return o;
 }
 let saveT=0;
 function scheduleSave(){clearTimeout(saveT);saveT=setTimeout(saveNow,700);}
@@ -2282,11 +2808,12 @@ function saveNow(){
     });
   }else{const o=localLib();o[id]=body;writeLocalLib(o);lib.items=Object.entries(o).map(([k,v])=>({id:k,...v})).sort((a,b)=>b.updatedAt-a.updatedAt);renderLib();}
 }
-function loadDoc(doc,fitView){
+function loadDoc(doc,fitView,ref){
   if(!doc.race) doc.race=defaultRace();
   state.doc=doc;
+  if(ref) setRef(doc.id,ref); else loadRefFor(doc);
   state.sel={path:null,nodes:new Set(),piece:null};
-  state.penPath=null;state.ruler=null;
+  state.penPath=null;state.ruler=null;state.wsel=null;
   syncDocInputs(); resetHistory();
   if(fitView) requestAnimationFrame(fit); else render();
   renderLib();
@@ -2306,6 +2833,7 @@ function newTrack(){
 async function deleteItem(id){
   if(lib.db){try{await lib.db.collection('tracks').doc(id).delete();}catch(_){toast('Couldn’t delete that track. Try again.');return;}}
   else{const o=localLib();delete o[id];writeLocalLib(o);lib.items=lib.items.filter(i=>i.id!==id);}
+  refDel(id);
   if(id===state.doc.id){
     const next=lib.items.find(i=>i.id!==id);
     if(next) openItem(next); else loadDoc(blankDoc(),false);
@@ -2367,7 +2895,7 @@ function initLocalLib(){
     if(cur&&Array.isArray(cur.paths)) doc=docFrom(cur,cur.id);
   }catch(_){}
   if(!doc){doc=exampleDoc();}
-  state.doc=doc; syncDocInputs(); resetHistory();
+  state.doc=doc; syncDocInputs(); resetHistory(); loadRefFor(doc);
   setTool('pen');
   if(doc.paths.length===1) state.sel={path:doc.paths[0].id,nodes:new Set(),piece:null};
   requestAnimationFrame(()=>{fit();});
