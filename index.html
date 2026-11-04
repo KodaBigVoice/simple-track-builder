@@ -14,7 +14,7 @@
 :root{
   --bg:#FFFFFF; --panel:#FFFFFF; --canvas:#F5F5F3; --ink:#121212; --muted:#5C5C5A;
   --line:#E4E4E1; --grid-minor:#ECECE9; --grid-major:#D9D9D5; --hover:#F1F1EE;
-  --accent:#D4231A; --on-accent:#FFFFFF; --warn:#B45309; --sector:#1D5FD1; --pit:#55554F; --pitbox:#C9C9C4; --building:#E2E2DD; --grass:#CFE3BF; --gravel:#E5D8B4; --runoff:#B9B9B4; --sand:#EEDFB8; --stand:#A9BBD0; --stand-row:#7F93AD; --concrete:#7A7A74; --armco:#9A9A96; --drs:#15803D;
+  --accent:#D4231A; --on-accent:#FFFFFF; --warn:#B45309; --sector:#1D5FD1; --pit:#55554F; --pitbox:#C9C9C4; --building:#E2E2DD; --grass:#CFE3BF; --gravel:#E5D8B4; --runoff:#B9B9B4; --sand:#EEDFB8; --stand:#A9BBD0; --stand-row:#7F93AD; --concrete:#7A7A74; --armco:#9A9A96; --drs:#15803D; --ref-bld:#DCDCD6; --ref-bld-edge:#C4C4BE; --ref-water:#BFD7E6; --ref-road:#8E8E88; --ref-bridge:#6B6B66;
   --f-sans:'Archivo','Helvetica Neue',Arial,sans-serif;
   --f-mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
 }
@@ -22,13 +22,13 @@
   :root:not([data-theme="light"]){
     --bg:#0E0E0F; --panel:#111112; --canvas:#18181A; --ink:#F2F2F0; --muted:#A3A3A0;
     --line:#2A2A2D; --grid-minor:#202023; --grid-major:#2E2E32; --hover:#1F1F22;
-    --warn:#FBBF24; --sector:#2F6FE0; --pit:#B5B5AF; --pitbox:#3A3A3E; --building:#26262A; --grass:#22331F; --gravel:#4B4330; --runoff:#3A3A3E; --sand:#544A33; --stand:#34465C; --stand-row:#4C6584; --concrete:#8C8C86; --armco:#C9C9C4; --drs:#22C55E; color-scheme:dark;
+    --warn:#FBBF24; --sector:#2F6FE0; --pit:#B5B5AF; --pitbox:#3A3A3E; --building:#26262A; --grass:#22331F; --gravel:#4B4330; --runoff:#3A3A3E; --sand:#544A33; --stand:#34465C; --stand-row:#4C6584; --concrete:#8C8C86; --armco:#C9C9C4; --drs:#22C55E; --ref-bld:#2B2B30; --ref-bld-edge:#3A3A40; --ref-water:#1E3442; --ref-road:#6E6E6A; --ref-bridge:#A3A3A0; color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
   --bg:#0E0E0F; --panel:#111112; --canvas:#18181A; --ink:#F2F2F0; --muted:#A3A3A0;
   --line:#2A2A2D; --grid-minor:#202023; --grid-major:#2E2E32; --hover:#1F1F22;
-  --warn:#FBBF24; --sector:#2F6FE0; --pit:#B5B5AF; --pitbox:#3A3A3E; --building:#26262A; --grass:#22331F; --gravel:#4B4330; --runoff:#3A3A3E; --sand:#544A33; --stand:#34465C; --stand-row:#4C6584; --concrete:#8C8C86; --armco:#C9C9C4; --drs:#22C55E; color-scheme:dark;
+  --warn:#FBBF24; --sector:#2F6FE0; --pit:#B5B5AF; --pitbox:#3A3A3E; --building:#26262A; --grass:#22331F; --gravel:#4B4330; --runoff:#3A3A3E; --sand:#544A33; --stand:#34465C; --stand-row:#4C6584; --concrete:#8C8C86; --armco:#C9C9C4; --drs:#22C55E; --ref-bld:#2B2B30; --ref-bld-edge:#3A3A40; --ref-water:#1E3442; --ref-road:#6E6E6A; --ref-bridge:#A3A3A0; color-scheme:dark;
 }
 html,body{height:100%}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-sans);font-size:14px;overflow:hidden}
@@ -62,6 +62,15 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
 
 /* stage */
 .stage-wrap{flex:1 1 auto;min-height:0;position:relative;background:var(--canvas);overflow:hidden}
+#refStage{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
+#refStage .ref-buildings{fill:var(--ref-bld);stroke:var(--ref-bld-edge);stroke-width:1px;vector-effect:non-scaling-stroke}
+#refStage .ref-water{fill:var(--ref-water)}
+#refStage .ref-bridges{fill:none;stroke:var(--ref-bridge);stroke-width:1.5px;stroke-dasharray:6 3;vector-effect:non-scaling-stroke}
+#refStage .ref-roads{fill:none;stroke:var(--ref-road);stroke-width:1px;stroke-dasharray:4 4;vector-effect:non-scaling-stroke;opacity:.8}
+#refStage .ref-other{fill:none;stroke:var(--muted);stroke-width:1px;vector-effect:non-scaling-stroke}
+.refrow{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.refrow .src{font-size:12px;color:var(--muted)}
+.refnote{font-size:12px;color:var(--muted);margin:0}
 #stage{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none;user-select:none;-webkit-user-select:none}
 .scalebar{position:absolute;left:20px;bottom:44px;display:flex;align-items:flex-end;gap:10px;font-family:var(--f-mono);font-size:11px;color:var(--ink);pointer-events:none}
 .scalebar .bar{display:flex;height:6px}
@@ -270,6 +279,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
       <button class="tb export" id="exportBtn" title="Export SVG"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"></path></svg><span>Export SVG</span></button>
     </nav>
     <div class="stage-wrap" id="stageWrap">
+      <svg id="refStage" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"></svg>
       <svg id="stage" xmlns="http://www.w3.org/2000/svg" role="application" aria-label="Track drawing canvas"></svg>
       <div class="empty" id="emptyMsg" hidden><strong>Start drawing</strong>Choose the Pen and click to place points. Drag as you click to make a curve. Click your first point to close the loop.</div>
       <div class="scalebar" aria-hidden="true"><div class="bar"><i id="sb1"></i><i id="sb2"></i></div><span id="sbLbl">200 m</span></div>
@@ -309,6 +319,12 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
 
     <div class="sect">
       <div class="field"><label for="widthIn">Track width</label><span class="in"><input class="num" id="widthIn" type="number" min="2" max="60" step="0.5" value="12"> m</span></div>
+    </div>
+
+    <div class="sect" id="refSect" hidden>
+      <div class="refrow"><b>Reference layers</b><span class="src">Locked</span></div>
+      <div class="sect" id="refList"></div>
+      <p class="refnote" id="refNote"></p>
     </div>
 
     <div class="segs">
@@ -738,7 +754,7 @@ function uid(){return 't'+Date.now().toString(36)+Math.random().toString(36).sli
 
 /* ---------------- state ---------------- */
 const state={
-  doc:null, view:{z:0.5,tx:0,ty:0}, tool:'pen',
+  doc:null, view:{z:0.5,tx:0,ty:0}, tool:'pen', ref:null,
   sel:{path:null,nodes:new Set(),piece:null},
   penPath:null, ruler:null, drag:null, hover:null, cursorS:null,
   space:false, mod:false, alt:false, shift:false, snap:false, dirty:false,
@@ -1617,6 +1633,7 @@ function draw(){
     }
   }
   stage.innerHTML=s;
+  const rg=refStage.firstElementChild; if(rg) rg.setAttribute('transform',`matrix(${z} 0 0 ${z} ${tx} ${ty})`);
 
   /* chrome */
   $('emptyMsg').hidden=doc.paths.length>0;
@@ -2231,7 +2248,10 @@ $('exportBtn').addEventListener('click',()=>{
 });
 $('saveFileBtn').addEventListener('click',()=>{
   const d=state.doc;
-  offer(slug(d.name)+'.json',JSON.stringify({format:'circuit-track',version:2,name:d.name,width:d.width,race:d.race,paths:d.paths},null,1),'track file');
+  const ref=state.ref&&state.ref.docId===d.id?state.ref.data:null;
+  const out={format:'circuit-track',version:ref?3:2,name:d.name,width:d.width,race:d.race,paths:d.paths};
+  if(ref) out.reference=ref;
+  offer(slug(d.name)+'.json',ref?JSON.stringify(out):JSON.stringify(out,null,1),'track file');
 });
 $('openFileBtn').addEventListener('click',()=>$('fileIn').click());
 $('fileIn').addEventListener('change',async e=>{
@@ -2240,8 +2260,11 @@ $('fileIn').addEventListener('change',async e=>{
   try{
     const j=JSON.parse(await f.text());
     if(!j||!Array.isArray(j.paths)) throw new Error('bad');
-    const doc=docFrom({...j,name:j.name||f.name.replace(/\.json$/i,'')});
-    loadDoc(doc,true); scheduleSave(); toast('Opened '+doc.name+'.');
+    const ref=j.reference?cleanRef(j.reference):null;
+    const doc=docFrom({...j,reference:null,hasRef:!!ref,name:j.name||f.name.replace(/\.json$/i,'')});
+    loadDoc(doc,true,ref); scheduleSave();
+    if(ref) refPut(doc.id,ref).then(ok=>{if(!ok) toast('Opened '+doc.name+'. Reference layers are shown but couldn’t be stored in this browser, so keep the file.');});
+    toast('Opened '+doc.name+(ref?' with '+ref.layers.length+' reference layers.':'.'));
   }catch(_){toast('That file isn’t a Circuit track. Choose a .json file saved from this editor.');}
 });
 function cleanPath(p){
@@ -2258,8 +2281,100 @@ function cleanPath(p){
 const SURF_KINDS={grass:'Grass',gravel:'Gravel',tarmac:'Tarmac run-off',sand:'Sand'};
 const WALL_KINDS={concrete:'Concrete wall',armco:'Armco',tyres:'Tyre wall',fence:'Catch fence'};
 function docFrom(o,id){
-  return {id:id||uid(),name:String(o.name||'Untitled circuit').slice(0,120),width:+o.width||12,updatedAt:o.updatedAt||0,race:cleanRace(o.race),paths:(Array.isArray(o.paths)?o.paths:[]).map(cleanPath).filter(Boolean)};
+  const d={id:id||uid(),name:String(o.name||'Untitled circuit').slice(0,120),width:+o.width||12,updatedAt:o.updatedAt||0,race:cleanRace(o.race),paths:(Array.isArray(o.paths)?o.paths:[]).map(cleanPath).filter(Boolean)};
+  if(o.hasRef||o.reference) d.hasRef=true;
+  return d;
 }
+
+/* ---------------- reference layers ----------------
+   Locked real-world context (buildings, road edges, water, bridges) carried with a project.
+   Kept outside the document so undo history stays light; stored per track in IndexedDB and in saved project files. */
+const refStage=$('refStage');
+const REF_CLS={buildings:'ref-buildings',water:'ref-water',bridges:'ref-bridges',roads:'ref-roads'};
+const REF_ORDER=['water','buildings','bridges','roads'];
+function cleanRef(r){
+  if(!r||!Array.isArray(r.layers)) return null;
+  const num=v=>typeof v==='number'&&isFinite(v);
+  const pts=a=>Array.isArray(a)?a.filter(q=>Array.isArray(q)&&q.length>=2&&num(q[0])&&num(q[1])).map(q=>[+q[0],+q[1]]):[];
+  const layers=[];
+  for(const l of r.layers.slice(0,20)){
+    if(!l||typeof l!=='object') continue;
+    const id=typeof l.id==='string'&&/^[a-z0-9_-]{1,30}$/i.test(l.id)?l.id:'layer'+layers.length;
+    const polys=(Array.isArray(l.polys)?l.polys:[]).slice(0,50000).map(pts).filter(q=>q.length>=3);
+    const lines=(Array.isArray(l.lines)?l.lines:[]).slice(0,50000).map(pts).filter(q=>q.length>=2);
+    if(!polys.length&&!lines.length) continue;
+    layers.push({id,name:String(l.name||id).slice(0,60),limit:l.limit==='soft'?'soft':'hard',source:String(l.source||'').slice(0,120),polys,lines});
+  }
+  if(!layers.length) return null;
+  const o=r.origin&&typeof r.origin==='object'&&num(r.origin.lat)&&num(r.origin.lon)?{lat:+r.origin.lat,lon:+r.origin.lon}:null;
+  const attribution=typeof r.attribution==='string'?r.attribution.slice(0,160).replace(/\.$/,''):'';
+  return {origin:o,attribution,layers};
+}
+function refMarkup(ref){
+  const f=q=>(+q[0].toFixed(1))+','+(+q[1].toFixed(1));
+  const ord=ref.layers.slice().sort((a,b)=>{const i=REF_ORDER.indexOf(a.id),j=REF_ORDER.indexOf(b.id);return (i<0?9:i)-(j<0?9:j);});
+  return ord.map(l=>{
+    let d='';
+    for(const p of l.polys) d+='M'+p.map(f).join('L')+'Z';
+    for(const p of l.lines) d+='M'+p.map(f).join('L');
+    return `<path class="${REF_CLS[l.id]||'ref-other'}" data-layer="${esc(l.id)}" fill-rule="evenodd" d="${d}"></path>`;
+  }).join('');
+}
+function setRef(docId,ref){
+  state.ref=ref?{docId,data:ref,show:{},missing:false}:null;
+  if(ref) for(const l of ref.layers) state.ref.show[l.id]=true;
+  refStage.innerHTML=ref?`<g>${refMarkup(ref)}</g>`:'';
+  renderRefPanel(); render();
+}
+function loadRefFor(doc){
+  setRef(doc.id,null);
+  if(!doc.hasRef) return;
+  refGet(doc.id).then(r=>{
+    if(state.doc.id!==doc.id) return;
+    const ref=r&&cleanRef(r);
+    if(ref) setRef(doc.id,ref);
+    else{state.ref={docId:doc.id,data:null,show:{},missing:true};renderRefPanel();}
+  });
+}
+function renderRefPanel(){
+  const sect=$('refSect'),R=state.ref;
+  if(!R){sect.hidden=true;return;}
+  sect.hidden=false;
+  if(R.missing){$('refList').innerHTML='';$('refNote').textContent='This track has reference layers, but they aren’t stored in this browser. Open its project file to bring them back.';return;}
+  $('refList').innerHTML=R.data.layers.map(l=>`<label class="check refrow"><span class="check"><input type="checkbox" data-ref="${esc(l.id)}" ${R.show[l.id]?'checked':''}> ${esc(l.name)}</span><span class="src">${l.limit==='soft'?'estimate':'hard limit'}</span></label>`).join('');
+  $('refNote').textContent='Shown for guidance only. They can’t be selected or moved.'+(R.data.attribution?' '+R.data.attribution+'.':'');
+  applyRefVisibility();
+}
+function applyRefVisibility(){
+  const R=state.ref; if(!R||!R.data) return;
+  refStage.querySelectorAll('[data-layer]').forEach(el=>{el.style.display=R.show[el.dataset.layer]?'':'none';});
+}
+$('refList').addEventListener('change',e=>{
+  const id=e.target&&e.target.dataset&&e.target.dataset.ref; if(!id||!state.ref) return;
+  state.ref.show[id]=e.target.checked; applyRefVisibility();
+});
+/* IndexedDB store, one record per track id */
+let refDBp=null;
+function refDB(){
+  if(refDBp) return refDBp;
+  refDBp=new Promise(res=>{
+    try{
+      const rq=indexedDB.open('circuit-reference',1);
+      rq.onupgradeneeded=()=>{rq.result.createObjectStore('ref');};
+      rq.onsuccess=()=>res(rq.result); rq.onerror=()=>res(null); rq.onblocked=()=>res(null);
+    }catch(_){res(null);}
+  });
+  return refDBp;
+}
+function refTx(mode,fn){
+  return refDB().then(db=>new Promise(res=>{
+    if(!db){res(null);return;}
+    try{const tx=db.transaction('ref',mode),st=tx.objectStore('ref'),rq=fn(st);tx.oncomplete=()=>res(rq?rq.result:true);tx.onerror=tx.onabort=()=>res(null);}catch(_){res(null);}
+  }));
+}
+const refPut=(id,ref)=>refTx('readwrite',st=>st.put(ref,id)).then(r=>r!==null);
+const refGet=id=>refTx('readonly',st=>st.get(id));
+const refDel=id=>refTx('readwrite',st=>st.delete(id));
 
 /* ---------------- library ---------------- */
 const lib={db:null,items:[],first:true};
@@ -2267,7 +2382,9 @@ function localLib(){try{return JSON.parse(localStorage.getItem('circuit.library'
 function writeLocalLib(o){try{localStorage.setItem('circuit.library',JSON.stringify(o));}catch(_){}}
 function docBody(){
   const d=state.doc,p=focusPath(),b=p&&bake(p);
-  return {name:d.name,width:d.width,race:JSON.parse(JSON.stringify(d.race||defaultRace())),paths:JSON.parse(JSON.stringify(d.paths)),updatedAt:Date.now(),lapLength:b?Math.round(b.total):0};
+  const o={name:d.name,width:d.width,race:JSON.parse(JSON.stringify(d.race||defaultRace())),paths:JSON.parse(JSON.stringify(d.paths)),updatedAt:Date.now(),lapLength:b?Math.round(b.total):0};
+  if(d.hasRef) o.hasRef=true;
+  return o;
 }
 let saveT=0;
 function scheduleSave(){clearTimeout(saveT);saveT=setTimeout(saveNow,700);}
@@ -2282,9 +2399,10 @@ function saveNow(){
     });
   }else{const o=localLib();o[id]=body;writeLocalLib(o);lib.items=Object.entries(o).map(([k,v])=>({id:k,...v})).sort((a,b)=>b.updatedAt-a.updatedAt);renderLib();}
 }
-function loadDoc(doc,fitView){
+function loadDoc(doc,fitView,ref){
   if(!doc.race) doc.race=defaultRace();
   state.doc=doc;
+  if(ref) setRef(doc.id,ref); else loadRefFor(doc);
   state.sel={path:null,nodes:new Set(),piece:null};
   state.penPath=null;state.ruler=null;
   syncDocInputs(); resetHistory();
@@ -2306,6 +2424,7 @@ function newTrack(){
 async function deleteItem(id){
   if(lib.db){try{await lib.db.collection('tracks').doc(id).delete();}catch(_){toast('Couldn’t delete that track. Try again.');return;}}
   else{const o=localLib();delete o[id];writeLocalLib(o);lib.items=lib.items.filter(i=>i.id!==id);}
+  refDel(id);
   if(id===state.doc.id){
     const next=lib.items.find(i=>i.id!==id);
     if(next) openItem(next); else loadDoc(blankDoc(),false);
@@ -2367,7 +2486,7 @@ function initLocalLib(){
     if(cur&&Array.isArray(cur.paths)) doc=docFrom(cur,cur.id);
   }catch(_){}
   if(!doc){doc=exampleDoc();}
-  state.doc=doc; syncDocInputs(); resetHistory();
+  state.doc=doc; syncDocInputs(); resetHistory(); loadRefFor(doc);
   setTool('pen');
   if(doc.paths.length===1) state.sel={path:doc.paths[0].id,nodes:new Set(),piece:null};
   requestAnimationFrame(()=>{fit();});

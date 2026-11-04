@@ -47,6 +47,14 @@ With the Pen or Line tool, click the end of an open path to keep drawing from it
 
 These markers follow the track as you edit it, and they're included in the SVG export (pit lane, numbered pit boxes and grid slots, each with its car position and heading).
 
+## Reference layers (real-world tracks)
+
+A project file can carry locked reference layers: building footprints, road edges, bridges and similar real-world limits. They're drawn under the track for guidance and can't be selected or moved.
+
+- **Open file** with a project that includes a `reference` block to load them. The **Reference layers** section in the panel lists each layer with a show/hide toggle, marked as a hard limit or an estimate.
+- They're stored per track in this browser (IndexedDB), and **Save as file** writes them back into the project file. On another browser or device, open the project file to bring them back.
+- `examples/hyde-park-circuit.json` is the Hyde Park Circuit project: the lap traced from real road centrelines, start/finish on Exhibition Road, the pit lane along its west side with garages in Kensington Gardens, and building and road-edge layers. Map data © OpenStreetMap contributors (ODbL).
+
 ## Panel
 
 - Lap length, number of straights and turns, and track width (default 12 m).
