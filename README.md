@@ -19,10 +19,11 @@ Related tools share a toolbar button, as in Illustrator. The button shows the la
 | Split | Split | X | Cut the track at a point; a loop opens, an open path becomes two |
 | Width | Width | W | Width points along the race track: the width morphs from one point to the next, with each side set separately |
 | Kerbs | Kerbs | K | Select, reshape, delete and add kerbs along the track edges |
+| Barriers | Barriers | B | Shape barriers and run-off along each side of the track |
 | Measure | Measure | M | Ruler that snaps to points; Shift locks to 45° |
 | Hand | Hand | H | Drag to move around the canvas |
 
-The race layout (start line, sectors, grid, pits, DRS, run-off) is edited from the **Race**, **DRS** and **Run-off** sections of the panel; choosing one puts the canvas into race editing. T jumps to the Race section.
+The race layout (start line, sectors, grid, pits, DRS) is edited from the **Race** and **DRS** sections of the panel; choosing one puts the canvas into race editing. The **Barriers** section switches to the Barriers tool. T jumps to the Race section.
 
 Other shortcuts: Ctrl/Cmd+Z undo, F switches a selected kerb between on the road and beyond the edge, Ctrl/Cmd+Shift+Z redo, Space-drag to pan, scroll or pinch to zoom, Ctrl/Cmd+0 to fit, arrow keys nudge 1 m (Shift for 10 m), Delete removes the selection, Enter or Esc finishes a path.
 
@@ -36,7 +37,7 @@ The panel on the right can be hidden with the ☰ button. Its sections:
 - **Race:** direction, start/finish, sectors, grid and pits, and turn names.
 - **Kerbs:** kerb settings and regeneration.
 - **DRS:** DRS zones.
-- **Run-off:** automatic run-off, and your own ground shapes, walls and grandstands.
+- **Barriers:** barriers and run-off, and your own ground shapes, walls and grandstands.
 - **View:** turn numbers and names, the direction arrow, snap to grid, and reference layers.
 
 ## Race layout
@@ -60,10 +61,21 @@ The panel on the right can be hidden with the ☰ button. Its sections:
 - **Edited kerbs stay put:** once you edit one, the automatic kerbs become yours and are stored with the track. **Regenerate kerbs** in the Kerbs section puts automatic kerbs back and replaces your edits, after a confirmation.
 - **DRS zones:** up to four, in the DRS section. **Add DRS zone** puts one on the longest straight without a zone, with a detection point before the preceding corner; drag its detection, activation and end points along the track.
 
-### Run-off and your own shapes
+### Barriers and run-off
 
-- **Automatic run-off** on the outside of each bend tighter than 300 m: mixed (tarmac then gravel), all tarmac or all gravel, with adjustable depth and optional tyre barriers at the edge. Switch it off for a single turn with the **R** toggle in the Race section's turn list.
-- **Draw your own:** draw a shape with the Pen or Line tool, click it in the Run-off section and choose what it is: grass, gravel, tarmac run-off, sand, a grandstand, or a concrete wall, armco, tyre wall or catch fence. Grandstand rows face the track automatically.
+Each side of the track can have barriers, and the run-off is the ground between the track edge and the barrier.
+
+- **Generate barriers** puts a barrier along both sides: a short verge on the straights and deeper run-off on the outside of bends, kept clear of buildings, trees and water in the reference layers.
+- **Shape them** with the Barriers tool (B). Click a barrier or its run-off to select it. Each barrier has square points; drag one in or out to set its distance from the edge, or along the track to move it. Between points the distance blends smoothly. Click the selected barrier to add a point, and drag its round ends to open or close a gap (for a pit entry or a side road). Delete removes the selected point, or the whole barrier.
+- **Types:** concrete (with a debris fence), armco or tyres, with an optional tyre wall in front. The run-off is grass, tarmac or gravel. **Split here** divides a barrier at the selected point so each part can differ.
+- **Checks** flag a barrier inside a building, tree or water.
+- **Kerbs:** **Fit kerbs to barriers** in the Kerbs section puts each kerb on the road where the barrier on its side is closer than a kerb width.
+- Barriers follow the track edges when you reshape the track, and go into the drawing and the Track Pack (barrier lines with their types, and run-off polygons with their surfaces).
+
+### Quick run-off and your own shapes
+
+- **Quick run-off** (when a track has no barriers) on the outside of each bend tighter than 300 m: mixed (tarmac then gravel), all tarmac or all gravel, with adjustable depth and optional tyre barriers at the edge. Switch it off for a single turn with the **R** toggle in the Race section's turn list.
+- **Draw your own:** draw a shape with the Pen or Line tool, click it in the Barriers section and choose what it is: grass, gravel, tarmac run-off, sand, a grandstand, or a concrete wall, armco, tyre wall or catch fence. Grandstand rows face the track automatically.
 
 These markers follow the track as you edit it, and they're included in the SVG export (pit lane, numbered pit boxes and grid slots, each with its car position and heading).
 
@@ -74,7 +86,7 @@ A project file can carry locked reference layers: building footprints, road edge
 - Open a project that includes a `reference` block (**Tracks → Open file**) to load them. The **View** section lists each layer with a show/hide toggle, marked as a hard limit or an estimate.
 - **Road lines** can be **Subtle** (dashed, under the track) or **Highlighted** (bright, drawn above the track so you can trace against them). The choice is remembered in this browser.
 - They're stored per track in this browser (IndexedDB), and **Download → Project file** writes them back into it. On another browser or device, open the project file to bring them back.
-- `examples/hyde-park-circuit.json` is the Hyde Park Circuit project: the lap traced from real road centrelines with width points for the real road widths, start/finish on Exhibition Road, the pit lane along its west side with boxes in Kensington Gardens, kerbs where the simulated racing line uses the edge, building, road-edge and bridge layers, and LIDAR terrain. Map data © OpenStreetMap contributors (ODbL). Contains Environment Agency information © Environment Agency and/or database right.
+- `examples/hyde-park-circuit.json` is the Hyde Park Circuit project: the lap traced from real road centrelines with width points for the real road widths, start/finish on Exhibition Road, the pit lane along its west side with boxes in Kensington Gardens, kerbs where the simulated racing line uses the edge, building, road-edge, bridge, tree, water and wall layers, barriers and run-off, and LIDAR terrain. Map data © OpenStreetMap contributors (ODbL). Contains Environment Agency information © Environment Agency and/or database right.
 
 ## Track width
 

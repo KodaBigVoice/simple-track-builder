@@ -14,7 +14,7 @@
 :root{
   --bg:#FFFFFF; --panel:#FFFFFF; --canvas:#F5F5F3; --ink:#121212; --muted:#5C5C5A;
   --line:#E4E4E1; --grid-minor:#ECECE9; --grid-major:#D9D9D5; --hover:#F1F1EE;
-  --accent:#D4231A; --on-accent:#FFFFFF; --warn:#B45309; --sector:#1D5FD1; --pit:#55554F; --pitbox:#C9C9C4; --building:#E2E2DD; --grass:#CFE3BF; --gravel:#E5D8B4; --runoff:#B9B9B4; --sand:#EEDFB8; --stand:#A9BBD0; --stand-row:#7F93AD; --concrete:#7A7A74; --armco:#9A9A96; --drs:#15803D; --ref-bld:#DCDCD6; --ref-bld-edge:#C4C4BE; --ref-water:#BFD7E6; --ref-road:#8E8E88; --ref-bridge:#6B6B66; --ref-road-bold:#0891B2;
+  --accent:#D4231A; --on-accent:#FFFFFF; --warn:#B45309; --sector:#1D5FD1; --pit:#55554F; --pitbox:#C9C9C4; --building:#E2E2DD; --grass:#CFE3BF; --gravel:#E5D8B4; --runoff:#B9B9B4; --sand:#EEDFB8; --stand:#A9BBD0; --stand-row:#7F93AD; --concrete:#7A7A74; --armco:#9A9A96; --drs:#15803D; --ref-bld:#DCDCD6; --ref-bld-edge:#C4C4BE; --ref-water:#BFD7E6; --ref-road:#8E8E88; --ref-bridge:#6B6B66; --ref-road-bold:#0891B2; --ref-tree:#8DB87A; --bar-concrete:#5C5C57; --bar-armco:#4F6A7C;
   --f-sans:'Archivo','Helvetica Neue',Arial,sans-serif;
   --f-mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
 }
@@ -22,13 +22,13 @@
   :root:not([data-theme="light"]){
     --bg:#0E0E0F; --panel:#111112; --canvas:#18181A; --ink:#F2F2F0; --muted:#A3A3A0;
     --line:#2A2A2D; --grid-minor:#202023; --grid-major:#2E2E32; --hover:#1F1F22;
-    --warn:#FBBF24; --sector:#2F6FE0; --pit:#B5B5AF; --pitbox:#3A3A3E; --building:#26262A; --grass:#22331F; --gravel:#4B4330; --runoff:#3A3A3E; --sand:#544A33; --stand:#34465C; --stand-row:#4C6584; --concrete:#8C8C86; --armco:#C9C9C4; --drs:#22C55E; --ref-bld:#2B2B30; --ref-bld-edge:#3A3A40; --ref-water:#1E3442; --ref-road:#6E6E6A; --ref-bridge:#A3A3A0; --ref-road-bold:#22D3EE; color-scheme:dark;
+    --warn:#FBBF24; --sector:#2F6FE0; --pit:#B5B5AF; --pitbox:#3A3A3E; --building:#26262A; --grass:#22331F; --gravel:#4B4330; --runoff:#3A3A3E; --sand:#544A33; --stand:#34465C; --stand-row:#4C6584; --concrete:#8C8C86; --armco:#C9C9C4; --drs:#22C55E; --ref-bld:#2B2B30; --ref-bld-edge:#3A3A40; --ref-water:#1E3442; --ref-road:#6E6E6A; --ref-bridge:#A3A3A0; --ref-road-bold:#22D3EE; --ref-tree:#3F6A3A; --bar-concrete:#B4B4AE; --bar-armco:#93B0C4; color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
   --bg:#0E0E0F; --panel:#111112; --canvas:#18181A; --ink:#F2F2F0; --muted:#A3A3A0;
   --line:#2A2A2D; --grid-minor:#202023; --grid-major:#2E2E32; --hover:#1F1F22;
-  --warn:#FBBF24; --sector:#2F6FE0; --pit:#B5B5AF; --pitbox:#3A3A3E; --building:#26262A; --grass:#22331F; --gravel:#4B4330; --runoff:#3A3A3E; --sand:#544A33; --stand:#34465C; --stand-row:#4C6584; --concrete:#8C8C86; --armco:#C9C9C4; --drs:#22C55E; --ref-bld:#2B2B30; --ref-bld-edge:#3A3A40; --ref-water:#1E3442; --ref-road:#6E6E6A; --ref-bridge:#A3A3A0; --ref-road-bold:#22D3EE; color-scheme:dark;
+  --warn:#FBBF24; --sector:#2F6FE0; --pit:#B5B5AF; --pitbox:#3A3A3E; --building:#26262A; --grass:#22331F; --gravel:#4B4330; --runoff:#3A3A3E; --sand:#544A33; --stand:#34465C; --stand-row:#4C6584; --concrete:#8C8C86; --armco:#C9C9C4; --drs:#22C55E; --ref-bld:#2B2B30; --ref-bld-edge:#3A3A40; --ref-water:#1E3442; --ref-road:#6E6E6A; --ref-bridge:#A3A3A0; --ref-road-bold:#22D3EE; --ref-tree:#3F6A3A; --bar-concrete:#B4B4AE; --bar-armco:#93B0C4; color-scheme:dark;
 }
 html,body{height:100%}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-sans);font-size:14px;overflow:hidden}
@@ -100,6 +100,9 @@ body.nopanel .panel{display:none}
 #refStage .ref-water{fill:var(--ref-water)}
 #refStage .ref-bridges{fill:none;stroke:var(--ref-bridge);stroke-width:1.5px;stroke-dasharray:6 3;vector-effect:non-scaling-stroke}
 #refStage .ref-roads{fill:none;stroke:var(--ref-road);stroke-width:1px;stroke-dasharray:4 4;vector-effect:non-scaling-stroke;opacity:.8}
+#refStage .ref-trees{fill:var(--ref-tree)}
+#refStage .ref-woods{fill:var(--ref-tree);opacity:.35}
+#refStage .ref-walls{fill:none;stroke:var(--ref-bridge);stroke-width:1px;vector-effect:non-scaling-stroke}
 #refStage .ref-other{fill:none;stroke:var(--muted);stroke-width:1px;vector-effect:non-scaling-stroke}
 .refrow{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .refrow .src{font-size:12px;color:var(--muted)}
@@ -179,7 +182,7 @@ body.nopanel .panel{display:none}
 .kerb{fill:none;stroke:#D4231A;stroke-linecap:butt;stroke-linejoin:round}
 .kerb-w{fill:none;stroke:#FFFFFF;stroke-dasharray:1.2 1.2;stroke-linecap:butt;stroke-linejoin:round}
 .wall{fill:none;stroke-linecap:round;stroke-linejoin:round}
-.w-concrete{stroke:var(--concrete)}.w-armco{stroke:var(--armco)}.w-tyres{stroke:#D4231A;stroke-dasharray:2 2}.w-fence{stroke:var(--muted);stroke-dasharray:1 2}
+.w-concrete{stroke:var(--bar-concrete)}.w-armco{stroke:var(--bar-armco)}.w-tyres{stroke:#D4231A;stroke-dasharray:2 2}.w-fence{stroke:var(--muted);stroke-dasharray:1 2}
 .drsb{fill:none;stroke:var(--drs);stroke-opacity:.42;stroke-linecap:butt;stroke-linejoin:round}
 .drsd{stroke:var(--drs);stroke-width:2;stroke-dasharray:4 3;vector-effect:non-scaling-stroke}
 .pill.drs{fill:var(--drs)}
@@ -356,7 +359,7 @@ body.nopanel .panel{display:none}
     </div>
 
     <div class="secs" role="tablist" aria-label="Panel sections" id="secs">
-      <button role="tab" data-sec="track">Track</button><button role="tab" data-sec="race">Race</button><button role="tab" data-sec="kerbs">Kerbs</button><button role="tab" data-sec="drs">DRS</button><button role="tab" data-sec="runoff">Run-off</button><button role="tab" data-sec="view">View</button>
+      <button role="tab" data-sec="track">Track</button><button role="tab" data-sec="race">Race</button><button role="tab" data-sec="kerbs">Kerbs</button><button role="tab" data-sec="drs">DRS</button><button role="tab" data-sec="runoff">Barriers</button><button role="tab" data-sec="view">View</button>
     </div>
 
     <div class="ctx" id="ctx"></div>
@@ -619,7 +622,7 @@ function samplePiece(pc){
 function defaultRace(){return {loop:null,reversed:false,start:null,sectors:null,arrows:true,numbers:true,names_on:true,turnMin:15,names:{},cars:20,
   grid:{pole:'auto',first:8,gap:8},pit:{path:null,width:10,boxLen:14,depth:9,centre:null,flipSide:false},
   kerbs:{on:true,maxR:250,width:1.5,off:{},place:'beyond',list:null},drs:[],widths:[],checks:{minR:10,minW:6,maxGrad:8},
-  runoff:{on:true,depth:35,tarmac:15,type:'mixed',maxR:300,barriers:true,off:{}}};}
+  runoff:{on:true,depth:35,tarmac:15,type:'mixed',maxR:300,barriers:true,off:{}},barriers:{on:true,list:null,type:'armco',surface:'grass'}};}
 function cleanRace(r){
   const d=defaultRace(); if(!r||typeof r!=='object') return d;
   const pt=a=>Array.isArray(a)&&a.length===2&&isFinite(a[0])&&isFinite(a[1])?[+a[0],+a[1]]:null;
@@ -637,6 +640,15 @@ function cleanRace(r){
   if(kb.place==='road') d.kerbs.place='road';
   if(Array.isArray(kb.list)) d.kerbs.list=kb.list.slice(0,600).map(k=>k&&pt(k.a)&&pt(k.b)?{a:pt(k.a),b:pt(k.b),side:k.side==='R'?'R':'L',place:k.place==='road'?'road':'beyond'}:null).filter(Boolean);
   if(Array.isArray(r.drs)) d.drs=r.drs.slice(0,4).map(z=>z&&{d:pt(z.d),a:pt(z.a),e:pt(z.e)}).filter(z=>z&&z.d&&z.a&&z.e);
+  const bz=r.barriers||{};d.barriers.on=bz.on!==false;
+  const BT=['concrete','armco','tyres'],BS=['grass','tarmac','gravel'];
+  if(BT.includes(bz.type)) d.barriers.type=bz.type; if(BS.includes(bz.surface)) d.barriers.surface=bz.surface;
+  if(Array.isArray(bz.list)) d.barriers.list=bz.list.slice(0,800).map(b=>{
+    if(!b||!pt(b.a)||!pt(b.b)||!Array.isArray(b.pts)) return null;
+    const ks=b.pts.slice(0,200).map(k=>k&&pt(k.pt)&&isFinite(k.off)?{pt:pt(k.pt),off:clamp(+k.off,0,150)}:null).filter(Boolean);
+    if(!ks.length) return null;
+    return {a:pt(b.a),b:pt(b.b),side:b.side==='R'?'R':'L',pts:ks,type:BT.includes(b.type)?b.type:'armco',surface:BS.includes(b.surface)?b.surface:'grass',tyres:!!b.tyres};
+  }).filter(Boolean);
   const ro=r.runoff||{}; d.runoff.on=ro.on!==false; d.runoff.barriers=ro.barriers!==false;
   if(isFinite(ro.depth)) d.runoff.depth=clamp(+ro.depth,5,200); if(isFinite(ro.tarmac)) d.runoff.tarmac=clamp(+ro.tarmac,0,200);
   if(['mixed','tarmac','gravel'].includes(ro.type)) d.runoff.type=ro.type; if(isFinite(ro.maxR)) d.runoff.maxR=clamp(+ro.maxR,10,2000); d.runoff.off=offMap(ro.off);
@@ -818,6 +830,14 @@ function computeRace(){
     kerbs.push({i:kerbs.length,turn:t.n,side:outS,place:kc.place,d0:t.dE-span*0.35,d1:t.dE+clamp(span*0.2+15,15,60)});
   }
   /* run-off on the outside of each turn, tapering at both ends */
+  /* barriers: stretches along one side, each with offset points (distance beyond the edge) */
+  const barriers=[],bc=r.barriers;
+  if(bc&&bc.on&&bc.list) bc.list.forEach((b,i)=>{
+    let d0=dOf(lineProject(line,b.a).s),d1=dOf(lineProject(line,b.b).s);
+    if(p.closed){if(d1<=d0) d1+=L;}else if(d1<d0){const q=d0;d0=d1;d1=q;}
+    const keys=b.pts.map((k,j)=>{let d=dOf(lineProject(line,k.pt).s);if(p.closed&&d<d0-0.5) d+=L;return {j,d,off:k.off};}).sort((x,y)=>x.d-y.d);
+    barriers.push({i,side:b.side,d0,d1,keys,type:b.type,surface:b.surface,tyres:b.tyres});
+  });
   const runoffs=[],rc=r.runoff;
   if(rc.on) for(const t of turns){
     if(!(t.minR<rc.maxR)||rc.off[t.n]) continue;
@@ -827,7 +847,7 @@ function computeRace(){
   const prof=lineProfile(line,'race:'+p.id);
   const drs=(r.drs||[]).map((zn,i)=>({i,dDet:dOf(lineProject(line,zn.d).s),dAct:dOf(lineProject(line,zn.a).s),dEnd:dOf(lineProject(line,zn.e).s)}));
   return {p,b,line,L,s0,rev,fs,order,turns,closed:p.closed,cwGeo,clockwise:p.closed?(cwGeo!==rev):null,sectors,sectorLens,dist,travelTan,grid,gridAvail,gridNeed,pole,pit,
-    sOf,dOf,entryS,exitS,outward,kerbs,runoffs,drs,hw,hwT,wkf,varW:wkf.length>0,prof,zAt:prof?(sv=>prof.at(lineMod(line,sv))):null,gAt:prof?(sv=>prof.gAt(lineMod(line,sv))):null};
+    sOf,dOf,entryS,exitS,outward,kerbs,runoffs,barriers,drs,hw,hwT,wkf,varW:wkf.length>0,prof,zAt:prof?(sv=>prof.at(lineMod(line,sv))):null,gAt:prof?(sv=>prof.gAt(lineMod(line,sv))):null};
 }
 function autoDrs(){
   const R=state.race,r=state.doc.race; if(!R) return false;
@@ -849,7 +869,27 @@ function snapRaceMarks(){
   if(r.drs) r.drs=r.drs.map(z=>({d:lineProject(R.line,z.d).pt,a:lineProject(R.line,z.a).pt,e:lineProject(R.line,z.e).pt}));
   if(r.widths) for(const k of r.widths) k.pt=lineProject(R.line,k.pt).pt;
   if(r.kerbs&&r.kerbs.list) for(const k of r.kerbs.list){k.a=lineProject(R.line,k.a).pt;k.b=lineProject(R.line,k.b).pt;}
+  if(r.barriers&&r.barriers.list) for(const b of r.barriers.list){b.a=lineProject(R.line,b.a).pt;b.b=lineProject(R.line,b.b).pt;for(const k of b.pts) k.pt=lineProject(R.line,k.pt).pt;}
 }
+/* barrier geometry */
+function barOff(B,d){
+  const k=B.keys;if(!k.length) return 0;
+  if(d<=k[0].d) return k[0].off;
+  for(let i=1;i<k.length;i++) if(d<=k[i].d){const a=k[i-1],b=k[i],u=(d-a.d)/Math.max(b.d-a.d,1e-6);return a.off+(b.off-a.off)*smooth01(u);}
+  return k[k.length-1].off;
+}
+function barPoint(R,B,d,extra){
+  const sv=R.sOf(d),at=lineAt(R.line,sv),t=R.travelTan(sv),lf=[t[1],-t[0]],h=R.hwT(sv),e=B.side==='L'?h.l:h.r,o=e+(extra==null?barOff(B,d):extra(d));
+  return V.add(at.pt,V.mul(lf,B.side==='L'?o:-o));
+}
+function barGeo(R,B){
+  R._bar=R._bar||new Map();
+  if(R._bar.has(B.i)) return R._bar.get(B.i);
+  const n=Math.max(2,Math.ceil((B.d1-B.d0)/2)),line=[],edge=[],tyre=[];
+  for(let q=0;q<=n;q++){const d=B.d0+(B.d1-B.d0)*q/n;line.push(barPoint(R,B,d));edge.push(barPoint(R,B,d,()=>0));if(B.tyres) tyre.push(barPoint(R,B,d,dd=>Math.max(0,barOff(B,dd)-0.8)));}
+  const g={line,edge,tyre,poly:edge.concat(line.slice().reverse())};R._bar.set(B.i,g);return g;
+}
+function barList(){const r=state.doc.race;if(!r.barriers.list) r.barriers.list=[];return r.barriers.list;}
 /* kerb geometry: f=0 at the track edge, 1 at the far side of the kerb; on the road it sits inside the edge, beyond the edge outside it */
 function kerbPts(R,k,kw,f){
   const n=Math.max(2,Math.ceil((k.d1-k.d0)/2)),pts=[];
@@ -861,6 +901,35 @@ function kerbPts(R,k,kw,f){
   return pts;
 }
 /* turn the automatic kerbs into stored, editable ones (once) */
+/* automatic barriers: a verge on the straights, deeper run-off on the outside of bends, kept clear of hard limits */
+function generateBarriers(){
+  const R=state.race,r=state.doc.race; if(!R) return;
+  const H=hardIndex(),L=R.L,step=4,n=Math.max(4,Math.floor(L/step)),list=[];
+  for(const side of ['L','R']){
+    const offs=[];
+    for(let i=0;i<n;i++){
+      const d=i*step,sv=R.sOf(d),at=lineAt(R.line,sv),t=R.travelTan(sv),lf=[t[1],-t[0]],h=R.hwT(sv),e=side==='L'?h.l:h.r,sg=side==='L'?1:-1;
+      let want=2;
+      for(const tn of R.turns){if(!(tn.minR<300)) continue;const outS=tn.dir==='Right'?'L':'R';if(outS!==side) continue;
+        const a=tn.dS-40,b=tn.dE+50,dd=d<a-L/2?d+L:d>b+L/2?d-L:d;if(dd<a||dd>b) continue;
+        const u=(dd-a)/(b-a),depth=clamp(8+2400/tn.minR,8,40);want=Math.max(want,2+(depth-2)*taper(u));}
+      let lim=want;
+      if(H) for(let o=0.5;o<=want+1;o+=0.5){const q=V.add(at.pt,V.mul(lf,sg*(e+o)));if(hardHit(H,q)){lim=Math.max(0.3,o-1);break;}}
+      offs.push(Math.min(want,lim));
+    }
+    // stretches between turns, offset points where the shape changes
+    const cuts=[0];for(const tn of R.turns){const m=Math.round(((tn.dS-30+L)%L)/step);if(m>cuts[cuts.length-1]+10) cuts.push(m);}
+    cuts.push(n);
+    for(let c=0;c<cuts.length-1;c++){
+      const i0=cuts[c],i1=cuts[c+1];const ks=[i0];
+      for(let i=i0+1;i<i1;i++){const pv=offs[ks[ks.length-1]];if(Math.abs(offs[i]-pv)>1||(i-ks[ks.length-1])*step>=60) ks.push(i);}
+      if(ks[ks.length-1]!==i1-1) ks.push(i1-1);
+      const P=d=>lineAt(R.line,R.sOf(d)).pt,mx=Math.max(...offs.slice(i0,i1));
+      list.push({a:P(i0*step),b:P(i1>=n&&R.closed?0:Math.min(i1*step,L)),side,pts:ks.map(i=>({pt:P(i*step),off:+offs[i].toFixed(2)})),type:mx<1.5?'concrete':r.barriers.type,surface:mx>6?'tarmac':r.barriers.surface,tyres:mx>12});
+    }
+  }
+  r.barriers.list=list;
+}
 function kerbList(){
   const r=state.doc.race,R=state.race;
   if(r.kerbs.list) return r.kerbs.list;
@@ -890,7 +959,7 @@ const state={
   sel:{path:null,nodes:new Set(),piece:null},
   penPath:null, ruler:null, drag:null, hover:null, cursorS:null,
   space:false, mod:false, alt:false, shift:false, snap:false, dirty:false,
-  bakes:new Map(), race:null, listTab:'segs', raceTab:'layout', section:'track', ksel:null, karm:false,
+  bakes:new Map(), race:null, listTab:'segs', raceTab:'layout', section:'track', ksel:null, karm:false, bsel:null, bkey:null, barm:false,
   roundR:50, lineLen:100, wsel:null, flash:null,
   arc:{len:200,r:120,ang:90,dir:'right',heading:0,ghost:'arc'}
 };
@@ -922,6 +991,8 @@ function restore(){
   state.doc=JSON.parse(hist.stack[hist.i]);
   if(state.wsel!=null&&!(state.doc.race&&state.doc.race.widths&&state.doc.race.widths[state.wsel])) state.wsel=null;
   if(state.ksel!=null&&!(state.doc.race&&state.doc.race.kerbs.list&&state.doc.race.kerbs.list[state.ksel])) state.ksel=null;
+  if(state.bsel!=null&&!(state.doc.race&&state.doc.race.barriers.list&&state.doc.race.barriers.list[state.bsel])){state.bsel=null;state.bkey=null;}
+  if(state.bsel!=null&&state.bkey!=null&&!state.doc.race.barriers.list[state.bsel].pts[state.bkey]) state.bkey=null;
   const p=selPath();
   if(!p) state.sel={path:null,nodes:new Set(),piece:null};
   else state.sel.nodes=new Set([...state.sel.nodes].filter(i=>i<p.nodes.length));
@@ -1188,6 +1259,7 @@ function onDown(e){
   else if(tool==='measure') measureDown(sp,wp,e);
   else if(tool==='width') widthDown(sp,wp,e);
   else if(tool==='kerb') kerbDown(sp,wp,e);
+  else if(tool==='barrier') barDown(sp,wp,e);
   render();
 }
 function penDown(sp,wp,e,lineMode){
@@ -1337,7 +1409,7 @@ function selectDown(sp,wp,e){
   if(hp){
     state.sel={path:hp.path.id,nodes:new Set(),piece:hp.k};
     const rr0=state.doc.race,isRace=state.race&&state.race.p===hp.path;
-    state.drag={type:'movePath',p:hp.path,w0:wp,sp0:sp,orig:JSON.parse(JSON.stringify(hp.path.nodes)),moved:false,race:isRace&&rr0?{start:rr0.start,sectors:rr0.sectors,widths:(rr0.widths||[]).map(k=>k.pt),kerbs:rr0.kerbs.list?rr0.kerbs.list.map(k=>[k.a,k.b]):null}:null};
+    state.drag={type:'movePath',p:hp.path,w0:wp,sp0:sp,orig:JSON.parse(JSON.stringify(hp.path.nodes)),moved:false,race:isRace&&rr0?{start:rr0.start,sectors:rr0.sectors,widths:(rr0.widths||[]).map(k=>k.pt),kerbs:rr0.kerbs.list?rr0.kerbs.list.map(k=>[k.a,k.b]):null,bars:rr0.barriers.list?rr0.barriers.list.map(b=>[b.a,b.b,b.pts.map(k=>k.pt)]):null}:null};
   }else{state.sel={path:null,nodes:new Set(),piece:null};state.drag={type:'none'};}
 }
 function roundDown(sp,wp,e){
@@ -1459,6 +1531,95 @@ function kerbDrag(d,wp){
   markDirty();
 }
 function kerbDelete(){const r=state.doc.race;if(state.ksel==null) return false;const list=kerbList();if(!list[state.ksel]) return false;list.splice(state.ksel,1);state.ksel=null;commit();return true;}
+/* barrier tool */
+function latAt(R,wp){const pr=lineProject(R.line,wp),at=lineAt(R.line,pr.s),t=R.travelTan(pr.s),lf=[t[1],-t[0]],h=R.hwT(pr.s),lat=V.dot(V.sub(wp,at.pt),lf);return {s:pr.s,d:R.dOf(pr.s),lat,side:lat>=0?'L':'R',e:lat>=0?h.l:h.r};}
+function barDin(R,B,d){if(R.closed){if(d<B.d0-0.5) d+=R.L;if(d>B.d1+0.5&&d-R.L>=B.d0-0.5) d-=R.L;}return d;}
+function barHit(sp){
+  const R=state.race,r=state.doc.race; if(!R||!r.barriers.on) return null;
+  const wp=toW(sp);
+  if(state.bsel!=null){const B=R.barriers.find(q=>q.i===state.bsel);if(B){
+    for(const k of B.keys) if(V.dist(sp,toS(barPoint(R,B,k.d)))<=9) return {act:'bkey',i:B.i,j:k.j};
+    const g=barGeo(R,B);
+    if(V.dist(sp,toS(g.line[0]))<=9) return {act:'bend',i:B.i,end:'a'};
+    if(V.dist(sp,toS(g.line[g.line.length-1]))<=9) return {act:'bend',i:B.i,end:'b'};
+    if(distToPoly(sp,g.line.map(toS))<=7) return {act:'bline',i:B.i};
+  }}
+  let best=null,bd=7;
+  for(const B of R.barriers){const d=distToPoly(sp,barGeo(R,B).line.map(toS));if(d<bd){bd=d;best={act:'bsel',i:B.i};}}
+  if(best) return best;
+  for(const B of R.barriers) if(inPoly(wp,barGeo(R,B).poly)) return {act:'bsel',i:B.i};
+  const q=latAt(R,wp),beyond=Math.abs(q.lat)-q.e;
+  if(beyond>0.3&&beyond<120){
+    const cov=R.barriers.some(B=>B.side===q.side&&barDin(R,B,q.d)>=B.d0&&barDin(R,B,q.d)<=B.d1);
+    if(!cov) return {act:'badd',side:q.side,d:q.d,off:beyond};
+  }
+  return null;
+}
+function barDown(sp,wp,e){
+  state.drag={type:'none'};
+  const R=state.race,r=state.doc.race;
+  if(!R){toast('Make a closed loop the race track first, in the Race section.');return;}
+  const h=barHit(sp);state.barm=false;
+  if(!h){
+    const hp=hitPiece(sp);
+    if(hp&&hp.path!==R.p){state.sel={path:hp.path.id,nodes:new Set(),piece:null};}
+    state.bsel=null;state.bkey=null;return;
+  }
+  const list=barList(),P=d=>lineAt(R.line,R.sOf(d)).pt;
+  if(h.act==='badd'){
+    const off=+clamp(h.off,0,150).toFixed(1);
+    list.push({a:P(h.d-20),b:P(h.d+20),side:h.side,pts:[{pt:P(h.d),off}],type:off<1.5?'concrete':r.barriers.type,surface:r.barriers.surface,tyres:false});
+    state.bsel=list.length-1;state.bkey=0;commit();return;
+  }
+  state.bsel=h.i;
+  const B=R.barriers.find(q=>q.i===h.i),b=list[h.i];
+  if(h.act==='bsel'){state.bkey=null;return;}
+  if(h.act==='bkey'){state.bkey=h.j;state.drag={type:'barKey',i:h.i,j:h.j,sp0:sp,moved:false};return;}
+  if(h.act==='bend'){state.drag={type:'barEnd',i:h.i,end:h.end,d0:B.d0,d1:B.d1,sp0:sp,moved:false};return;}
+  if(h.act==='bline'){
+    const d=barDin(R,B,latAt(R,wp).d);
+    b.pts.push({pt:P(d),off:+barOff(B,d).toFixed(2)});state.bkey=b.pts.length-1;
+    state.drag={type:'barKey',i:h.i,j:state.bkey,sp0:sp,moved:true};markDirty();
+  }
+}
+function barDrag(d,wp){
+  const R=state.race,r=state.doc.race,b=r.barriers.list&&r.barriers.list[d.i]; if(!R||!b) return;
+  const P=dd=>lineAt(R.line,R.sOf(dd)).pt,L=R.L,q=latAt(R,wp);
+  if(d.type==='barKey'){
+    const B=R.barriers.find(x=>x.i===d.i),k=b.pts[d.j]; if(!B||!k) return;
+    const dd=clamp(barDin(R,B,q.d),B.d0,B.d1);
+    const off=q.side===b.side?Math.max(0,Math.abs(q.lat)-q.e):0;
+    k.pt=P(dd);k.off=+clamp(off,0,150).toFixed(2);
+  }else{
+    if(d.end==='a'){let n=R.closed?((d.d1-q.d)%L+L)%L:d.d1-q.d;if(n<5||n>L*0.95) n=5;b.a=P(d.d1-n);}
+    else{let n=R.closed?((q.d-d.d0)%L+L)%L:q.d-d.d0;if(n<5||n>L*0.95) n=5;b.b=P(d.d0+n);}
+  }
+  markDirty();
+}
+function barDelete(){
+  const r=state.doc.race;if(state.bsel==null||!r.barriers.list) return false;
+  const b=r.barriers.list[state.bsel];if(!b) return false;
+  if(state.bkey!=null&&b.pts.length>1){b.pts.splice(state.bkey,1);state.bkey=null;}
+  else{r.barriers.list.splice(state.bsel,1);state.bsel=null;state.bkey=null;}
+  commit();return true;
+}
+function barSplit(){
+  const R=state.race,r=state.doc.race,b=r.barriers.list&&r.barriers.list[state.bsel];if(!R||!b||state.bkey==null) return;
+  const B=R.barriers.find(x=>x.i===state.bsel),k=b.pts[state.bkey],kd=B.keys.find(x=>x.j===state.bkey);if(!B||!k||!kd) return;
+  const left=[],right=[];for(const x of B.keys){const o={pt:b.pts[x.j].pt,off:b.pts[x.j].off};if(x.d<=kd.d) left.push(o);if(x.d>=kd.d) right.push(o);}
+  const nb={...b,a:k.pt,pts:right};b.b=k.pt;b.pts=left;r.barriers.list.splice(state.bsel+1,0,nb);state.bkey=null;commit();
+}
+/* kerbs on the road wherever the barrier on that side is closer than a kerb width */
+function fitKerbs(){
+  const R=state.race,r=state.doc.race;if(!R) return 0;
+  const list=kerbList(),kw=r.kerbs.width;let ch=0;
+  R.kerbs.forEach(k=>{
+    let mn=Infinity;
+    for(const B of R.barriers){if(B.side!==k.side) continue;for(let d=k.d0;d<=k.d1;d+=2){const dd=barDin(R,B,d);if(dd>=B.d0&&dd<=B.d1) mn=Math.min(mn,barOff(B,dd));}}
+    const want=mn<kw+0.3?'road':'beyond',o=list[k.i];if(o&&o.place!==want){o.place=want;ch++;}
+  });
+  return ch;
+}
 function measureDown(sp,wp){
   const a=snapToAnchor(sp)||snapPt(wp);
   state.ruler={a,b:a};
@@ -1507,7 +1668,7 @@ function onMove(e){
     }
     if(d.type==='movePath'){
       d.p.nodes=d.orig.map(n=>{const c=JSON.parse(JSON.stringify(n));moveNode(c,dd);return c;});
-      if(d.race){const r=state.doc.race;if(d.race.start) r.start=V.add(d.race.start,dd);if(d.race.sectors) r.sectors=d.race.sectors.map(q=>V.add(q,dd));if(d.race.widths&&r.widths) r.widths.forEach((k,i)=>{if(d.race.widths[i]) k.pt=V.add(d.race.widths[i],dd);});if(d.race.kerbs&&r.kerbs.list) r.kerbs.list.forEach((k,i)=>{const o=d.race.kerbs[i];if(o){k.a=V.add(o[0],dd);k.b=V.add(o[1],dd);}});}
+      if(d.race){const r=state.doc.race;if(d.race.start) r.start=V.add(d.race.start,dd);if(d.race.sectors) r.sectors=d.race.sectors.map(q=>V.add(q,dd));if(d.race.widths&&r.widths) r.widths.forEach((k,i)=>{if(d.race.widths[i]) k.pt=V.add(d.race.widths[i],dd);});if(d.race.kerbs&&r.kerbs.list) r.kerbs.list.forEach((k,i)=>{const o=d.race.kerbs[i];if(o){k.a=V.add(o[0],dd);k.b=V.add(o[1],dd);}});if(d.race.bars&&r.barriers.list) r.barriers.list.forEach((b,i)=>{const o=d.race.bars[i];if(o){b.a=V.add(o[0],dd);b.b=V.add(o[1],dd);b.pts.forEach((k,j)=>{if(o[2][j]) k.pt=V.add(o[2][j],dd);});}});}
     }else{
       for(const k in d.orig){const c=JSON.parse(JSON.stringify(d.orig[k]));moveNode(c,dd);d.p.nodes[k]=c;}
     }
@@ -1524,6 +1685,7 @@ function onMove(e){
   }
   else if(d.type==='wkfMove'||d.type==='wkfEdge'){widthDrag(d,wp,e);}
   else if(d.type==='kerbEnd'||d.type==='kerbMove'){kerbDrag(d,wp);}
+  else if(d.type==='barKey'||d.type==='barEnd'){barDrag(d,wp);}
   else if(d.type==='round'){
     const b=state.bakes.get(d.p.id),c=b&&b.corners[d.j];
     if(c){
@@ -1582,6 +1744,7 @@ function updateHover(sp){
   else if(tool==='arc'){const hp=hitPiece(sp);if(hp) state.hover={act:'piece',p:hp.path,k:hp.k};}
   else if(tool==='width'){state.hover=widthHit(sp);}
   else if(tool==='kerb'){state.hover=kerbHit(sp);}
+  else if(tool==='barrier'){state.hover=barHit(sp);}
   updateCursor();
 }
 function updateCursor(){
@@ -1589,6 +1752,7 @@ function updateCursor(){
   let c='default';
   if(state.space||t==='hand'||(state.drag&&state.drag.type==='pan')) c=state.drag?'grabbing':'grab';
   else if(t==='kerb') c=state.drag?'grabbing':state.hover?(state.hover.act==='kadd'?'copy':'grab'):'default';
+  else if(t==='barrier') c=state.drag?'grabbing':state.hover?(state.hover.act==='badd'||state.hover.act==='bline'?'copy':state.hover.act==='bsel'?'pointer':'grab'):'default';
   else if(t==='pen'||t==='line'||t==='measure'||t==='split') c='crosshair';
   else if(t==='arc') c=(state.hover&&state.hover.act==='piece')?'pointer':'crosshair';
   else if(t==='width') c=state.hover?(state.hover.act==='wadd'?'copy':state.hover.act==='wedge'?'ew-resize':'grab'):'default';
@@ -1684,6 +1848,7 @@ function draw(){
   for(const p of doc.paths) if(p.role==='surface'&&p.closed){const bk=state.bakes.get(p.id);s+=`<path class="sf sf-${p.kind||'grass'}" d="${piecesD(bk.pieces,true)}"></path>`;}
   const ROs=R?runoffShapes(R,rr.runoff,W):[];
   for(const o of ROs){if(o.gravel) s+=`<path class="sf sf-gravel" d="${polyD(o.gravel,true)}"></path>`;if(o.tarmac) s+=`<path class="sf sf-tarmac" d="${polyD(o.tarmac,true)}"></path>`;}
+  if(R) for(const B of R.barriers){const g=barGeo(R,B);s+=`<path class="sf sf-${B.surface}" d="${polyD(g.poly,true)}"></path>`;}
   doc.paths.forEach((p,i)=>{
     if(p.role!=='stand'||!p.closed) return;
     const bk=state.bakes.get(p.id),ang=standRows(p,R);
@@ -1739,6 +1904,7 @@ function draw(){
   }
   const wallW=Math.max(1,1.6/z);
   if(R&&rr.runoff.barriers) for(const o of ROs) s+=`<path class="wall w-tyres" stroke-width="${wallW*1.3}" d="${polyD(o.edge)}"></path>`;
+  if(R) for(const B of R.barriers){const g=barGeo(R,B);if(B.tyres) s+=`<path class="wall w-tyres" stroke-width="${wallW*1.6}" d="${polyD(g.tyre)}"></path>`;s+=`<path class="wall w-${B.type}" stroke-width="${wallW*1.5}" d="${polyD(g.line)}"></path>`;}
   for(const p of doc.paths) if(p.role==='wall'){const bk=state.bakes.get(p.id);s+=`<path class="wall w-${p.kind||'concrete'}" stroke-width="${wallW}" d="${piecesD(bk.pieces,p.closed)}"></path>`;}
   const sp=selPath(),sb=sp&&state.bakes.get(sp.id);
   if(sb&&state.sel.piece!=null&&sb.pieces[state.sel.piece]){
@@ -1862,6 +2028,18 @@ function draw(){
       s+=`<line class="wghost" x1="${A[0]}" y1="${A[1]}" x2="${B[0]}" y2="${B[1]}"></line>`+pill((A[0]+B[0])/2,Math.min(A[1],B[1])-18,'Add width point · '+(h.l+h.r).toFixed(1)+' m');
     }
   }
+  if(tool==='barrier'&&R){
+    if(hv&&(hv.act==='bsel')&&hv.i!==state.bsel&&!state.drag){const B=R.barriers.find(q=>q.i===hv.i);if(B) s+=`<path class="hov" d="${polyD(barGeo(R,B).line.map(toS))}"></path>`;}
+    if(hv&&hv.act==='badd'&&!state.drag){const g={side:hv.side,d0:hv.d-20,d1:hv.d+20,keys:[{d:hv.d,off:hv.off}],i:-1},P=[];for(let d=g.d0;d<=g.d1;d+=2) P.push(toS(barPoint(R,g,d)));const m=P[P.length>>1];s+=`<path class="ghost" d="${polyD(P)}"></path>`+pill(m[0],m[1]-20,'Add barrier · '+hv.off.toFixed(1)+' m from edge');}
+    const B=state.bsel!=null&&R.barriers.find(q=>q.i===state.bsel);
+    if(B){
+      const g=barGeo(R,B);s+=`<path class="hov" d="${polyD(g.line.map(toS))}"></path>`;
+      for(const e of [g.line[0],g.line[g.line.length-1]]){const q=toS(e);s+=`<circle class="wkc" cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="5"></circle>`;}
+      for(const k of B.keys){const q=toS(barPoint(R,B,k.d)),on=state.bkey===k.j;s+=`<rect class="wkh${on?' on':''}" x="${(q[0]-5).toFixed(1)}" y="${(q[1]-5).toFixed(1)}" width="10" height="10"></rect>`;
+        if(on||state.drag&&state.drag.type==='barKey'&&state.drag.j===k.j) s+=pill(q[0],q[1]-20,k.off.toFixed(1)+' m from edge');}
+      if(state.bkey==null){const m=toS(g.line[g.line.length>>1]);s+=pill(m[0],m[1]-20,Math.round(B.d1-B.d0)+' m · '+B.type+' · '+B.surface);}
+    }
+  }
   if(tool==='kerb'&&R){
     const kw=rr.kerbs.width;
     if(hv&&hv.act==='kbody'&&hv.i!==state.ksel&&!state.drag){const k=R.kerbs.find(q=>q.i===hv.i);if(k) s+=`<path class="hov" d="${polyD(kerbPts(R,k,kw,0.5).map(toS))}"></path>`;}
@@ -1948,6 +2126,7 @@ function hintFor(t){
     round:'Select a track, then drag a corner’s dot inwards · Shift snaps to 5 m · Alt-click resets a corner',
     arc:'Adds straights and arcs to the end of the selected open path · click empty space to start one',
     measure:'Drag to measure · snaps to points · Shift locks to 45°',
+    barrier:'Click a barrier or its run-off to select it · drag its points in, out or along · click the selected barrier to add a point · Delete removes a point or the barrier · click beyond an edge to add one',
     kerb:'Click a kerb to select it · drag its end squares or the kerb itself along the edge · Delete removes it · click an empty stretch of edge to add one',
     hand:'Drag to move around · scroll or pinch to zoom'
   }[t]||'';
@@ -2009,7 +2188,7 @@ function renderPanel(){
   const one=s&&state.sel.nodes.size===1?[...state.sel.nodes][0]:null;
   const oneInfo=one!=null&&s.nodes[one]?(s.nodes[one].smooth?'s':'c')+(cornerOf(s,one)?'k':''):'';
   const pcInfo=t==='select'&&s&&state.sel.piece!=null?'p'+state.sel.piece:'';
-  const rr=state.doc.race||{},secR=RACE_SECS.includes(state.section)||state.section==='kerbs',raceKey=secR?[state.section,state.ksel,state.karm,rr.kerbs&&rr.kerbs.list?rr.kerbs.list.length:-1,rr.kerbs&&rr.kerbs.place,state.ksel!=null&&rr.kerbs&&rr.kerbs.list&&rr.kerbs.list[state.ksel]?rr.kerbs.list[state.ksel].place+rr.kerbs.list[state.ksel].side:'',!!rr.start,!!rr.sectors,rr.reversed,rr.arrows,rr.numbers,rr.loop,state.race?state.race.closed:'',state.raceTab,rr.grid&&rr.grid.pole,rr.kerbs&&rr.kerbs.on,rr.runoff&&rr.runoff.on,rr.runoff&&rr.runoff.type,rr.drs&&rr.drs.length,(selPath()||{}).role,(selPath()||{}).kind,rr.pit&&rr.pit.path,!!(state.race&&state.race.pit),state.race&&state.race.clockwise].join(','):'';
+  const rr=state.doc.race||{},secR=RACE_SECS.includes(state.section)||state.section==='kerbs',raceKey=secR?[state.section,state.ksel,state.karm,state.bsel,state.bkey,state.barm,rr.barriers&&rr.barriers.list?rr.barriers.list.length:-1,rr.barriers&&rr.barriers.on,rr.barriers&&rr.barriers.type+rr.barriers.surface,state.bsel!=null&&rr.barriers&&rr.barriers.list&&rr.barriers.list[state.bsel]?(b=>b.type+b.surface+b.tyres+b.pts.length)(rr.barriers.list[state.bsel]):'',rr.kerbs&&rr.kerbs.list?rr.kerbs.list.length:-1,rr.kerbs&&rr.kerbs.place,state.ksel!=null&&rr.kerbs&&rr.kerbs.list&&rr.kerbs.list[state.ksel]?rr.kerbs.list[state.ksel].place+rr.kerbs.list[state.ksel].side:'',!!rr.start,!!rr.sectors,rr.reversed,rr.arrows,rr.numbers,rr.loop,state.race?state.race.closed:'',state.raceTab,rr.grid&&rr.grid.pole,rr.kerbs&&rr.kerbs.on,rr.runoff&&rr.runoff.on,rr.runoff&&rr.runoff.type,rr.drs&&rr.drs.length,(selPath()||{}).role,(selPath()||{}).kind,rr.pit&&rr.pit.path,!!(state.race&&state.race.pit),state.race&&state.race.clockwise].join(','):'';
   const wKey=t==='width'?[state.wsel,(rr.widths||[]).length,state.wsel!=null&&rr.widths&&rr.widths[state.wsel]?[rr.widths[state.wsel].ease,rr.widths[state.wsel].link].join(':'):'',!!state.race].join(','):'';
   const key=[raceKey,wKey,t,state.sel.path,[...state.sel.nodes].join(','),state.penPath?'d':'',state.ruler?'r':'',s?s.closed:'',s?s.nodes.length:'',state.arc.dir,state.arc.ghost,oneInfo,pcInfo].join('|');
   if(key!==ctxKey){ctxKey=key;$('ctx').innerHTML=ctxHTML(t,s);$('ctx').hidden=!$('ctx').innerHTML.trim();}
@@ -2021,7 +2200,7 @@ function ctxHTML(t,s){
   if(sec==='view') return '';
   if(sec==='kerbs') return kerbCtxHTML();
   if(RACE_SECS.includes(sec)) t='race';
-  else if(t==='race'||t==='kerb') return '';
+  else if(t==='race'||t==='kerb'||t==='barrier') return '';
   if(t==='hand') return `<h3>Hand</h3><p>Drag to move around the canvas. Scroll or pinch to zoom. Hold Space with any tool to do the same.</p>`;
   if(t==='pen'){
     if(state.penPath){const ap=getPath(state.penPath);return `<h3>Drawing</h3><p><span data-live="pts">${ap?ap.nodes.length:0}</span> points so far.</p><div class="row"><button class="btn" data-act="finish">Finish · Enter</button><button class="btn" data-act="closePath">Close loop</button></div>`;}
@@ -2059,15 +2238,15 @@ function ctxHTML(t,s){
         <p>A new zone goes on the longest straight without one. Drag its green circles to move the detection point, activation point and end. Up to four zones.</p>`;
     }
     if(sec==='runoff'){
-      const ro=r.runoff,ty=(v,l)=>`<button data-act="roType:${v}" aria-pressed="${ro.type===v}">${l}</button>`;
-      return `${pick}
-        <h3>Run-off</h3>
-        <label class="check"><input type="checkbox" data-act="roOn" ${ro.on?'checked':''}> Automatic run-off</label>
+      const ro=r.runoff,ty=(v,l)=>`<button data-act="roType:${v}" aria-pressed="${ro.type===v}">${l}</button>`,hasB=r.barriers.list&&r.barriers.list.length;
+      return `${pick}${barCtxHTML()}
+        ${hasB?'':`<h3>Quick run-off</h3>
+        <label class="check"><input type="checkbox" data-act="roOn" ${ro.on?'checked':''}> Run-off on bends, without barriers</label>
         ${ro.on?`<div class="field"><span>Surface</span><div class="seg" role="group" aria-label="Run-off surface">${ty('mixed','Mixed')}${ty('tarmac','Tarmac')}${ty('gravel','Gravel')}</div></div>
         <div class="field"><label for="roDepth">Depth</label><span class="in"><input class="num" id="roDepth" type="number" min="5" max="200" step="5" data-act="roDepth"> m</span></div>
         ${ro.type==='mixed'?'<div class="field"><label for="roTar">Tarmac first</label><span class="in"><input class="num" id="roTar" type="number" min="0" max="200" step="5" data-act="roTar"> m</span></div>':''}
         <div class="field"><label for="roR">On bends tighter than</label><span class="in"><input class="num" id="roR" type="number" min="10" max="2000" step="10" data-act="roR"> m</span></div>
-        <label class="check"><input type="checkbox" data-act="roBar" ${ro.barriers?'checked':''}> Tyre barriers at the edge</label>`:''}
+        <label class="check"><input type="checkbox" data-act="roBar" ${ro.barriers?'checked':''}> Tyre barriers at the edge</label>`:''}`}
         <h3>Draw your own</h3>
         <p>Draw a shape with the Pen or Line tool, then come back here and click it to choose what it is: grass, gravel, tarmac, sand, a grandstand, or a wall or barrier. Walls can be open lines.</p>`;
     }
@@ -2167,6 +2346,28 @@ function ctxHTML(t,s){
   }
   return '';
 }
+function barCtxHTML(){
+  const R=state.race,r=state.doc.race,bc=r.barriers;
+  const sg=(opts,cur,act,lab)=>`<div class="seg wide" role="group" aria-label="${lab}">${opts.map(([v,l])=>`<button data-act="${act}:${v}" aria-pressed="${cur===v}">${l}</button>`).join('')}</div>`;
+  const TY=[['concrete','Concrete'],['armco','Armco'],['tyres','Tyres']],SF=[['grass','Grass'],['tarmac','Tarmac'],['gravel','Gravel']];
+  let h=`<h3>Barriers &amp; run-off</h3><label class="check"><input type="checkbox" data-act="barOn" ${bc.on?'checked':''}> Show barriers</label>`;
+  if(!bc.on) return h;
+  const b=state.bsel!=null&&bc.list&&bc.list[state.bsel];
+  if(b){
+    h+=`<div class="pick"><h3>Selected barrier</h3><div class="kv"><span>${b.side==='L'?'Left':'Right'} side</span><span data-live="bLen"></span></div>
+      <div class="field"><span>Barrier</span></div>${sg(TY,b.type,'btype','Barrier type')}
+      <label class="check"><input type="checkbox" data-act="btyres" ${b.tyres?'checked':''}> Tyre wall in front</label>
+      <div class="field"><span>Run-off</span></div>${sg(SF,b.surface,'bsurf','Run-off surface')}
+      ${state.bkey!=null&&b.pts[state.bkey]?`<div class="field"><label for="bOff">Distance from the edge</label><span class="in"><input class="num" id="bOff" type="number" min="0" max="150" step="0.5" data-act="bOff"> m</span></div>
+      <div class="row"><button class="btn" data-act="bsplit">Split here</button><button class="btn" data-act="bkdel" ${b.pts.length<2?'disabled':''}>Remove point</button></div>`:'<p>Click a square to edit that point, or click the barrier to add one.</p>'}
+      <button class="btn" data-act="bdel">Delete barrier</button></div>`;
+  }
+  h+=`<div class="kv"><span>${bc.list&&bc.list.length?'Barriers':'No barriers yet'}</span><span data-live="bCount"></span></div>`;
+  h+=bc.list&&bc.list.length?`<button class="btn${state.barm?' solid':''}" data-act="bgen">${state.barm?'Replace my barriers':'Regenerate barriers'}</button>`:`<button class="btn" data-act="bgen">Generate barriers</button><p>Puts a barrier along both sides: a short verge on the straights and deeper run-off on the outside of bends, kept clear of buildings, trees and water.</p>`;
+  h+=`<h3>New barriers</h3>${sg(TY,bc.type,'bdefT','New barrier type')}${sg(SF,bc.surface,'bdefS','New run-off surface')}
+    <ul><li><b>Click a barrier</b> or its run-off to select it</li><li><b>Drag a square</b> in, out or along to shape the run-off</li><li><b>Click the selected barrier</b> to add a point there</li><li><b>Drag a round end</b> to open or close a gap</li><li><b>Delete</b> removes the selected point, or the whole barrier</li><li><b>Click beyond an edge</b> where there's no barrier to add one</li></ul>`;
+  return h;
+}
 function kerbCtxHTML(){
   const R=state.race,r=state.doc.race,kc=r.kerbs;
   if(!R) return `<h3>Kerbs</h3><p>Make a closed loop the race track first, in the <b>Race</b> section. Kerbs then appear on its corners automatically.</p>`;
@@ -2181,6 +2382,7 @@ function kerbCtxHTML(){
   h+=`<div class="field"><label for="kerbR">${kc.list?'Regenerate on':'On'} bends tighter than</label><span class="in"><input class="num" id="kerbR" type="number" min="10" max="2000" step="10" data-act="kerbR"> m</span></div>`;
   if(kc.list) h+=`<button class="btn${state.karm?' solid':''}" data-act="kregen">${state.karm?'Replace my edits':'Regenerate kerbs'}</button>`;
   h+=`<div class="field"><label for="kerbW">Kerb width</label><span class="in"><input class="num" id="kerbW" type="number" min="0.5" max="5" step="0.25" data-act="kerbW"> m</span></div>
+    ${r.barriers.list&&r.barriers.list.length?`<button class="btn" data-act="kfit">Fit kerbs to barriers</button><p>Puts each kerb on the road where the barrier on its side is closer than a kerb width, and beyond the edge elsewhere.</p>`:''}
     <h3>New kerbs sit</h3>${pl(kc.place,'kdef')}
     <p>On the road suits a wall or building right at the edge. Beyond the edge suits corners with space.</p>
     <ul><li><b>Click a kerb</b> to select it</li><li><b>Drag an end square</b> to lengthen or shorten it</li><li><b>Drag the kerb</b> to slide it along the edge, or across the track to the other side</li><li><b>Delete</b> removes it · <b>F</b> switches road and beyond</li><li><b>Click an empty stretch of edge</b> to add a 30 m kerb</li></ul>`;
@@ -2217,6 +2419,8 @@ function refreshCtx(t,s){
   if((RACE_SECS.includes(state.section)||state.section==='kerbs')&&state.race){
     const R=state.race,r=state.doc.race;
     setLive('kCount',R.kerbs.length+' kerb'+(R.kerbs.length===1?'':'s'));
+    {let tot=0;for(const B of R.barriers) tot+=B.d1-B.d0;setLive('bCount',R.barriers.length?R.barriers.length+' · '+(tot/1000).toFixed(2)+' km':'');}
+    if(state.bsel!=null){const B=R.barriers.find(q=>q.i===state.bsel);if(B) setLive('bLen',Math.round(B.d1-B.d0)+' m');const b=r.barriers.list&&r.barriers.list[state.bsel];if(b&&state.bkey!=null&&b.pts[state.bkey]) setVal('bOff',b.pts[state.bkey].off);}
     if(state.ksel!=null){const g=R.kerbs.find(q=>q.i===state.ksel);if(g) setLive('kLen',Math.round(g.d1-g.d0)+' m'+(g.turn?' · T'+g.turn:''));}
     setLive('sfState',r.start?'Placed':'Not placed');
     if(R.sectorLens) setLive('secLens',R.sectorLens.map(x=>(x/1000).toFixed(2)).join(' · ')+' km');
@@ -2267,6 +2471,15 @@ $('ctx').addEventListener('click',e=>{
   else if(act.startsWith('kdef:')){state.doc.race.kerbs.place=act.slice(5);commit();}
   else if(act==='kside'){const k=kerbList()[state.ksel];if(k){k.side=k.side==='L'?'R':'L';commit();}}
   else if(act==='kdel'){kerbDelete();}
+  else if(act==='kfit'){const n=fitKerbs();commit();toast(n?n+' kerb'+(n===1?'':'s')+' moved to fit the barriers.':'Kerbs already fit the barriers.');}
+  else if(act.startsWith('btype:')){const b=barList()[state.bsel];if(b){b.type=act.slice(6);commit();}}
+  else if(act.startsWith('bsurf:')){const b=barList()[state.bsel];if(b){b.surface=act.slice(6);commit();}}
+  else if(act.startsWith('bdefT:')){state.doc.race.barriers.type=act.slice(6);commit();}
+  else if(act.startsWith('bdefS:')){state.doc.race.barriers.surface=act.slice(6);commit();}
+  else if(act==='bdel'){state.bkey=null;barDelete();}
+  else if(act==='bkdel'){barDelete();}
+  else if(act==='bsplit'){barSplit();}
+  else if(act==='bgen'){const r=state.doc.race;if(r.barriers.list&&r.barriers.list.length&&!state.barm){state.barm=true;}else{state.barm=false;state.bsel=null;state.bkey=null;generateBarriers();commit();toast(r.barriers.list.length+' barriers generated. Shape them with the Barriers tool.');}}
   else if(act==='kregen'){if(!state.karm){state.karm=true;}else{state.karm=false;state.ksel=null;state.doc.race.kerbs.list=null;commit();toast('Kerbs regenerated on every bend tighter than '+state.doc.race.kerbs.maxR+' m.');}}
   else if(act==='makeRace'){if(s) makeRaceTrack(s);}
   else if(act==='makePit'){if(s) makePitLane(s);}
@@ -2302,6 +2515,8 @@ $('ctx').addEventListener('input',e=>{
     else if(act==='arrowsOn') r.arrows=el.checked;
     else if(act==='numbersOn') r.numbers=el.checked;
     else if(act==='kerbsOn') r.kerbs.on=el.checked;
+    else if(act==='barOn') r.barriers.on=el.checked;
+    else if(act==='btyres'){const b=r.barriers.list&&r.barriers.list[state.bsel];if(b) b.tyres=el.checked;}
     else if(act==='roOn') r.runoff.on=el.checked;
     else if(act==='roBar') r.runoff.barriers=el.checked;
     else if(act==='wlink'){const k=r.widths[state.wsel];if(k){k.link=el.checked;if(el.checked){const m=+((k.l+k.r)/2).toFixed(2);k.l=m;k.r=m;}}}
@@ -2325,6 +2540,7 @@ $('ctx').addEventListener('input',e=>{
     markDirty();render();return;
   }
   if(act==='wL'||act==='wR'){const v=parseFloat(el.value),k=state.doc.race&&state.doc.race.widths[state.wsel];if(!k||!isFinite(v)||v<0.5) return;const c=clamp(v,0.5,40);if(k.link){k.l=c;k.r=c;}else k[act==='wL'?'l':'r']=c;markDirty();render();return;}
+  if(act==='bOff'){const v=parseFloat(el.value),b=state.doc.race&&state.doc.race.barriers.list&&state.doc.race.barriers.list[state.bsel],k=b&&b.pts[state.bkey];if(!k||!isFinite(v)||v<0) return;k.off=clamp(v,0,150);markDirty();render();return;}
   if(act==='turnMin'){const v=parseFloat(el.value);if(isFinite(v)&&v>=1&&v<=90&&state.doc.race){state.doc.race.turnMin=v;markDirty();render();}return;}
   const v=parseFloat(el.value); if(!isFinite(v)) return;
   const s=selPath();
@@ -2385,8 +2601,8 @@ $('trackName').addEventListener('change',()=>{if(state.dirty) commit();renderLib
 function syncDocInputs(){$('trackName').value=state.doc.name;$('widthIn').value=state.doc.width;if(typeof syncView==='function') syncView();}
 
 /* ---------------- toolbar ---------------- */
-const TOOLDEF={"select": ["Select", "Select", "V", "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M6 3l13 8-6 1.5L10 19z\"></path></svg>"], "direct": ["Direct select", "Direct", "A", "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M6 3l13 8-6 1.5L10 19z\"></path></svg>"], "pen": ["Pen", "Pen", "P", "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 2l6 10-6 9-6-9z\"></path><path d=\"M12 12v9\"></path><circle cx=\"12\" cy=\"11\" r=\"1.4\"></circle></svg>"], "line": ["Straight line", "Line", "L", "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M5 19L19 5\"></path><rect x=\"3\" y=\"17\" width=\"4\" height=\"4\" fill=\"currentColor\" stroke=\"none\"></rect><rect x=\"17\" y=\"3\" width=\"4\" height=\"4\" fill=\"currentColor\" stroke=\"none\"></rect></svg>"], "arc": ["Straights & arcs", "Arc", "R", "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M4 20A16 16 0 0 1 20 4\"></path></svg>"], "round": ["Round corners", "Round", "C", "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M4 21V12a8 8 0 0 1 8-8h9\"></path></svg>"], "split": ["Split", "Split", "X", "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" aria-hidden=\"true\"><circle cx=\"6\" cy=\"6\" r=\"3\"></circle><circle cx=\"6\" cy=\"18\" r=\"3\"></circle><path d=\"M8.5 7.5L20 18M8.5 16.5L20 6\"></path></svg>"], "width": ["Track width", "Width", "W", "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M3 5c6 2 12 2 18 0M3 19c6-3 12-3 18 0\"></path><path d=\"M12 7.5v8M10 9.5l2-2 2 2M10 13.5l2 2 2-2\"></path></svg>"], "kerb": ["Kerbs", "Kerbs", "K", "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><path d=\"M3 17c4-7 14-7 18 0\" stroke=\"currentColor\" stroke-width=\"5\"></path><path d=\"M3 17c4-7 14-7 18 0\" stroke=\"var(--bg)\" stroke-width=\"3\" stroke-dasharray=\"2.6 2.6\"></path></svg>"], "measure": ["Measure", "Measure", "M", "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" aria-hidden=\"true\"><rect x=\"2\" y=\"8\" width=\"20\" height=\"8\" rx=\"1.5\"></rect><path d=\"M6 8v3M10 8v4M14 8v3M18 8v4\"></path></svg>"], "hand": ["Hand", "Hand", "H", "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M8 12V5.5a1.5 1.5 0 0 1 3 0V11\"></path><path d=\"M11 5a1.5 1.5 0 0 1 3 0v6\"></path><path d=\"M14 6.5a1.5 1.5 0 0 1 3 0V12\"></path><path d=\"M17 9a1.5 1.5 0 0 1 3 0v5a7 7 0 0 1-7 7h-1a6 6 0 0 1-5-2.7l-2.6-4.1a1.5 1.5 0 0 1 2.5-1.6L8 14\"></path></svg>"]};
-const GROUPS=[['select','direct'],['pen','line'],['arc','round'],['split'],['width'],['kerb'],['measure'],['hand']];
+const TOOLDEF={"select": ["Select", "Select", "V", "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M6 3l13 8-6 1.5L10 19z\"></path></svg>"], "direct": ["Direct select", "Direct", "A", "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M6 3l13 8-6 1.5L10 19z\"></path></svg>"], "pen": ["Pen", "Pen", "P", "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 2l6 10-6 9-6-9z\"></path><path d=\"M12 12v9\"></path><circle cx=\"12\" cy=\"11\" r=\"1.4\"></circle></svg>"], "line": ["Straight line", "Line", "L", "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M5 19L19 5\"></path><rect x=\"3\" y=\"17\" width=\"4\" height=\"4\" fill=\"currentColor\" stroke=\"none\"></rect><rect x=\"17\" y=\"3\" width=\"4\" height=\"4\" fill=\"currentColor\" stroke=\"none\"></rect></svg>"], "arc": ["Straights & arcs", "Arc", "R", "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M4 20A16 16 0 0 1 20 4\"></path></svg>"], "round": ["Round corners", "Round", "C", "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M4 21V12a8 8 0 0 1 8-8h9\"></path></svg>"], "split": ["Split", "Split", "X", "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" aria-hidden=\"true\"><circle cx=\"6\" cy=\"6\" r=\"3\"></circle><circle cx=\"6\" cy=\"18\" r=\"3\"></circle><path d=\"M8.5 7.5L20 18M8.5 16.5L20 6\"></path></svg>"], "width": ["Track width", "Width", "W", "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M3 5c6 2 12 2 18 0M3 19c6-3 12-3 18 0\"></path><path d=\"M12 7.5v8M10 9.5l2-2 2 2M10 13.5l2 2 2-2\"></path></svg>"], "kerb": ["Kerbs", "Kerbs", "K", "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><path d=\"M3 17c4-7 14-7 18 0\" stroke=\"currentColor\" stroke-width=\"5\"></path><path d=\"M3 17c4-7 14-7 18 0\" stroke=\"var(--bg)\" stroke-width=\"3\" stroke-dasharray=\"2.6 2.6\"></path></svg>"], "barrier": ["Barriers", "Barriers", "B", "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M3 9h18M3 15h18\"></path><path d=\"M6 9v6M12 9v6M18 9v6\"></path><path d=\"M4 19h16\" stroke-dasharray=\"2 2\"></path></svg>"], "measure": ["Measure", "Measure", "M", "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" aria-hidden=\"true\"><rect x=\"2\" y=\"8\" width=\"20\" height=\"8\" rx=\"1.5\"></rect><path d=\"M6 8v3M10 8v4M14 8v3M18 8v4\"></path></svg>"], "hand": ["Hand", "Hand", "H", "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M8 12V5.5a1.5 1.5 0 0 1 3 0V11\"></path><path d=\"M11 5a1.5 1.5 0 0 1 3 0v6\"></path><path d=\"M14 6.5a1.5 1.5 0 0 1 3 0V12\"></path><path d=\"M17 9a1.5 1.5 0 0 1 3 0v5a7 7 0 0 1-7 7h-1a6 6 0 0 1-5-2.7l-2.6-4.1a1.5 1.5 0 0 1 2.5-1.6L8 14\"></path></svg>"]};
+const GROUPS=[['select','direct'],['pen','line'],['arc','round'],['split'],['width'],['kerb'],['barrier'],['measure'],['hand']];
 const gShown=GROUPS.map(g=>g[0]);
 const RACE_SECS=['race','drs','runoff'];
 function renderTools(){
@@ -2400,20 +2616,24 @@ function setTool(t,fromSection){
   state.tool=t;
   const gi=GROUPS.findIndex(g=>g.includes(t)); if(gi>=0) gShown[gi]=t;
   if(!fromSection){
-    if(t==='race'&&!RACE_SECS.includes(state.section)) state.section='race';
+    if(t==='race'&&state.section!=='race'&&state.section!=='drs') state.section='race';
     else if(t==='kerb') state.section='kerbs';
-    else if(t!=='race'&&t!=='kerb'&&t!=='hand'&&t!=='measure'&&(RACE_SECS.includes(state.section)||state.section==='kerbs')) state.section='track';
+    else if(t==='barrier') state.section='runoff';
+    else if(t!=='race'&&t!=='kerb'&&t!=='barrier'&&t!=='hand'&&t!=='measure'&&(RACE_SECS.includes(state.section)||state.section==='kerbs')) state.section='track';
   }
   if(t!=='kerb'){state.ksel=null;state.karm=false;}
+  if(t!=='barrier'){state.bsel=null;state.bkey=null;state.barm=false;}
   if((t==='round'||t==='direct'||t==='pen'||t==='arc')&&!state.sel.path){const fp=state.doc.paths.length===1?state.doc.paths[0]:null;if(fp&&t!=='pen') state.sel={path:fp.id,nodes:new Set(),piece:null};}
   closeFly(); renderTools(); renderSecs();
   state.hover=null; ctxKey=''; updateCursor(); render();
 }
 function setSection(sec){
   state.section=sec; state.karm=false;
-  if(RACE_SECS.includes(sec)){if(state.tool!=='race') setTool('race',true);if(sec==='race') state.listTab='turns';}
+  state.barm=false;
+  if(sec==='runoff'){if(state.tool!=='barrier') setTool('barrier',true);}
+  else if(RACE_SECS.includes(sec)){if(state.tool!=='race') setTool('race',true);if(sec==='race') state.listTab='turns';}
   else if(sec==='kerbs'){if(state.tool!=='kerb') setTool('kerb',true);}
-  else if(sec==='track'){if(state.tool==='race'||state.tool==='kerb') setTool('select',true);state.listTab='segs';}
+  else if(sec==='track'){if(state.tool==='race'||state.tool==='kerb'||state.tool==='barrier') setTool('select',true);state.listTab='segs';}
   $('segList')._h=''; ctxKey=''; renderSecs(); render();
   if(document.body.classList.contains('nopanel')) togglePanel(true);
 }
@@ -2540,17 +2760,18 @@ window.addEventListener('keydown',e=>{
   if(e.key===' '){e.preventDefault();if(!state.space){state.space=true;updateCursor();render();}return;}
   if(mod) return;
   if(e.target&&e.target.closest&&e.target.closest('.menu')) return;
-  const map={v:'select',a:'direct',p:'pen',l:'line',r:'arc',c:'round',x:'split',t:'race',m:'measure',w:'width',k:'kerb',h:'hand'};
+  const map={v:'select',a:'direct',p:'pen',l:'line',r:'arc',c:'round',x:'split',t:'race',m:'measure',w:'width',k:'kerb',b:'barrier',h:'hand'};
   const k=e.key.toLowerCase();
   if(map[k]&&!e.altKey){setTool(map[k]);return;}
   if(e.key==='Escape'||e.key==='Enter'){
     if(state.penPath){state.penPath=null;}
-    else if(e.key==='Escape'){if(state.ruler) state.ruler=null; else if(state.ksel!=null) state.ksel=null; else {state.sel.nodes=new Set();state.sel.piece=null;}}
+    else if(e.key==='Escape'){if(state.ruler) state.ruler=null; else if(state.ksel!=null) state.ksel=null; else if(state.bsel!=null){state.bsel=null;state.bkey=null;} else {state.sel.nodes=new Set();state.sel.piece=null;}}
     closeMenus(); render(); return;
   }
   if(e.key==='Delete'||e.key==='Backspace'){
     e.preventDefault();
     if(effTool()==='kerb'){kerbDelete();render();return;}
+    if(effTool()==='barrier'){barDelete();render();return;}
     if(effTool()==='width'){const r=state.doc.race;if(r&&state.wsel!=null&&r.widths[state.wsel]){r.widths.splice(state.wsel,1);state.wsel=null;commit();render();}return;}
     const s=selPath(); if(!s) return;
     const t=effTool();
@@ -2613,6 +2834,11 @@ function shapesSVG(){
       }
       out+=`  </g>\n`;
       if(r.runoff.barriers) out+=`  <g id="barriers" fill="none" stroke="#D4231A" stroke-width="1.2" data-kind="tyres">\n${ROs.map(o=>`    <path d="${pd(o.edge)}" data-turn="T${o.turn}"/>\n`).join('')}  </g>\n`;
+    }
+    if(R.barriers.length){
+      const SF={grass:'#CFE3BF',tarmac:'#B9B9B4',gravel:'#E5D8B4'},ST={concrete:'#7A7A74',armco:'#9A9A96',tyres:'#D4231A'};
+      out+=`  <g id="barrier-runoff">\n${R.barriers.map((B,i)=>`    <path id="runoff-${i+1}" d="${pd(barGeo(R,B).poly)} Z" fill="${SF[B.surface]}" data-surface="${B.surface}"/>\n`).join('')}  </g>\n`;
+      out+=`  <g id="barrier-lines" fill="none" stroke-width="0.8">\n${R.barriers.map((B,i)=>`    <path id="barrier-${i+1}" d="${pd(barGeo(R,B).line)}" stroke="${ST[B.type]}" data-type="${B.type}" data-side="${B.side==='L'?'left':'right'}"${B.tyres?' data-tyres="true"':''}/>\n`).join('')}  </g>\n`;
     }
     }
   return {ground:out,top:(w?`  <g id="walls">\n${w}  </g>\n`:'')+(st?`  <g id="grandstands">\n${st}  </g>\n`:'')};
@@ -2718,6 +2944,7 @@ async function buildTrackPack(){
     start:{distance:0,...slot(lineAt(R.line,R.s0).pt,R.travelTan(R.s0))},
     sectors:(R.sectors||[]).map(sv=>r2(R.dOf(sv))).sort((a,b)=>a-b),
     turns,kerbs,kerbWidth:r.kerbs.width,runoff:ROs,grid,pit,drs,shapes,
+    barriers:R.barriers.map(B=>{const g=barGeo(R,B);return {side:B.side==='L'?'left':'right',type:B.type==='concrete'?'concrete wall with debris fence':B.type,tyreWall:B.tyres,surface:B.surface,from:r2(B.d0%R.L),to:r2(B.d1%R.L),offsets:B.keys.map(k=>({d:r2(k.d%R.L),off:r2(k.off)})),line:g.line.map(P),tyreLine:B.tyres?g.tyre.map(P):null,runoff:g.poly.map(P)};}),
     widthKeyframes:(r.widths||[]).map(k=>({distance:r2(R.dOf(lineProject(R.line,k.pt).s)),left:k.l,right:k.r,blend:k.ease})),
     reference:ref?{attribution:ref.attribution||'',layers:ref.layers.map(l=>({id:l.id,name:l.name,limit:l.limit,polys:l.polys,lines:l.lines})),terrain:ref.terrain||null}:null};
   const slugName=slug(doc.name),files=[];
@@ -2812,7 +3039,8 @@ function docFrom(o,id){
 function hardIndex(){
   const R=state.ref; if(!R||!R.data) return null;
   if(R.hard) return R.hard;
-  const cell=40,map=new Map(),polys=[];
+  const cell=40,map=new Map(),polys=[],decks=[];
+  for(const l of R.data.layers) if(l.id==='bridges') for(const pg of l.polys) decks.push(pg);
   for(const l of R.data.layers){
     if(l.limit!=='hard'||l.id==='bridges') continue;
     for(const pg of l.polys){
@@ -2821,17 +3049,17 @@ function hardIndex(){
       for(let i=Math.floor(x0/cell);i<=Math.floor(x1/cell);i++) for(let j=Math.floor(y0/cell);j<=Math.floor(y1/cell);j++){const k=i+','+j;if(!map.has(k)) map.set(k,[]);map.get(k).push(id);}
     }
   }
-  R.hard={cell,map,polys};return R.hard;
+  R.hard={cell,map,polys,decks};return R.hard;
 }
 function hardHit(H,pt){
   const ids=H.map.get(Math.floor(pt[0]/H.cell)+','+Math.floor(pt[1]/H.cell)); if(!ids) return null;
-  for(const id of ids){const o=H.polys[id];if(pt[0]<o.x0||pt[0]>o.x1||pt[1]<o.y0||pt[1]>o.y1) continue;if(inPoly(pt,o.pg)) return o;}
+  for(const id of ids){const o=H.polys[id];if(pt[0]<o.x0||pt[0]>o.x1||pt[1]<o.y0||pt[1]>o.y1) continue;if(inPoly(pt,o.pg)){if(o.layer==='Water'&&H.decks.some(pg=>inPoly(pt,pg)||distToPoly(pt,pg.concat([pg[0]]))<12)) continue;return o;}}
   return null;
 }
 let chkCache={sig:'',list:[]};
 function computeChecks(R){
   const r=state.doc.race,c=r.checks||{minR:10,minW:6,maxGrad:8},H=hardIndex();
-  const sig=[R.L.toFixed(2),R.line.pts.length,R.line.pts[0],JSON.stringify(r.widths||[]),R.s0.toFixed(1),R.rev,c.minR,c.minW,c.maxGrad,state.doc.width,!!H,R.prof?R.prof.sig:''].join('|');
+  const sig=[R.L.toFixed(2),R.line.pts.length,R.line.pts[0],JSON.stringify(r.widths||[]),JSON.stringify(r.barriers&&r.barriers.on?r.barriers.list:null),R.s0.toFixed(1),R.rev,c.minR,c.minW,c.maxGrad,state.doc.width,!!H,R.prof?R.prof.sig:''].join('|');
   if(chkCache.sig===sig) return chkCache.list;
   const out=[],step=2,n=Math.max(2,Math.floor(R.L/step));
   const runs=(test,make)=>{let a=null,worst=null;for(let i=0;i<=n;i++){const d=i*step,v=i<n?test(d):null;if(v){if(a==null){a=d;worst=v;} else if(v.w>worst.w) worst=v;}else if(a!=null){out.push(make(a,d,worst));a=null;}}};
@@ -2839,6 +3067,11 @@ function computeChecks(R){
   if(H) for(const side of ['l','r']){
     runs(d=>{const sv=R.sOf(d),at=lineAt(R.line,sv),t=R.travelTan(sv),lf=[t[1],-t[0]],h=R.hwT(sv),pt=side==='l'?V.add(at.pt,V.mul(lf,h.l)):V.sub(at.pt,V.mul(lf,h.r));const o=hardHit(H,pt);return o?{w:1,o}:null;},
       (a,b,w)=>({kind:'hit',d0:a,d1:b,side,txt:(side==='l'?'Left':'Right')+' edge inside '+(w.o.layer.toLowerCase().replace(/s$/,''))}));
+  }
+  if(H) for(const B of R.barriers){
+    const g=barGeo(R,B),n2=g.line.length-1;let a=null,lay='';
+    for(let q=0;q<=n2+1;q++){const o=q<=n2?hardHit(H,g.line[q]):null,d=B.d0+(B.d1-B.d0)*Math.min(q,n2)/Math.max(n2,1);
+      if(o){if(a==null){a=d;lay=o.layer;}}else if(a!=null){out.push({kind:'hit',d0:a%R.L,d1:Math.max(a+2,d)%R.L,side:B.side==='L'?'l':'r',txt:(B.side==='L'?'Left':'Right')+' barrier inside '+lay.toLowerCase().replace(/s$/,'')});a=null;}}
   }
   if(c.minW>0) runs(d=>{const h=R.hwT(R.sOf(d)),w=h.l+h.r;return w<c.minW-0.01?{w:c.minW-w,v:w}:null;},(a,b,w)=>({kind:'width',d0:a,d1:b,txt:'Narrower than '+c.minW+' m (down to '+w.v.toFixed(1)+' m)'}));
   if(c.minR>0) for(const t of R.turns) if(t.minR<c.minR) out.push({kind:'radius',d0:t.dS,d1:t.dE,txt:(t.name||'T'+t.n)+' radius '+fmtR(t.minR)+' m'});
@@ -2926,8 +3159,8 @@ function lineProfile(line,key){
    Locked real-world context (buildings, road edges, water, bridges) carried with a project.
    Kept outside the document so undo history stays light; stored per track in IndexedDB and in saved project files. */
 const refStage=$('refStage'),refTop=$('refTop');
-const REF_CLS={buildings:'ref-buildings',water:'ref-water',bridges:'ref-bridges',roads:'ref-roads'};
-const REF_ORDER=['water','buildings','bridges','roads'];
+const REF_CLS={buildings:'ref-buildings',water:'ref-water',bridges:'ref-bridges',roads:'ref-roads',trees:'ref-trees',woods:'ref-woods',walls:'ref-walls'};
+const REF_ORDER=['water','woods','buildings','trees','walls','bridges','roads'];
 function cleanRef(r){
   if(!r||!Array.isArray(r.layers)) return null;
   const num=v=>typeof v==='number'&&isFinite(v);
@@ -2982,7 +3215,7 @@ function terrainAt(G,x,y){
 }
 function refTopMarkup(ref){
   const f=q=>(+q[0].toFixed(1))+','+(+q[1].toFixed(1));
-  return ref.layers.filter(l=>l.lines.length).map(l=>{let d='';for(const p of l.lines) d+='M'+p.map(f).join('L');
+  return ref.layers.filter(l=>l.lines.length&&l.id==='roads').map(l=>{let d='';for(const p of l.lines) d+='M'+p.map(f).join('L');
     return `<g data-layer="${esc(l.id)}"><path class="ref-roads-halo" d="${d}"></path><path class="ref-roads-bold" d="${d}"></path></g>`;}).join('');
 }
 let roadMode='subtle';try{if(localStorage.getItem('circuit.roadMode')==='bold') roadMode='bold';}catch(_){}
@@ -3008,14 +3241,14 @@ function renderRefPanel(){
   if(!R){sect.hidden=true;return;}
   sect.hidden=false;
   if(R.missing){$('refList').innerHTML='';$('refNote').textContent='This track has reference layers, but they aren’t stored in this browser. Open its project file to bring them back.';return;}
-  const anyLines=R.data.layers.some(l=>l.lines.length);
+  const anyLines=R.data.layers.some(l=>l.id==='roads'&&l.lines.length);
   $('refList').innerHTML='<h3>Reference layers</h3>'+(R.grid?`<div class="refrow"><span>Terrain</span><span class="src">${R.data.terrain.step} m grid</span></div>`:'')+R.data.layers.map(l=>`<label class="check refrow"><span class="check"><input type="checkbox" data-ref="${esc(l.id)}" ${R.show[l.id]?'checked':''}> ${esc(l.name)}</span><span class="src">${l.limit==='soft'?'estimate':'hard limit'}</span></label>`).join('')+(anyLines?`<div class="field"><span>Road lines</span><div class="seg" role="group" aria-label="Road line visibility"><button data-roadmode="subtle" aria-pressed="${roadMode==='subtle'}">Subtle</button><button data-roadmode="bold" aria-pressed="${roadMode==='bold'}">Highlighted</button></div></div>`:'');
   $('refNote').textContent='Shown for guidance only. They can’t be selected or moved.'+(R.data.attribution?' '+R.data.attribution+'.':'')+(R.data.terrain&&R.data.terrain.attribution?' '+R.data.terrain.attribution+'.':'');
   applyRefVisibility();
 }
 function applyRefVisibility(){
   const R=state.ref; if(!R||!R.data) return;
-  const lineIds=new Set(R.data.layers.filter(l=>l.lines.length&&!l.polys.length).map(l=>l.id));
+  const lineIds=new Set(R.data.layers.filter(l=>l.id==='roads'&&l.lines.length).map(l=>l.id));
   refStage.querySelectorAll('[data-layer]').forEach(el=>{const id=el.dataset.layer;el.style.display=R.show[id]&&!(roadMode==='bold'&&lineIds.has(id))?'':'none';});
   refTop.querySelectorAll('[data-layer]').forEach(el=>{el.style.display=R.show[el.dataset.layer]&&roadMode==='bold'?'':'none';});
 }
@@ -3079,7 +3312,7 @@ function loadDoc(doc,fitView,ref){
   state.doc=doc;
   if(ref) setRef(doc.id,ref); else loadRefFor(doc);
   state.sel={path:null,nodes:new Set(),piece:null};
-  state.penPath=null;state.ruler=null;state.wsel=null;state.ksel=null;
+  state.penPath=null;state.ruler=null;state.wsel=null;state.ksel=null;state.bsel=null;state.bkey=null;
   syncDocInputs(); resetHistory();
   if(fitView) requestAnimationFrame(fit); else render();
   renderLib();
