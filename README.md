@@ -19,13 +19,14 @@ Related tools share a toolbar button, as in Illustrator. The button shows the la
 | Split | Split | X | Cut the track at a point; a loop opens, an open path becomes two |
 | Width | Width | W | Width points along the race track: the width morphs from one point to the next, with each side set separately |
 | Kerbs | Kerbs | K | Select, reshape, delete and add kerbs along the track edges |
-| Barriers | Barriers | B | Shape barriers and run-off along each side of the track |
+| Barriers | Barriers | B | Shape edge barriers and their run-off along each side of the track |
+| | Fill | F | Fill an enclosed area with grass, gravel, tarmac or sand |
 | Measure | Measure | M | Ruler that snaps to points; Shift locks to 45° |
 | Hand | Hand | H | Drag to move around the canvas |
 
 The race layout (start line, sectors, grid, pits, DRS) is edited from the **Race** and **DRS** sections of the panel; choosing one puts the canvas into race editing. The **Barriers** section switches to the Barriers tool. T jumps to the Race section.
 
-Other shortcuts: Ctrl/Cmd+Z undo, F switches a selected kerb between on the road and beyond the edge, Ctrl/Cmd+Shift+Z redo, Space-drag to pan, scroll or pinch to zoom, Ctrl/Cmd+0 to fit, arrow keys nudge 1 m (Shift for 10 m), Delete removes the selection, Enter or Esc finishes a path.
+Other shortcuts: Ctrl/Cmd+Z undo, Ctrl/Cmd+Shift+Z redo, Space-drag to pan, scroll or pinch to zoom, Ctrl/Cmd+0 to fit, arrow keys nudge 1 m (Shift for 10 m), Delete removes the selection, Enter or Esc finishes a path.
 
 With the Pen or Line tool, click the end of an open path to keep drawing from it, and click another open end to join the two.
 
@@ -42,6 +43,9 @@ The panel on the right can be hidden with the ☰ button. Its sections:
 
 ## Race layout
 
+- **White lines:** painted on both track edges (0.2 m by default; set the width in Race → Layout). They go into the Track Pack.
+- **Lock the race track and pit lane** (Track section, on by default) stops the drawing tools moving them while you edit walls and ground beside them.
+
 - **Direction of travel:** one arrow just past the start line; set it clockwise or anticlockwise.
 - **Start/finish:** a chequered line you drag along the track, or drop on the longest straight in one click.
 - **Sectors:** two sector lines (equal thirds to start), with each sector's length shown.
@@ -56,20 +60,34 @@ The panel on the right can be hidden with the ☰ button. Its sections:
 ### Kerbs & DRS
 
 - **Automatic kerbs:** every bend tighter than 250 m (adjustable) gets a red-and-white kerb on the inside at the apex and on the outside at the exit. Switch kerbs off for a single turn with the **K** toggle in the Race section's turn list.
+- **Kerbs sit beyond the white line**, between the track edge and the barrier.
 - **Editing kerbs:** with the Kerbs tool (K), click a kerb to select it. Drag its end squares to lengthen or shorten it, or drag the kerb itself to slide it along the edge (or across the track to the other side). Delete removes it, and clicking an empty stretch of edge adds a 30 m kerb. Kerbs always follow the track edge, including when you reshape the track.
-- **On the road or beyond the edge:** each kerb either sits on the road, inside the track edge (for a wall or building right at the edge), or beyond the edge (for corners with space). Set it per kerb, and choose where new kerbs go.
 - **Edited kerbs stay put:** once you edit one, the automatic kerbs become yours and are stored with the track. **Regenerate kerbs** in the Kerbs section puts automatic kerbs back and replaces your edits, after a confirmation.
 - **DRS zones:** up to four, in the DRS section. **Add DRS zone** puts one on the longest straight without a zone, with a detection point before the preceding corner; drag its detection, activation and end points along the track.
 
 ### Barriers and run-off
 
-Each side of the track can have barriers, and the run-off is the ground between the track edge and the barrier.
+There are two kinds of barrier:
+
+- **Edge barriers** follow the track edge at a distance you set, and fill their run-off automatically. Use them for most walls.
+- **Free barriers** are ordinary paths with the role Barrier, drawn and shaped with the Pen, Line, Direct select and Split tools, anywhere you like. Use them for run-off zones that need a shape of their own.
+
+Edge barriers:
 
 - **Generate barriers** puts a barrier along both sides: a short verge on the straights and deeper run-off on the outside of bends, kept clear of buildings, trees and water in the reference layers.
 - **Shape them** with the Barriers tool (B). Click a barrier or its run-off to select it. Each barrier has square points; drag one in or out to set its distance from the edge, or along the track to move it. Between points the distance blends smoothly. Click the selected barrier to add a point, and drag its round ends to open or close a gap (for a pit entry or a side road). Delete removes the selected point, or the whole barrier.
+- **Splitting:** Alt-click an edge barrier, or click it with Split (X), to cut it in two.
+- **Detach from edge** turns a selected edge barrier into a free barrier in the same place. **Attach to the track edge** (on a selected free barrier) does the reverse.
 - **Types:** concrete (with a debris fence), armco or tyres, with an optional tyre wall in front. The run-off is grass, tarmac or gravel. **Split here** divides a barrier at the selected point so each part can differ.
 - **Checks** flag a barrier inside a building, tree or water.
-- **Kerbs:** **Fit kerbs to barriers** in the Kerbs section puts each kerb on the road where the barrier on its side is closer than a kerb width.
+- **Checks** also flag a barrier closer to the edge than its kerb: kerbs sit beyond the white line, so a barrier behind a kerb needs at least a kerb width plus 0.3 m.
+
+Free barriers and ground:
+
+- Draw a barrier with the Pen or Line tool (it snaps to the ends of edge barriers), then choose its type in the Barriers section. The Pen tools edit it like any path.
+- **Fill (F):** choose grass, gravel, tarmac or sand and click an area enclosed by the track, barriers, walls, other ground or buildings. It becomes a ground shape you can reshape with Direct select. If the area isn't closed within 300 m, it tells you instead.
+- **Dividers:** to split an area, say gravel then grass, draw a line and make it a **Divider**. It bounds fills but isn't a wall.
+- Ground you don't fill counts as grass in the open and pavement next to buildings.
 - Barriers follow the track edges when you reshape the track, and go into the drawing and the Track Pack (barrier lines with their types, and run-off polygons with their surfaces).
 
 ### Quick run-off and your own shapes
