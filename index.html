@@ -57,8 +57,39 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
 .bordered{border:1px solid var(--line);border-bottom:1px solid var(--line)}
 .tb.export{background:var(--ink);color:var(--bg);font-weight:600;margin-left:8px;padding:0 14px;border-bottom:0;height:40px}
 .tb.export:hover{opacity:.9;background:var(--ink)}
-@media (max-width:1400px){ .tb .lbl{display:none} .tb{padding:0 10px} }
+.toolbar>*{flex-shrink:0}
+.tools{display:flex;gap:2px}
+.tgrp{position:relative;display:flex}
+.tb .lbl{display:none}
+@media (min-width:1640px){ .tb .lbl{display:inline} }
+@media (max-width:1440px){ .tb .key{display:none} .tb{padding:0 10px} }
+@media (max-width:1300px){ #zoomOut,#zoomIn,.zoom{display:none} }
 @media (max-width:560px){ .tb.export span{display:none} }
+.tri{position:absolute;right:4px;bottom:7px;width:0;height:0;border-left:5px solid transparent;border-bottom:5px solid var(--muted);pointer-events:none}
+.tmore{position:absolute;right:0;bottom:0;width:18px;height:20px;border:0;background:transparent;padding:0}
+.menub{border:1px solid var(--line);height:40px;margin-left:8px;gap:6px}
+.tb.export{gap:8px}
+.menu,.fly{position:fixed;z-index:30;background:var(--panel);border:1px solid var(--ink);box-shadow:0 12px 32px rgba(0,0,0,.18);display:flex;flex-direction:column}
+.menu.dl{width:300px}
+.mi{display:flex;flex-direction:column;align-items:flex-start;gap:2px;width:100%;border:0;border-bottom:1px solid var(--line);background:transparent;padding:12px 14px;text-align:left}
+.mi:last-child{border-bottom:0}
+.mi b{font-weight:600}
+.mi span{font-size:12px;color:var(--muted)}
+.mi:hover{background:var(--hover)}
+.fly{min-width:210px;padding:4px 0}
+.fly button{display:flex;align-items:center;gap:10px;height:40px;padding:0 12px;border:0;background:transparent;text-align:left;width:100%}
+.fly button:hover{background:var(--hover)}
+.fly button[aria-checked="true"]{font-weight:600}
+.fly .key{margin-left:auto;font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+.secs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--line)}
+.secs button{height:34px;border:0;background:transparent;font-size:13px;font-weight:500;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.secs button:nth-child(3n){border-right:0}
+.secs button:nth-child(n+4){border-bottom:0}
+.secs button:hover{background:var(--hover)}
+.secs button[aria-selected="true"]{background:var(--ink);color:var(--bg)}
+.secoff{display:none!important}
+body.nopanel .panel{display:none}
+.kerbsel{fill:none;stroke:var(--accent);stroke-linecap:butt;stroke-linejoin:round;opacity:.85}
 
 /* stage */
 .stage-wrap{flex:1 1 auto;min-height:0;position:relative;background:var(--canvas);overflow:hidden}
@@ -173,7 +204,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
 .libbtn{margin-left:auto;height:32px;padding:0 10px;border:1px solid var(--line);background:transparent;display:flex;align-items:center;gap:6px;font-size:13px}
 .libbtn:hover{background:var(--hover)}
 .summary{display:flex;flex-direction:column;gap:4px}
-.name{border:0;border-bottom:1px solid transparent;background:transparent;padding:2px 0;font-size:13px;color:var(--muted);width:100%}
+.name{border:0;border-bottom:1px solid transparent;background:transparent;padding:2px 0;font-size:20px;font-weight:800;letter-spacing:-.01em;color:var(--ink);width:100%}
 .name:hover{border-bottom-color:var(--line)}
 .name:focus{outline:none;border-bottom-color:var(--accent);color:var(--ink)}
 .lap{font-size:56px;font-weight:800;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}
@@ -248,7 +279,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
 .actions{display:flex;flex-direction:column;gap:8px;margin-top:auto}
 
 /* library popover */
-.lib{position:absolute;top:64px;left:16px;right:16px;z-index:5;background:var(--panel);border:1px solid var(--ink);box-shadow:0 12px 32px rgba(0,0,0,.18);display:flex;flex-direction:column;max-height:70vh}
+.lib{width:340px;max-height:70vh}
 .lib-head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--line)}
 .lib-head h3{margin:0;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .lib-list{overflow-y:auto}
@@ -265,7 +296,6 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
 .lib-files{display:flex;gap:8px;padding:12px 14px 0}
 .lib-files{flex-wrap:wrap}
 .lib-files .btn{flex:1}
-#packBtn{flex-basis:100%}
 .panel>*{flex-shrink:0}
 
 .toast{position:fixed;left:50%;bottom:calc(48px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;font-size:13px;z-index:20;max-width:min(520px,calc(100vw - 32px))}
@@ -292,16 +322,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 14l5-5-5-5"></path><path d="M20 9H10a6 6 0 0 0 0 12h3"></path></svg>
       </button>
       <div class="sep"></div>
-      <button class="tb" data-tool="select" title="Select  V"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 3l13 8-6 1.5L10 19z"></path></svg><span class="lbl">Select</span><span class="key">V</span></button>
-      <button class="tb" data-tool="direct" title="Direct select  A"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M6 3l13 8-6 1.5L10 19z"></path></svg><span class="lbl">Direct</span><span class="key">A</span></button>
-      <button class="tb" data-tool="pen" title="Pen  P"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l6 10-6 9-6-9z"></path><path d="M12 12v9"></path><circle cx="12" cy="11" r="1.4"></circle></svg><span class="lbl">Pen</span><span class="key">P</span></button>
-      <button class="tb" data-tool="line" title="Straight line  L"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M5 19L19 5"></path><rect x="3" y="17" width="4" height="4" fill="currentColor" stroke="none"></rect><rect x="17" y="3" width="4" height="4" fill="currentColor" stroke="none"></rect></svg><span class="lbl">Line</span><span class="key">L</span></button>
-      <button class="tb" data-tool="arc" title="Straights &amp; arcs  R"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M4 20A16 16 0 0 1 20 4"></path></svg><span class="lbl">Arc</span><span class="key">R</span></button>
-      <button class="tb" data-tool="round" title="Round corners  C"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M4 21V12a8 8 0 0 1 8-8h9"></path></svg><span class="lbl">Round</span><span class="key">C</span></button>
-      <button class="tb" data-tool="split" title="Split  X"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="6" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><path d="M8.5 7.5L20 18M8.5 16.5L20 6"></path></svg><span class="lbl">Split</span><span class="key">X</span></button>
-      <button class="tb" data-tool="width" title="Track width  W"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M3 5c6 2 12 2 18 0M3 19c6-3 12-3 18 0"></path><path d="M12 7.5v8M10 9.5l2-2 2 2M10 13.5l2 2 2-2"></path></svg><span class="lbl">Width</span><span class="key">W</span></button>
-      <button class="tb" data-tool="race" title="Race layout  T"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4"></path><path d="M5 4h13l-2.5 4L18 12H5"></path></svg><span class="lbl">Race</span><span class="key">T</span></button>
-      <button class="tb" data-tool="measure" title="Measure  M"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><rect x="2" y="8" width="20" height="8" rx="1.5"></rect><path d="M6 8v3M10 8v4M14 8v3M18 8v4"></path></svg><span class="lbl">Measure</span><span class="key">M</span></button>
+      <div class="tools" id="tools" role="group" aria-label="Drawing tools"></div>
       <div class="grow"></div>
       <button class="tb icon" id="zoomOut" aria-label="Zoom out" title="Zoom out  −"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"></path></svg></button>
       <span class="zoom" id="zoomLbl" aria-live="polite">100%</span>
@@ -309,7 +330,9 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
       <button class="tb" id="fitBtn" title="Fit to track  Ctrl+0"><span>Fit</span></button>
       <div class="sep"></div>
       <button class="tb icon bordered" id="themeBtn" aria-label="Switch to dark mode" title="Switch to dark mode"></button>
-      <button class="tb export" id="exportBtn" title="Export SVG"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"></path></svg><span>Export SVG</span></button>
+      <button class="tb menub" id="libBtn" data-menu="lib" aria-expanded="false" aria-haspopup="true">Tracks<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></button>
+      <button class="tb export" id="dlBtn" data-menu="dlMenu" aria-expanded="false" aria-haspopup="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"></path></svg><span>Download</span></button>
+      <button class="tb icon" id="panelBtn" aria-expanded="true" aria-controls="panel" aria-label="Hide panel" title="Hide panel"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"></path></svg></button>
     </nav>
     <div class="stage-wrap" id="stageWrap">
       <svg id="refStage" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"></svg>
@@ -325,51 +348,45 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
     </div>
   </div>
 
-  <aside class="panel" aria-label="Circuit">
-    <div class="brand">
-      <span class="sq" aria-hidden="true"></span><b>CIRCUIT</b>
-      <button class="libbtn" id="libBtn" aria-expanded="false" aria-controls="lib">Tracks
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
-      </button>
-    </div>
-    <div class="lib" id="lib" hidden>
-      <div class="lib-head"><h3>Your tracks</h3><button class="btn" id="newBtn">New track</button></div>
-      <div class="lib-list" id="libList"></div>
-      <div class="lib-files">
-        <button class="btn" id="saveFileBtn">Save as file</button>
-        <button class="btn" id="openFileBtn">Open file</button>
-        <button class="btn" id="packBtn">Export Track Pack</button>
-      </div>
-      <div class="lib-foot" id="libFoot"></div>
-    </div>
-
+  <aside class="panel" id="panel" aria-label="Circuit">
     <div class="summary">
-      <label for="trackName" class="sr" hidden>Track name</label>
       <input class="name" id="trackName" value="Untitled circuit" aria-label="Track name" spellcheck="false">
       <div class="lap" id="lap">0.000<small> km</small></div>
       <div class="sub" id="lapSub"></div>
     </div>
 
+    <div class="secs" role="tablist" aria-label="Panel sections" id="secs">
+      <button role="tab" data-sec="track">Track</button><button role="tab" data-sec="race">Race</button><button role="tab" data-sec="kerbs">Kerbs</button><button role="tab" data-sec="drs">DRS</button><button role="tab" data-sec="runoff">Run-off</button><button role="tab" data-sec="view">View</button>
+    </div>
+
     <div class="ctx" id="ctx"></div>
 
-    <div class="sect">
+    <div class="sect" data-in="track">
       <div class="field"><label for="widthIn">Track width</label><span class="in"><input class="num" id="widthIn" type="number" min="2" max="60" step="0.5" value="12"> m</span></div>
     </div>
 
-    <div class="sect" id="refSect" hidden>
-      <div class="refrow"><b>Reference layers</b><span class="src">Locked</span></div>
-      <div class="sect" id="refList"></div>
+    <div class="sect" id="viewSect" data-in="view">
+      <h3>On the track</h3>
+      <label class="check"><input type="checkbox" id="vNum"> Turn numbers</label>
+      <label class="check"><input type="checkbox" id="vNames"> Turn names</label>
+      <label class="check"><input type="checkbox" id="vArrow"> Direction arrow</label>
+      <label class="check"><input type="checkbox" id="vSnap"> Snap to grid</label>
+      <p class="refnote">Name turns in the <b>Race</b> section.</p>
+    </div>
+
+    <div class="sect" id="refSect" data-in="view" hidden>
+            <div class="sect" id="refList"></div>
       <p class="refnote" id="refNote"></p>
     </div>
 
-    <div class="sect" id="elevSect" hidden>
+    <div class="sect" id="elevSect" data-in="track" hidden>
       <div class="refrow"><b>Elevation</b><span class="src" id="elevRange"></span></div>
       <svg id="elevSvg" viewBox="0 0 300 96" preserveAspectRatio="none" role="img" aria-label="Elevation profile around the lap"></svg>
       <div class="kv"><span>Climb per lap</span><span id="elevClimb"></span></div>
       <div class="kv"><span>Steepest up · down</span><span id="elevGrad"></span></div>
     </div>
 
-    <div class="sect" id="chkSect" hidden>
+    <div class="sect" id="chkSect" data-in="track" hidden>
       <div class="refrow"><b>Checks</b><span class="src" id="chkCount"></span></div>
       <div class="chkset">
         <label>Min radius<span class="in"><input class="num" id="ckR" type="number" min="0" max="500" step="1" data-ck="minR"> m</span></label>
@@ -379,7 +396,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
       <div id="chkList"></div>
     </div>
 
-    <div class="segs">
+    <div class="segs" data-in="track race">
       <div class="segs-head"><div class="tabs" role="group" aria-label="List"><button data-tab="segs" aria-pressed="true">Segments</button><button data-tab="turns" aria-pressed="false">Turns</button></div><span id="segsRight">Length</span></div>
       <div class="seglist" id="segList"></div>
     </div>
@@ -387,6 +404,18 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
     <input type="file" id="fileIn" accept=".json,application/json" hidden>
   </aside>
 </div>
+<div class="menu lib" id="lib" hidden>
+  <div class="lib-head"><h3>Your tracks</h3><button class="btn" id="newBtn">New track</button></div>
+  <div class="lib-list" id="libList"></div>
+  <div class="lib-files"><button class="btn" id="openFileBtn">Open file</button></div>
+  <div class="lib-foot" id="libFoot"></div>
+</div>
+<div class="menu dl" id="dlMenu" hidden role="menu" aria-label="Download">
+  <button class="mi" role="menuitem" data-dl="json"><b>Project file</b><span>.json · editable; open it here on any device</span></button>
+  <button class="mi" role="menuitem" data-dl="svg"><b>Drawing</b><span>.svg · to scale, 1 unit = 1 metre</span></button>
+  <button class="mi" role="menuitem" data-dl="pack"><b>Track Pack</b><span>.zip · everything for the Assetto Corsa build</span></button>
+</div>
+<div class="fly" id="fly" role="menu" hidden></div>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 
 <script>
@@ -587,16 +616,16 @@ function samplePiece(pc){
 }
 
 /* ---------------- race layer: everything placed by distance along the race path ---------------- */
-function defaultRace(){return {loop:null,reversed:false,start:null,sectors:null,arrows:true,numbers:true,turnMin:15,names:{},cars:20,
+function defaultRace(){return {loop:null,reversed:false,start:null,sectors:null,arrows:true,numbers:true,names_on:true,turnMin:15,names:{},cars:20,
   grid:{pole:'auto',first:8,gap:8},pit:{path:null,width:10,boxLen:14,depth:9,centre:null,flipSide:false},
-  kerbs:{on:true,maxR:250,width:1.5,off:{}},drs:[],widths:[],checks:{minR:10,minW:6,maxGrad:8},
+  kerbs:{on:true,maxR:250,width:1.5,off:{},place:'beyond',list:null},drs:[],widths:[],checks:{minR:10,minW:6,maxGrad:8},
   runoff:{on:true,depth:35,tarmac:15,type:'mixed',maxR:300,barriers:true,off:{}}};}
 function cleanRace(r){
   const d=defaultRace(); if(!r||typeof r!=='object') return d;
   const pt=a=>Array.isArray(a)&&a.length===2&&isFinite(a[0])&&isFinite(a[1])?[+a[0],+a[1]]:null;
   d.loop=typeof r.loop==='string'?r.loop:null; d.reversed=!!r.reversed; d.start=pt(r.start);
   d.sectors=Array.isArray(r.sectors)&&r.sectors.length===2&&pt(r.sectors[0])&&pt(r.sectors[1])?[pt(r.sectors[0]),pt(r.sectors[1])]:null;
-  d.arrows=r.arrows!==false; d.numbers=r.numbers!==false; d.turnMin=isFinite(r.turnMin)?clamp(+r.turnMin,1,90):15;
+  d.arrows=r.arrows!==false; d.numbers=r.numbers!==false; d.names_on=r.names_on!==false; d.turnMin=isFinite(r.turnMin)?clamp(+r.turnMin,1,90):15;
   if(isFinite(r.cars)) d.cars=clamp(Math.round(+r.cars),0,60);
   const g=r.grid||{}; if(['auto','left','right'].includes(g.pole)) d.grid.pole=g.pole;
   if(isFinite(g.first)) d.grid.first=clamp(+g.first,0,100); if(isFinite(g.gap)) d.grid.gap=clamp(+g.gap,4,40);
@@ -605,6 +634,8 @@ function cleanRace(r){
   if(isFinite(q.depth)) d.pit.depth=clamp(+q.depth,4,30); d.pit.centre=pt(q.centre); d.pit.flipSide=!!q.flipSide;
   const offMap=o=>{const m={};if(o&&typeof o==='object') for(const k in o) if(/^\d{1,3}$/.test(k)&&o[k]) m[k]=true;return m;};
   const kb=r.kerbs||{}; d.kerbs.on=kb.on!==false; if(isFinite(kb.maxR)) d.kerbs.maxR=clamp(+kb.maxR,10,2000); if(isFinite(kb.width)) d.kerbs.width=clamp(+kb.width,0.5,5); d.kerbs.off=offMap(kb.off);
+  if(kb.place==='road') d.kerbs.place='road';
+  if(Array.isArray(kb.list)) d.kerbs.list=kb.list.slice(0,600).map(k=>k&&pt(k.a)&&pt(k.b)?{a:pt(k.a),b:pt(k.b),side:k.side==='R'?'R':'L',place:k.place==='road'?'road':'beyond'}:null).filter(Boolean);
   if(Array.isArray(r.drs)) d.drs=r.drs.slice(0,4).map(z=>z&&{d:pt(z.d),a:pt(z.a),e:pt(z.e)}).filter(z=>z&&z.d&&z.a&&z.e);
   const ro=r.runoff||{}; d.runoff.on=ro.on!==false; d.runoff.barriers=ro.barriers!==false;
   if(isFinite(ro.depth)) d.runoff.depth=clamp(+ro.depth,5,200); if(isFinite(ro.tarmac)) d.runoff.tarmac=clamp(+ro.tarmac,0,200);
@@ -771,13 +802,20 @@ function computeRace(){
     t.geo=rev?-t.sg:t.sg;
   }
   const outward=(geo,tan)=>geo>0?[tan[1],-tan[0]]:[-tan[1],tan[0]];
-  /* kerbs: inside at the apex, outside at the exit */
+  /* kerbs: stored ones (edited) or automatic (inside at the apex, outside at the exit); side is travel-left/right */
   const kerbs=[],kc=r.kerbs;
-  if(kc.on) for(const t of turns){
+  if(kc.on&&kc.list){
+    kc.list.forEach((k,i)=>{
+      let d0=dOf(lineProject(line,k.a).s),d1=dOf(lineProject(line,k.b).s);
+      if(p.closed){if(d1<d0) d1+=L;}else if(d1<d0){const q=d0;d0=d1;d1=q;}
+      const mid=(d0+d1)/2,tn=turns.find(t=>mid>=t.dS-40&&mid<=t.dE+60);
+      kerbs.push({i,turn:tn?tn.n:null,side:k.side,place:k.place,d0,d1});
+    });
+  }else if(kc.on) for(const t of turns){
     if(!(t.minR<kc.maxR)||kc.off[t.n]) continue;
-    const mid=(t.dS+t.dE)/2,span=t.dE-t.dS,li=clamp(span*0.55,12,140);
-    kerbs.push({turn:t.n,geo:t.geo,side:-1,d0:mid-li/2,d1:mid+li/2});
-    kerbs.push({turn:t.n,geo:t.geo,side:1,d0:t.dE-span*0.35,d1:t.dE+clamp(span*0.2+15,15,60)});
+    const mid=(t.dS+t.dE)/2,span=t.dE-t.dS,li=clamp(span*0.55,12,140),inS=t.dir==='Right'?'R':'L',outS=inS==='R'?'L':'R';
+    kerbs.push({i:kerbs.length,turn:t.n,side:inS,place:kc.place,d0:mid-li/2,d1:mid+li/2});
+    kerbs.push({i:kerbs.length,turn:t.n,side:outS,place:kc.place,d0:t.dE-span*0.35,d1:t.dE+clamp(span*0.2+15,15,60)});
   }
   /* run-off on the outside of each turn, tapering at both ends */
   const runoffs=[],rc=r.runoff;
@@ -810,6 +848,24 @@ function snapRaceMarks(){
   if(R.pit&&r.pit.centre) r.pit.centre=lineProject(R.pit.line,r.pit.centre).pt;
   if(r.drs) r.drs=r.drs.map(z=>({d:lineProject(R.line,z.d).pt,a:lineProject(R.line,z.a).pt,e:lineProject(R.line,z.e).pt}));
   if(r.widths) for(const k of r.widths) k.pt=lineProject(R.line,k.pt).pt;
+  if(r.kerbs&&r.kerbs.list) for(const k of r.kerbs.list){k.a=lineProject(R.line,k.a).pt;k.b=lineProject(R.line,k.b).pt;}
+}
+/* kerb geometry: f=0 at the track edge, 1 at the far side of the kerb; on the road it sits inside the edge, beyond the edge outside it */
+function kerbPts(R,k,kw,f){
+  const n=Math.max(2,Math.ceil((k.d1-k.d0)/2)),pts=[];
+  for(let i=0;i<=n;i++){
+    const d=k.d0+(k.d1-k.d0)*i/n,sv=R.sOf(d),at=lineAt(R.line,sv),t=R.travelTan(sv),lf=[t[1],-t[0]],h=R.hwT(sv);
+    const e=k.side==='L'?h.l:h.r,o=k.place==='road'?e-kw*f:e+kw*f;
+    pts.push(V.add(at.pt,V.mul(lf,k.side==='L'?o:-o)));
+  }
+  return pts;
+}
+/* turn the automatic kerbs into stored, editable ones (once) */
+function kerbList(){
+  const r=state.doc.race,R=state.race;
+  if(r.kerbs.list) return r.kerbs.list;
+  r.kerbs.list=R?R.kerbs.map(k=>({a:lineAt(R.line,R.sOf(k.d0)).pt,b:lineAt(R.line,R.sOf(k.d1)).pt,side:k.side,place:k.place})):[];
+  return r.kerbs.list;
 }
 
 /* ---------------- example circuit ---------------- */
@@ -834,7 +890,7 @@ const state={
   sel:{path:null,nodes:new Set(),piece:null},
   penPath:null, ruler:null, drag:null, hover:null, cursorS:null,
   space:false, mod:false, alt:false, shift:false, snap:false, dirty:false,
-  bakes:new Map(), race:null, listTab:'segs', raceTab:'layout',
+  bakes:new Map(), race:null, listTab:'segs', raceTab:'layout', section:'track', ksel:null, karm:false,
   roundR:50, lineLen:100, wsel:null, flash:null,
   arc:{len:200,r:120,ang:90,dir:'right',heading:0,ghost:'arc'}
 };
@@ -865,6 +921,7 @@ function commit(){
 function restore(){
   state.doc=JSON.parse(hist.stack[hist.i]);
   if(state.wsel!=null&&!(state.doc.race&&state.doc.race.widths&&state.doc.race.widths[state.wsel])) state.wsel=null;
+  if(state.ksel!=null&&!(state.doc.race&&state.doc.race.kerbs.list&&state.doc.race.kerbs.list[state.ksel])) state.ksel=null;
   const p=selPath();
   if(!p) state.sel={path:null,nodes:new Set(),piece:null};
   else state.sel.nodes=new Set([...state.sel.nodes].filter(i=>i<p.nodes.length));
@@ -1117,8 +1174,8 @@ function onDown(e){
   try{stage.setPointerCapture(e.pointerId);}catch(_){}
   const sp=ptr(e),wp=toW(sp);
   state.alt=e.altKey; state.shift=e.shiftKey;
-  closeLib();
-  if(e.button===1||state.space){state.drag={type:'pan',sp0:sp,t0:[state.view.tx,state.view.ty]};updateCursor();return;}
+  closeMenus();
+  if(e.button===1||state.space||state.tool==='hand'){state.drag={type:'pan',sp0:sp,t0:[state.view.tx,state.view.ty]};updateCursor();return;}
   const tool=effTool(e);
   if(tool==='pen') penDown(sp,wp,e,false);
   else if(tool==='line') penDown(sp,wp,e,true);
@@ -1130,6 +1187,7 @@ function onDown(e){
   else if(tool==='arc') arcDown(sp,wp,e);
   else if(tool==='measure') measureDown(sp,wp,e);
   else if(tool==='width') widthDown(sp,wp,e);
+  else if(tool==='kerb') kerbDown(sp,wp,e);
   render();
 }
 function penDown(sp,wp,e,lineMode){
@@ -1183,8 +1241,8 @@ function raceHandleAt(sp){
   const R=state.race,r=state.doc.race; if(!R) return null;
   if(r.start&&V.dist(sp,toS(lineAt(R.line,R.s0).pt))<=10) return 'start';
   if(R.sectors) for(let i=0;i<R.sectors.length;i++) if(V.dist(sp,toS(lineAt(R.line,R.sectors[i]).pt))<=10) return i;
-  if(R.pit&&R.pit.boxes.length&&state.raceTab==='pits'&&V.dist(sp,toS(lineAt(R.pit.line,R.pit.cs).pt))<=10) return 'pitc';
-  if(state.raceTab==='kerbs') for(const z of R.drs) for(const [k,d] of [['a',z.dAct],['e',z.dEnd],['d',z.dDet]]) if(V.dist(sp,toS(lineAt(R.line,R.sOf(d)).pt))<=10) return 'drs:'+z.i+':'+k;
+  if(R.pit&&R.pit.boxes.length&&state.section==='race'&&state.raceTab==='pits'&&V.dist(sp,toS(lineAt(R.pit.line,R.pit.cs).pt))<=10) return 'pitc';
+  if(state.section==='drs') for(const z of R.drs) for(const [k,d] of [['a',z.dAct],['e',z.dEnd],['d',z.dDet]]) if(V.dist(sp,toS(lineAt(R.line,R.sOf(d)).pt))<=10) return 'drs:'+z.i+':'+k;
   return null;
 }
 function raceDown(sp,wp){
@@ -1279,7 +1337,7 @@ function selectDown(sp,wp,e){
   if(hp){
     state.sel={path:hp.path.id,nodes:new Set(),piece:hp.k};
     const rr0=state.doc.race,isRace=state.race&&state.race.p===hp.path;
-    state.drag={type:'movePath',p:hp.path,w0:wp,sp0:sp,orig:JSON.parse(JSON.stringify(hp.path.nodes)),moved:false,race:isRace&&rr0?{start:rr0.start,sectors:rr0.sectors,widths:(rr0.widths||[]).map(k=>k.pt)}:null};
+    state.drag={type:'movePath',p:hp.path,w0:wp,sp0:sp,orig:JSON.parse(JSON.stringify(hp.path.nodes)),moved:false,race:isRace&&rr0?{start:rr0.start,sectors:rr0.sectors,widths:(rr0.widths||[]).map(k=>k.pt),kerbs:rr0.kerbs.list?rr0.kerbs.list.map(k=>[k.a,k.b]):null}:null};
   }else{state.sel={path:null,nodes:new Set(),piece:null};state.drag={type:'none'};}
 }
 function roundDown(sp,wp,e){
@@ -1352,6 +1410,55 @@ function widthRange(R){
   let lo=Infinity,hi=0;for(let sv=0;sv<R.L;sv+=4){const h=R.hw(sv),w=h.a+h.b;lo=Math.min(lo,w);hi=Math.max(hi,w);}
   return [lo,hi];
 }
+/* kerb tool: select, drag the ends or the whole kerb along its edge, add on an empty stretch of edge */
+const kerbWrap=(R,d)=>R.closed?((d%R.L)+R.L)%R.L:clamp(d,0,R.L);
+function kerbEnds(R,k){const kw=state.doc.race.kerbs.width,p=kerbPts(R,k,kw,0.5);return {a:p[0],b:p[p.length-1],pts:p};}
+function kerbHit(sp){
+  const R=state.race,r=state.doc.race; if(!R) return null;
+  const kw=r.kerbs.width,z=state.view.z;
+  if(state.ksel!=null){const k=R.kerbs.find(q=>q.i===state.ksel);if(k){const e=kerbEnds(R,k);for(const end of ['a','b']) if(V.dist(sp,toS(e[end]))<=10) return {act:'kend',i:k.i,end};}}
+  let best=null,bd=Math.max(7,kw*z/2+3);
+  for(const k of R.kerbs){const d=distToPoly(sp,kerbEnds(R,k).pts.map(toS));if(d<=bd){bd=d;best={act:'kbody',i:k.i};}}
+  if(best) return best;
+  if(!r.kerbs.on) return null;
+  const w=toW(sp),pr=lineProject(R.line,w),at=lineAt(R.line,pr.s),t=R.travelTan(pr.s),lf=[t[1],-t[0]],lat=V.dot(V.sub(w,at.pt),lf),h=R.hwT(pr.s);
+  const side=lat>=0?'L':'R',e=side==='L'?h.l:h.r;
+  if(Math.abs(Math.abs(lat)-e)<=Math.max(2.5,10/z)) return {act:'kadd',side,d:R.dOf(pr.s)};
+  return null;
+}
+function kerbDown(sp,wp,e){
+  state.drag={type:'none'};
+  const R=state.race,r=state.doc.race;
+  if(!R){toast('Make a closed loop the race track first, then edit its kerbs here.');return;}
+  const h=kerbHit(sp);
+  state.karm=false;
+  if(!h){state.ksel=null;return;}
+  const list=kerbList();
+  if(h.act==='kadd'){
+    const pt=d=>lineAt(R.line,R.sOf(d)).pt;
+    list.push({a:pt(h.d-15),b:pt(h.d+15),side:h.side,place:r.kerbs.place});
+    state.ksel=list.length-1;markDirty();commit();return;
+  }
+  state.ksel=h.i;
+  const k=R.kerbs.find(q=>q.i===h.i);
+  if(h.act==='kend') state.drag={type:'kerbEnd',i:h.i,end:h.end,d0:k.d0,d1:k.d1,sp0:sp,moved:false};
+  else state.drag={type:'kerbMove',i:h.i,d0:k.d0,d1:k.d1,ds:R.dOf(lineProject(R.line,wp).s),sp0:sp,moved:false};
+}
+function kerbDrag(d,wp){
+  const R=state.race,r=state.doc.race,k=r.kerbs.list&&r.kerbs.list[d.i]; if(!R||!k) return;
+  const pt=dd=>lineAt(R.line,R.sOf(dd)).pt,cur=R.dOf(lineProject(R.line,wp).s),L=R.L,len=d.d1-d.d0;
+  if(d.type==='kerbEnd'){
+    if(d.end==='a'){let n=R.closed?((d.d1-cur)%L+L)%L:d.d1-cur;if(n<3||n>L*0.6) n=3;k.a=pt(d.d1-n);}
+    else{let n=R.closed?((cur-d.d0)%L+L)%L:cur-d.d0;if(n<3||n>L*0.6) n=3;k.b=pt(d.d0+n);}
+  }else{
+    let dl=cur-d.ds;if(R.closed){dl=((dl%L)+L)%L;if(dl>L/2) dl-=L;}
+    k.a=pt(d.d0+dl);k.b=pt(d.d0+dl+len);
+    const at=lineAt(R.line,lineProject(R.line,wp).s),t=R.travelTan(lineProject(R.line,wp).s),lat=V.dot(V.sub(wp,at.pt),[t[1],-t[0]]);
+    if(Math.abs(lat)>1.5) k.side=lat>0?'L':'R';
+  }
+  markDirty();
+}
+function kerbDelete(){const r=state.doc.race;if(state.ksel==null) return false;const list=kerbList();if(!list[state.ksel]) return false;list.splice(state.ksel,1);state.ksel=null;commit();return true;}
 function measureDown(sp,wp){
   const a=snapToAnchor(sp)||snapPt(wp);
   state.ruler={a,b:a};
@@ -1400,7 +1507,7 @@ function onMove(e){
     }
     if(d.type==='movePath'){
       d.p.nodes=d.orig.map(n=>{const c=JSON.parse(JSON.stringify(n));moveNode(c,dd);return c;});
-      if(d.race){const r=state.doc.race;if(d.race.start) r.start=V.add(d.race.start,dd);if(d.race.sectors) r.sectors=d.race.sectors.map(q=>V.add(q,dd));if(d.race.widths&&r.widths) r.widths.forEach((k,i)=>{if(d.race.widths[i]) k.pt=V.add(d.race.widths[i],dd);});}
+      if(d.race){const r=state.doc.race;if(d.race.start) r.start=V.add(d.race.start,dd);if(d.race.sectors) r.sectors=d.race.sectors.map(q=>V.add(q,dd));if(d.race.widths&&r.widths) r.widths.forEach((k,i)=>{if(d.race.widths[i]) k.pt=V.add(d.race.widths[i],dd);});if(d.race.kerbs&&r.kerbs.list) r.kerbs.list.forEach((k,i)=>{const o=d.race.kerbs[i];if(o){k.a=V.add(o[0],dd);k.b=V.add(o[1],dd);}});}
     }else{
       for(const k in d.orig){const c=JSON.parse(JSON.stringify(d.orig[k]));moveNode(c,dd);d.p.nodes[k]=c;}
     }
@@ -1416,6 +1523,7 @@ function onMove(e){
     }
   }
   else if(d.type==='wkfMove'||d.type==='wkfEdge'){widthDrag(d,wp,e);}
+  else if(d.type==='kerbEnd'||d.type==='kerbMove'){kerbDrag(d,wp);}
   else if(d.type==='round'){
     const b=state.bakes.get(d.p.id),c=b&&b.corners[d.j];
     if(c){
@@ -1473,12 +1581,14 @@ function updateHover(sp){
   else if(tool==='round'){const p=selPath();const c=p&&hitWidget(sp,p);if(c) state.hover={act:'widget',p,j:c.j};else{const hp=hitPiece(sp);if(hp) state.hover={act:'piece',p:hp.path,k:hp.k};}}
   else if(tool==='arc'){const hp=hitPiece(sp);if(hp) state.hover={act:'piece',p:hp.path,k:hp.k};}
   else if(tool==='width'){state.hover=widthHit(sp);}
+  else if(tool==='kerb'){state.hover=kerbHit(sp);}
   updateCursor();
 }
 function updateCursor(){
   const t=effTool();
   let c='default';
-  if(state.space||(state.drag&&state.drag.type==='pan')) c=state.drag?'grabbing':'grab';
+  if(state.space||t==='hand'||(state.drag&&state.drag.type==='pan')) c=state.drag?'grabbing':'grab';
+  else if(t==='kerb') c=state.drag?'grabbing':state.hover?(state.hover.act==='kadd'?'copy':'grab'):'default';
   else if(t==='pen'||t==='line'||t==='measure'||t==='split') c='crosshair';
   else if(t==='arc') c=(state.hover&&state.hover.act==='piece')?'pointer':'crosshair';
   else if(t==='width') c=state.hover?(state.hover.act==='wadd'?'copy':state.hover.act==='wedge'?'ew-resize':'grab'):'default';
@@ -1616,7 +1726,8 @@ function draw(){
   if(R){
     const kw=rr.kerbs.width;
     let kd='';
-    for(const k of R.kerbs) kd+=polyD(bandPts(R,k.d0,k.d1,k.geo,(u,H)=>k.side*((k.side>0?H.out:H.in)+kw/2)))+' ';
+    if(tool==='kerb'&&state.ksel!=null){const k=R.kerbs.find(q=>q.i===state.ksel);if(k) s+=`<path class="kerbsel" stroke-width="${kw+Math.max(1.2,5/z)}" d="${polyD(kerbPts(R,k,kw,0.5))}"></path>`;}
+    for(const k of R.kerbs) kd+=polyD(kerbPts(R,k,kw,0.5))+' ';
     if(kd) s+=`<path class="kerb" stroke-width="${kw}" d="${kd}"></path><path class="kerb-w" stroke-width="${kw}" d="${kd}"></path>`;
     for(const z of R.drs){
       let d1=z.dEnd;if(d1<z.dAct) d1+=R.L;
@@ -1751,6 +1862,17 @@ function draw(){
       s+=`<line class="wghost" x1="${A[0]}" y1="${A[1]}" x2="${B[0]}" y2="${B[1]}"></line>`+pill((A[0]+B[0])/2,Math.min(A[1],B[1])-18,'Add width point · '+(h.l+h.r).toFixed(1)+' m');
     }
   }
+  if(tool==='kerb'&&R){
+    const kw=rr.kerbs.width;
+    if(hv&&hv.act==='kbody'&&hv.i!==state.ksel&&!state.drag){const k=R.kerbs.find(q=>q.i===hv.i);if(k) s+=`<path class="hov" d="${polyD(kerbPts(R,k,kw,0.5).map(toS))}"></path>`;}
+    if(hv&&hv.act==='kadd'&&!state.drag){const g={side:hv.side,place:rr.kerbs.place,d0:hv.d-15,d1:hv.d+15},P=kerbPts(R,g,kw,0.5),m=toS(P[P.length>>1]);s+=`<path class="ghost" d="${polyD(P.map(toS))}"></path>`+pill(m[0],m[1]-20,'Add kerb · '+(hv.side==='L'?'left':'right'));}
+    const k=state.ksel!=null&&R.kerbs.find(q=>q.i===state.ksel);
+    if(k){
+      const e=kerbEnds(R,k);
+      for(const end of ['a','b']){const q=toS(e[end]),hot=hv&&hv.act==='kend'&&hv.end===end;s+=`<rect class="wkh${hot?' on':''}" x="${(q[0]-5).toFixed(1)}" y="${(q[1]-5).toFixed(1)}" width="10" height="10"></rect>`;}
+      const m=toS(e.pts[e.pts.length>>1]);s+=pill(m[0],m[1]-22,Math.round(k.d1-k.d0)+' m · '+(k.side==='L'?'left':'right')+' · '+(k.place==='road'?'on road':'beyond edge'));
+    }
+  }
   if(state.drag&&state.drag.type==='marquee'){
     const d=state.drag,x=Math.min(d.sp0[0],d.sp1[0]),y=Math.min(d.sp0[1],d.sp1[1]);
     s+=`<rect class="mq" x="${x}" y="${y}" width="${Math.abs(d.sp1[0]-d.sp0[0])}" height="${Math.abs(d.sp1[1]-d.sp0[1])}"></rect>`;
@@ -1772,14 +1894,16 @@ function draw(){
   }
   if(R){
     const ln=R.line,offS=W*z/2+16;
-    if(rr.numbers) for(const t of R.turns){
+    const showN=rr.numbers!==false,showNm=rr.names_on!==false;
+    if(showN||showNm) for(const t of R.turns){
+      const txt=showN&&showNm&&t.name?'T'+t.n+' '+t.name:showN?'T'+t.n:t.name; if(!txt) continue;
       const q=V.add(toS(t.pt),V.mul(t.out,offS+6));
-      s+=`<text class="tlab" x="${q[0].toFixed(1)}" y="${(q[1]+4).toFixed(1)}" text-anchor="middle">${esc(t.name?t.name:'T'+t.n)}</text>`;
+      s+=`<text class="tlab" x="${q[0].toFixed(1)}" y="${(q[1]+4).toFixed(1)}" text-anchor="middle">${esc(txt)}</text>`;
     }
     const markLbl=(sv,txt,cls)=>{const at=lineAt(ln,sv),nn=[-at.tan[1],at.tan[0]],q=V.add(toS(at.pt),V.mul(nn,offS+8));s+=pill(q[0],q[1],txt,cls);};
     if(R.sectors){const ord=R.sectors.map((sv,i)=>({sv,d:R.dist(R.s0,sv)})).sort((a,c)=>a.d-c.d);ord.forEach((o,i)=>markLbl(o.sv,'S'+(i+2),'pill sec'));}
     if(rr.start) markLbl(R.s0,'START','pill ink');
-    for(const z of R.drs){markLbl(R.sOf(z.dAct),'DRS '+(z.i+1),'pill drs');if(state.tool==='race'&&state.raceTab==='kerbs') markLbl(R.sOf(z.dDet),'DETECT '+(z.i+1),'pill drs');}
+    for(const z of R.drs){markLbl(R.sOf(z.dAct),'DRS '+(z.i+1),'pill drs');if(state.tool==='race'&&state.section==='drs') markLbl(R.sOf(z.dDet),'DETECT '+(z.i+1),'pill drs');}
     if(R.pit){
       const PT=R.pit,o=PT.width*z/2+16;
       for(const [pt,txt] of [[PT.entry,'PIT IN'],[PT.exit,'PIT OUT']]){const q=toS(pt);s+=pill(q[0],q[1]-o,txt,'pill ink');}
@@ -1788,8 +1912,8 @@ function draw(){
     if(z*rr.grid.gap>=26&&tool==='race') for(const g of R.grid){const q=toS(V.add(g.pt,V.mul([g.t[1],-g.t[0]],g.side*((g.q||W/4)+3))));s+=`<text class="nlab" x="${q[0].toFixed(1)}" y="${(q[1]+4).toFixed(1)}" text-anchor="middle">${g.n}</text>`;}
     if(tool==='race'){
       const hs=[];if(rr.start) hs.push(lineAt(ln,R.s0).pt);if(R.sectors) hs.push(...R.sectors.map(sv=>lineAt(ln,sv).pt));
-      if(R.pit&&R.pit.boxes.length&&state.raceTab==='pits') hs.push(lineAt(R.pit.line,R.pit.cs).pt);
-      if(state.raceTab==='kerbs') for(const z of R.drs) for(const d of [z.dDet,z.dAct,z.dEnd]){const q=toS(lineAt(ln,R.sOf(d)).pt);s+=`<circle class="wdg drsh" cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="6"></circle>`;}
+      if(R.pit&&R.pit.boxes.length&&state.section==='race'&&state.raceTab==='pits') hs.push(lineAt(R.pit.line,R.pit.cs).pt);
+      if(state.section==='drs') for(const z of R.drs) for(const d of [z.dDet,z.dAct,z.dEnd]){const q=toS(lineAt(ln,R.sOf(d)).pt);s+=`<circle class="wdg drsh" cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="6"></circle>`;}
       for(const pt of hs){const q=toS(pt);s+=`<circle class="wdg" cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="6"></circle>`;}
       if(!rr.start&&hv&&hv.act==='raceStart'){const q=toS(hv.pt);s+=`<circle class="wdg on" cx="${q[0]}" cy="${q[1]}" r="5"></circle>`;}
     }
@@ -1817,13 +1941,15 @@ function hintFor(t){
   return {
     pen:state.penPath?'Click for a corner · drag for a curve · Alt-drag to break a handle · click the first point to close · Enter to finish':'Click to start a path · on a selected track, click a segment to add a point or a point to remove it · hold Ctrl for Direct select',
     line:state.penPath?'Click to add a straight · type a length in the panel for precision · click the first point to close · Enter to finish':'Click to start a run of straights, or click the end of an open path to extend it',
-    race:'Drag the start line or sector markers along the track · click another path to make it the race track',
+    race:'Drag the start line, sector markers'+(state.section==='drs'?' and DRS points':'')+' along the track · click another path to choose what it is',
     split:'Click the track or a point to cut it there · a loop opens, an open path splits in two',
     direct:'Drag points, handles or segments · Shift-click adds to the selection · Alt-click converts a point · drag empty space to box-select',
     select:'Click a segment to select it · drag to move the whole track · Delete removes it',
     round:'Select a track, then drag a corner’s dot inwards · Shift snaps to 5 m · Alt-click resets a corner',
     arc:'Adds straights and arcs to the end of the selected open path · click empty space to start one',
-    measure:'Drag to measure · snaps to points · Shift locks to 45°'
+    measure:'Drag to measure · snaps to points · Shift locks to 45°',
+    kerb:'Click a kerb to select it · drag its end squares or the kerb itself along the edge · Delete removes it · click an empty stretch of edge to add one',
+    hand:'Drag to move around · scroll or pinch to zoom'
   }[t]||'';
 }
 
@@ -1851,7 +1977,7 @@ function renderPanel(){
   if(state.listTab==='turns'){
     if(R&&R.turns.length){
       for(const t of R.turns){
-        html+=`<div class="trow"><span class="ix">T${t.n}</span><input class="tname" data-turn="${t.n}" value="${esc(t.name)}" placeholder="Turn ${t.n}" aria-label="Name for turn ${t.n}"><span class="tmeta">${t.dir[0]} ${Math.round(t.deg)}° · ${isFinite(t.minR)?'R '+fmtR(t.minR):'—'}</span><span class="tg">${(()=>{const r=state.doc.race,ke=r.kerbs.on&&t.minR<r.kerbs.maxR,ro=r.runoff.on&&t.minR<r.runoff.maxR;return (ke?`<button class="tgl" data-kerb="${t.n}" aria-pressed="${!r.kerbs.off[t.n]}" title="Kerbs on T${t.n}" aria-label="Kerbs on turn ${t.n}">K</button>`:'')+(ro?`<button class="tgl" data-ro="${t.n}" aria-pressed="${!r.runoff.off[t.n]}" title="Run-off on T${t.n}" aria-label="Run-off on turn ${t.n}">R</button>`:'');})()}</span></div>`;
+        html+=`<div class="trow"><span class="ix">T${t.n}</span><input class="tname" data-turn="${t.n}" value="${esc(t.name)}" placeholder="Turn ${t.n}" aria-label="Name for turn ${t.n}"><span class="tmeta">${t.dir[0]} ${Math.round(t.deg)}° · ${isFinite(t.minR)?'R '+fmtR(t.minR):'—'}</span><span class="tg">${(()=>{const r=state.doc.race,ke=r.kerbs.on&&!r.kerbs.list&&t.minR<r.kerbs.maxR,ro=r.runoff.on&&t.minR<r.runoff.maxR;return (ke?`<button class="tgl" data-kerb="${t.n}" aria-pressed="${!r.kerbs.off[t.n]}" title="Kerbs on T${t.n}" aria-label="Kerbs on turn ${t.n}">K</button>`:'')+(ro?`<button class="tgl" data-ro="${t.n}" aria-pressed="${!r.runoff.off[t.n]}" title="Run-off on T${t.n}" aria-label="Run-off on turn ${t.n}">R</button>`:'');})()}</span></div>`;
       }
     }else html='<div class="segs-empty">'+(p?'No bends of '+((state.doc.race&&state.doc.race.turnMin)||15)+'° or more yet.':'Turns are numbered here once you draw a track.')+'</div>';
     const sl=$('segList');
@@ -1883,14 +2009,20 @@ function renderPanel(){
   const one=s&&state.sel.nodes.size===1?[...state.sel.nodes][0]:null;
   const oneInfo=one!=null&&s.nodes[one]?(s.nodes[one].smooth?'s':'c')+(cornerOf(s,one)?'k':''):'';
   const pcInfo=t==='select'&&s&&state.sel.piece!=null?'p'+state.sel.piece:'';
-  const rr=state.doc.race||{},raceKey=t==='race'?[!!rr.start,!!rr.sectors,rr.reversed,rr.arrows,rr.numbers,rr.loop,state.race?state.race.closed:'',state.raceTab,rr.grid&&rr.grid.pole,rr.kerbs&&rr.kerbs.on,rr.runoff&&rr.runoff.on,rr.runoff&&rr.runoff.type,rr.drs&&rr.drs.length,(selPath()||{}).role,(selPath()||{}).kind,rr.pit&&rr.pit.path,!!(state.race&&state.race.pit),state.race&&state.race.clockwise].join(','):'';
+  const rr=state.doc.race||{},secR=RACE_SECS.includes(state.section)||state.section==='kerbs',raceKey=secR?[state.section,state.ksel,state.karm,rr.kerbs&&rr.kerbs.list?rr.kerbs.list.length:-1,rr.kerbs&&rr.kerbs.place,state.ksel!=null&&rr.kerbs&&rr.kerbs.list&&rr.kerbs.list[state.ksel]?rr.kerbs.list[state.ksel].place+rr.kerbs.list[state.ksel].side:'',!!rr.start,!!rr.sectors,rr.reversed,rr.arrows,rr.numbers,rr.loop,state.race?state.race.closed:'',state.raceTab,rr.grid&&rr.grid.pole,rr.kerbs&&rr.kerbs.on,rr.runoff&&rr.runoff.on,rr.runoff&&rr.runoff.type,rr.drs&&rr.drs.length,(selPath()||{}).role,(selPath()||{}).kind,rr.pit&&rr.pit.path,!!(state.race&&state.race.pit),state.race&&state.race.clockwise].join(','):'';
   const wKey=t==='width'?[state.wsel,(rr.widths||[]).length,state.wsel!=null&&rr.widths&&rr.widths[state.wsel]?[rr.widths[state.wsel].ease,rr.widths[state.wsel].link].join(':'):'',!!state.race].join(','):'';
   const key=[raceKey,wKey,t,state.sel.path,[...state.sel.nodes].join(','),state.penPath?'d':'',state.ruler?'r':'',s?s.closed:'',s?s.nodes.length:'',state.arc.dir,state.arc.ghost,oneInfo,pcInfo].join('|');
-  if(key!==ctxKey){ctxKey=key;$('ctx').innerHTML=ctxHTML(t,s);}
+  if(key!==ctxKey){ctxKey=key;$('ctx').innerHTML=ctxHTML(t,s);$('ctx').hidden=!$('ctx').innerHTML.trim();}
   refreshCtx(t,s);
 }
 function cornerOf(p,j){const b=p&&state.bakes.get(p.id);return b&&b.corners[j];}
 function ctxHTML(t,s){
+  const sec=state.section;
+  if(sec==='view') return '';
+  if(sec==='kerbs') return kerbCtxHTML();
+  if(RACE_SECS.includes(sec)) t='race';
+  else if(t==='race'||t==='kerb') return '';
+  if(t==='hand') return `<h3>Hand</h3><p>Drag to move around the canvas. Scroll or pinch to zoom. Hold Space with any tool to do the same.</p>`;
   if(t==='pen'){
     if(state.penPath){const ap=getPath(state.penPath);return `<h3>Drawing</h3><p><span data-live="pts">${ap?ap.nodes.length:0}</span> points so far.</p><div class="row"><button class="btn" data-act="finish">Finish · Enter</button><button class="btn" data-act="closePath">Close loop</button></div>`;}
     return `<h3>Pen</h3><ul><li><b>Click</b> places a corner point</li><li><b>Click and drag</b> makes a smooth curve</li><li><b>Alt-drag</b> breaks the handle for a sharp change</li><li><b>Click the first point</b> closes the loop</li><li><b>Shift</b> locks to 45°</li></ul>`;
@@ -1916,25 +2048,19 @@ function ctxHTML(t,s){
       const roadBtns=other.role?'':`<div class="row">${other.nodes.length>=3&&other.closed||!R?'<button class="btn" data-act="makeRace">Make race track</button>':''}${R&&!isPit&&!other.closed?'<button class="btn" data-act="makePit">Make pit lane</button>':''}${isPit?'<button class="btn" data-act="unPit">Stop using as pit lane</button>':''}</div>`;
       pick=`<div class="pick"><h3>Selected shape</h3>${sel}${roadBtns}</div>`;
     }
-    if(!R) return `<h3>Race layout</h3><p>Close a loop first, then click it with this tool. Any path can be made the race track.</p>${pick}`;
+    if(!R) return `<h3>${sec==='drs'?'DRS':sec==='runoff'?'Run-off':'Race layout'}</h3><p>Close a loop first, then click it here to make it the race track. Any path can be the race track.</p>${pick}`;
     const tb=(k,l)=>`<button data-act="rt:${k}" aria-pressed="${(state.raceTab||'layout')===k}">${l}</button>`;
-    const tabs=`<div class="seg quad" role="group" aria-label="Race settings">${tb('layout','Layout')}${tb('pits','Grid &amp; pits')}${tb('kerbs','Kerbs &amp; DRS')}${tb('ground','Run-off')}</div>`;
-    if(state.raceTab==='kerbs'){
-      const kc=r.kerbs,zl=R.drs.map(z=>`<div class="zrow"><span class="ix">DRS ${z.i+1}</span><span class="mono" data-live="drs${z.i}"></span><button class="btn sm" data-act="drsDel:${z.i}">Remove</button></div>`).join('');
-      return `${tabs}${pick}
-        <h3>Kerbs</h3>
-        <label class="check"><input type="checkbox" data-act="kerbsOn" ${kc.on?'checked':''}> Automatic kerbs</label>
-        ${kc.on?`<div class="field"><label for="kerbR">On bends tighter than</label><span class="in"><input class="num" id="kerbR" type="number" min="10" max="2000" step="10" data-act="kerbR"> m</span></div>
-        <div class="field"><label for="kerbW">Kerb width</label><span class="in"><input class="num" id="kerbW" type="number" min="0.5" max="5" step="0.25" data-act="kerbW"> m</span></div>
-        <p>Each kerbed turn gets one on the inside at the apex and one on the outside at the exit. To leave out a turn, switch it off in the <b>Turns</b> tab below.</p>`:''}
-        <h3>DRS zones</h3>
+    const tabs=sec==='race'?`<div class="seg wide" role="group" aria-label="Race settings">${tb('layout','Layout')}${tb('pits','Grid &amp; pits')}</div>`:'';
+    if(sec==='drs'){
+      const zl=R.drs.map(z=>`<div class="zrow"><span class="ix">DRS ${z.i+1}</span><span class="mono" data-live="drs${z.i}"></span><button class="btn sm" data-act="drsDel:${z.i}">Remove</button></div>`).join('');
+      return `<h3>DRS zones</h3>
         ${zl||'<p>No DRS zones yet.</p>'}
         <button class="btn" data-act="drsAdd" ${r.drs.length>=4?'disabled':''}>Add DRS zone</button>
-        <p>A new zone goes on the longest straight without one. Drag its green circles to move the detection point, activation point and end.</p>`;
+        <p>A new zone goes on the longest straight without one. Drag its green circles to move the detection point, activation point and end. Up to four zones.</p>`;
     }
-    if(state.raceTab==='ground'){
+    if(sec==='runoff'){
       const ro=r.runoff,ty=(v,l)=>`<button data-act="roType:${v}" aria-pressed="${ro.type===v}">${l}</button>`;
-      return `${tabs}${pick}
+      return `${pick}
         <h3>Run-off</h3>
         <label class="check"><input type="checkbox" data-act="roOn" ${ro.on?'checked':''}> Automatic run-off</label>
         ${ro.on?`<div class="field"><span>Surface</span><div class="seg" role="group" aria-label="Run-off surface">${ty('mixed','Mixed')}${ty('tarmac','Tarmac')}${ty('gravel','Gravel')}</div></div>
@@ -1943,10 +2069,10 @@ function ctxHTML(t,s){
         <div class="field"><label for="roR">On bends tighter than</label><span class="in"><input class="num" id="roR" type="number" min="10" max="2000" step="10" data-act="roR"> m</span></div>
         <label class="check"><input type="checkbox" data-act="roBar" ${ro.barriers?'checked':''}> Tyre barriers at the edge</label>`:''}
         <h3>Draw your own</h3>
-        <p>Draw a closed shape with the Pen or Line tool, then click it with this tool and choose what it is: grass, gravel, tarmac, sand, a grandstand, or a wall or barrier. Walls can be open lines.</p>`;
+        <p>Draw a shape with the Pen or Line tool, then come back here and click it to choose what it is: grass, gravel, tarmac, sand, a grandstand, or a wall or barrier. Walls can be open lines.</p>`;
     }
     if(state.raceTab==='pits'){
-      const pitTxt=R.pit?'':`<p>Draw the pit lane as an open path with the Pen or Line tool, from the track to the track. Then click it with this tool and choose <b>Make pit lane</b>.</p>`;
+      const pitTxt=R.pit?'':`<p>Draw the pit lane as an open path with the Pen or Line tool, from the track to the track. Then click it here and choose <b>Make pit lane</b>.</p>`;
       return `${tabs}${pick}
         <div class="field"><label for="carsIn">Cars</label><span class="in"><input class="num" id="carsIn" type="number" min="0" max="60" step="1" data-act="cars"></span></div>
         <p>Sets both the grid slots and the pit boxes.</p>
@@ -1973,13 +2099,12 @@ function ctxHTML(t,s){
       <div class="row"><button class="btn" data-act="startStraight">On the longest straight</button></div>
       ${R.closed?`<label class="check"><input type="checkbox" data-act="sectorsOn" ${r.sectors?'checked':''}> Sector lines</label>
       ${r.sectors?'<div class="kv"><span>S1 · S2 · S3</span><span data-live="secLens"></span></div><button class="btn" data-act="sectorThirds">Reset to equal thirds</button>':''}`:''}
-      <label class="check"><input type="checkbox" data-act="arrowsOn" ${r.arrows?'checked':''}> Direction arrow</label>
-      <label class="check"><input type="checkbox" data-act="numbersOn" ${r.numbers?'checked':''}> Turn numbers</label>
-      <div class="field"><label for="turnMin">Number bends from</label><span class="in"><input class="num" id="turnMin" type="number" min="1" max="90" step="1" data-act="turnMin"> °</span></div>`;
+      <div class="field"><label for="turnMin">Number bends from</label><span class="in"><input class="num" id="turnMin" type="number" min="1" max="90" step="1" data-act="turnMin"> °</span></div>
+      <p>Name the turns in the list below. Show or hide numbers and names in <b>View</b>.</p>`;
   }
   if(t==='width'){
     const R=state.race,r=state.doc.race;
-    if(!R) return `<h3>Track width</h3><p>Close a loop and make it the race track with the Race tool. Then set its width at any point here.</p>`;
+    if(!R) return `<h3>Track width</h3><p>Close a loop and make it the race track in the Race section. Then set its width at any point here.</p>`;
     const ws=r.widths||[],k=state.wsel!=null?ws[state.wsel]:null;
     const list=ws.length?`<div class="wlist">${ws.map((q,i)=>({q,i,d:R.dOf(lineProject(R.line,q.pt).s)})).sort((a,b)=>a.d-b.d).map(o=>`<button class="wrow${o.i===state.wsel?' on':''}" data-act="wsel:${o.i}"><span class="ix">${fmtLen(o.d)}</span><span>${(o.q.l+o.q.r).toFixed(1)} m</span><span class="wv">L ${o.q.l.toFixed(1)} · R ${o.q.r.toFixed(1)}${o.q.ease==='linear'?' · lin':''}</span></button>`).join('')}</div>`:'';
     const tips=`<ul><li><b>Click the track</b> to add a width point</li><li><b>Drag its centre</b> to slide it along the track</li><li><b>Drag an edge square</b> to change the width; <b>Alt</b> moves one side only</li><li>Between points the width morphs from one to the next</li></ul>`;
@@ -2042,6 +2167,25 @@ function ctxHTML(t,s){
   }
   return '';
 }
+function kerbCtxHTML(){
+  const R=state.race,r=state.doc.race,kc=r.kerbs;
+  if(!R) return `<h3>Kerbs</h3><p>Make a closed loop the race track first, in the <b>Race</b> section. Kerbs then appear on its corners automatically.</p>`;
+  const pl=(cur,act)=>`<div class="seg wide" role="group" aria-label="Where the kerb sits"><button data-act="${act}:road" aria-pressed="${cur==='road'}">On the road</button><button data-act="${act}:beyond" aria-pressed="${cur!=='road'}">Beyond the edge</button></div>`;
+  let h=`<h3>Kerbs</h3><label class="check"><input type="checkbox" data-act="kerbsOn" ${kc.on?'checked':''}> Show kerbs</label>`;
+  if(!kc.on) return h;
+  const k=state.ksel!=null&&kc.list&&kc.list[state.ksel];
+  if(k) h+=`<div class="pick"><h3>Selected kerb</h3><div class="kv"><span>${k.side==='L'?'Left':'Right'} side</span><span data-live="kLen"></span></div>${pl(k.place,'kplace')}
+    <div class="row"><button class="btn" data-act="kside">Other side</button><button class="btn" data-act="kdel">Delete</button></div></div>`;
+  h+=`<div class="kv"><span>${kc.list?'Edited by hand':'Automatic'}</span><span data-live="kCount"></span></div>`;
+  h+=kc.list?`<p>Regenerating puts automatic kerbs back on every bend tighter than the radius below, and replaces your edits.</p>`:`<p>One on the inside at each apex and one on the outside at the exit, following the corners until you edit one. Switch a turn off with its <b>K</b> in the Race section's turn list.</p>`;
+  h+=`<div class="field"><label for="kerbR">${kc.list?'Regenerate on':'On'} bends tighter than</label><span class="in"><input class="num" id="kerbR" type="number" min="10" max="2000" step="10" data-act="kerbR"> m</span></div>`;
+  if(kc.list) h+=`<button class="btn${state.karm?' solid':''}" data-act="kregen">${state.karm?'Replace my edits':'Regenerate kerbs'}</button>`;
+  h+=`<div class="field"><label for="kerbW">Kerb width</label><span class="in"><input class="num" id="kerbW" type="number" min="0.5" max="5" step="0.25" data-act="kerbW"> m</span></div>
+    <h3>New kerbs sit</h3>${pl(kc.place,'kdef')}
+    <p>On the road suits a wall or building right at the edge. Beyond the edge suits corners with space.</p>
+    <ul><li><b>Click a kerb</b> to select it</li><li><b>Drag an end square</b> to lengthen or shorten it</li><li><b>Drag the kerb</b> to slide it along the edge, or across the track to the other side</li><li><b>Delete</b> removes it · <b>F</b> switches road and beyond</li><li><b>Click an empty stretch of edge</b> to add a 30 m kerb</li></ul>`;
+  return h;
+}
 function setVal(id,v){const el=$(id);if(el&&document.activeElement!==el) el.value=v;}
 function setLive(name,v){const el=document.querySelector(`[data-live="${name}"]`);if(el) el.textContent=v;}
 function refreshCtx(t,s){
@@ -2070,8 +2214,10 @@ function refreshCtx(t,s){
     const k=state.doc.race.widths[state.wsel];
     if(k){setVal('wL',+k.l.toFixed(2));setVal('wR',+k.r.toFixed(2));setLive('wtot',(k.l+k.r).toFixed(1)+' m');setLive('wdist',fmtLen(state.race.dOf(lineProject(state.race.line,k.pt).s)));}
   }
-  if(t==='race'&&state.race){
+  if((RACE_SECS.includes(state.section)||state.section==='kerbs')&&state.race){
     const R=state.race,r=state.doc.race;
+    setLive('kCount',R.kerbs.length+' kerb'+(R.kerbs.length===1?'':'s'));
+    if(state.ksel!=null){const g=R.kerbs.find(q=>q.i===state.ksel);if(g) setLive('kLen',Math.round(g.d1-g.d0)+' m'+(g.turn?' · T'+g.turn:''));}
     setLive('sfState',r.start?'Placed':'Not placed');
     if(R.sectorLens) setLive('secLens',R.sectorLens.map(x=>(x/1000).toFixed(2)).join(' · ')+' km');
     setVal('turnMin',r.turnMin);
@@ -2117,6 +2263,11 @@ $('ctx').addEventListener('click',e=>{
   else if(act==='drsAdd'){if(autoDrs()) commit(); else toast(state.doc.race.drs.length>=4?'Four DRS zones is the maximum.':'There’s no straight of 250 m or more without a zone.');}
   else if(act.startsWith('drsDel:')){state.doc.race.drs.splice(+act.slice(7),1);commit();}
   else if(act.startsWith('roType:')){state.doc.race.runoff.type=act.slice(7);commit();}
+  else if(act.startsWith('kplace:')){const k=kerbList()[state.ksel];if(k){k.place=act.slice(7);commit();}}
+  else if(act.startsWith('kdef:')){state.doc.race.kerbs.place=act.slice(5);commit();}
+  else if(act==='kside'){const k=kerbList()[state.ksel];if(k){k.side=k.side==='L'?'R':'L';commit();}}
+  else if(act==='kdel'){kerbDelete();}
+  else if(act==='kregen'){if(!state.karm){state.karm=true;}else{state.karm=false;state.ksel=null;state.doc.race.kerbs.list=null;commit();toast('Kerbs regenerated on every bend tighter than '+state.doc.race.kerbs.maxR+' m.');}}
   else if(act==='makeRace'){if(s) makeRaceTrack(s);}
   else if(act==='makePit'){if(s) makePitLane(s);}
   else if(act==='unPit'){state.doc.race.pit.path=null;state.doc.race.pit.centre=null;commit();}
@@ -2231,24 +2382,117 @@ $('widthIn').addEventListener('input',e=>{const v=parseFloat(e.target.value);if(
 $('widthIn').addEventListener('change',()=>{if(state.dirty) commit();});
 $('trackName').addEventListener('input',e=>{state.doc.name=e.target.value||'Untitled circuit';markDirty();});
 $('trackName').addEventListener('change',()=>{if(state.dirty) commit();renderLib();});
-function syncDocInputs(){$('trackName').value=state.doc.name;$('widthIn').value=state.doc.width;}
+function syncDocInputs(){$('trackName').value=state.doc.name;$('widthIn').value=state.doc.width;if(typeof syncView==='function') syncView();}
 
 /* ---------------- toolbar ---------------- */
-function setTool(t){
+const TOOLDEF={"select": ["Select", "Select", "V", "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M6 3l13 8-6 1.5L10 19z\"></path></svg>"], "direct": ["Direct select", "Direct", "A", "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M6 3l13 8-6 1.5L10 19z\"></path></svg>"], "pen": ["Pen", "Pen", "P", "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 2l6 10-6 9-6-9z\"></path><path d=\"M12 12v9\"></path><circle cx=\"12\" cy=\"11\" r=\"1.4\"></circle></svg>"], "line": ["Straight line", "Line", "L", "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M5 19L19 5\"></path><rect x=\"3\" y=\"17\" width=\"4\" height=\"4\" fill=\"currentColor\" stroke=\"none\"></rect><rect x=\"17\" y=\"3\" width=\"4\" height=\"4\" fill=\"currentColor\" stroke=\"none\"></rect></svg>"], "arc": ["Straights & arcs", "Arc", "R", "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M4 20A16 16 0 0 1 20 4\"></path></svg>"], "round": ["Round corners", "Round", "C", "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M4 21V12a8 8 0 0 1 8-8h9\"></path></svg>"], "split": ["Split", "Split", "X", "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" aria-hidden=\"true\"><circle cx=\"6\" cy=\"6\" r=\"3\"></circle><circle cx=\"6\" cy=\"18\" r=\"3\"></circle><path d=\"M8.5 7.5L20 18M8.5 16.5L20 6\"></path></svg>"], "width": ["Track width", "Width", "W", "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M3 5c6 2 12 2 18 0M3 19c6-3 12-3 18 0\"></path><path d=\"M12 7.5v8M10 9.5l2-2 2 2M10 13.5l2 2 2-2\"></path></svg>"], "kerb": ["Kerbs", "Kerbs", "K", "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><path d=\"M3 17c4-7 14-7 18 0\" stroke=\"currentColor\" stroke-width=\"5\"></path><path d=\"M3 17c4-7 14-7 18 0\" stroke=\"var(--bg)\" stroke-width=\"3\" stroke-dasharray=\"2.6 2.6\"></path></svg>"], "measure": ["Measure", "Measure", "M", "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" aria-hidden=\"true\"><rect x=\"2\" y=\"8\" width=\"20\" height=\"8\" rx=\"1.5\"></rect><path d=\"M6 8v3M10 8v4M14 8v3M18 8v4\"></path></svg>"], "hand": ["Hand", "Hand", "H", "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M8 12V5.5a1.5 1.5 0 0 1 3 0V11\"></path><path d=\"M11 5a1.5 1.5 0 0 1 3 0v6\"></path><path d=\"M14 6.5a1.5 1.5 0 0 1 3 0V12\"></path><path d=\"M17 9a1.5 1.5 0 0 1 3 0v5a7 7 0 0 1-7 7h-1a6 6 0 0 1-5-2.7l-2.6-4.1a1.5 1.5 0 0 1 2.5-1.6L8 14\"></path></svg>"]};
+const GROUPS=[['select','direct'],['pen','line'],['arc','round'],['split'],['width'],['kerb'],['measure'],['hand']];
+const gShown=GROUPS.map(g=>g[0]);
+const RACE_SECS=['race','drs','runoff'];
+function renderTools(){
+  $('tools').innerHTML=GROUPS.map((g,gi)=>{
+    const on=g.includes(state.tool),t=on?state.tool:gShown[gi],d=TOOLDEF[t];
+    return `<div class="tgrp"><button class="tb" data-tool="${t}" data-g="${gi}" aria-pressed="${on}" title="${esc(d[0])}  ${d[2]}${g.length>1?' · hold for more':''}">${d[3]}<span class="lbl">${d[1]}</span><span class="key">${d[2]}</span>${g.length>1?'<i class="tri"></i>':''}</button>${g.length>1?`<button class="tmore" data-more="${gi}" aria-haspopup="menu" aria-label="More tools: ${g.map(x=>esc(TOOLDEF[x][0])).join(', ')}"></button>`:''}</div>`;
+  }).join('');
+}
+function setTool(t,fromSection){
   if(t!==state.tool) state.penPath=null;
   state.tool=t;
-  if(t!=='measure') {}
-  document.querySelectorAll('[data-tool]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.tool===t)));
+  const gi=GROUPS.findIndex(g=>g.includes(t)); if(gi>=0) gShown[gi]=t;
+  if(!fromSection){
+    if(t==='race'&&!RACE_SECS.includes(state.section)) state.section='race';
+    else if(t==='kerb') state.section='kerbs';
+    else if(t!=='race'&&t!=='kerb'&&t!=='hand'&&t!=='measure'&&(RACE_SECS.includes(state.section)||state.section==='kerbs')) state.section='track';
+  }
+  if(t!=='kerb'){state.ksel=null;state.karm=false;}
   if((t==='round'||t==='direct'||t==='pen'||t==='arc')&&!state.sel.path){const fp=state.doc.paths.length===1?state.doc.paths[0]:null;if(fp&&t!=='pen') state.sel={path:fp.id,nodes:new Set(),piece:null};}
+  closeFly(); renderTools(); renderSecs();
   state.hover=null; ctxKey=''; updateCursor(); render();
 }
-document.querySelectorAll('[data-tool]').forEach(b=>b.addEventListener('click',()=>setTool(b.dataset.tool)));
+function setSection(sec){
+  state.section=sec; state.karm=false;
+  if(RACE_SECS.includes(sec)){if(state.tool!=='race') setTool('race',true);if(sec==='race') state.listTab='turns';}
+  else if(sec==='kerbs'){if(state.tool!=='kerb') setTool('kerb',true);}
+  else if(sec==='track'){if(state.tool==='race'||state.tool==='kerb') setTool('select',true);state.listTab='segs';}
+  $('segList')._h=''; ctxKey=''; renderSecs(); render();
+  if(document.body.classList.contains('nopanel')) togglePanel(true);
+}
+function renderSecs(){
+  document.querySelectorAll('#secs [data-sec]').forEach(b=>{const on=b.dataset.sec===state.section;b.setAttribute('aria-selected',String(on));b.tabIndex=on?0:-1;});
+  document.querySelectorAll('[data-in]').forEach(el=>el.classList.toggle('secoff',!el.dataset.in.split(' ').includes(state.section)));
+}
+$('secs').addEventListener('click',e=>{const b=e.target.closest('[data-sec]');if(b) setSection(b.dataset.sec);});
+$('secs').addEventListener('keydown',e=>{
+  if(e.key!=='ArrowRight'&&e.key!=='ArrowLeft') return;
+  const bs=[...document.querySelectorAll('#secs [data-sec]')],i=bs.findIndex(b=>b.dataset.sec===state.section),j=(i+(e.key==='ArrowRight'?1:-1)+bs.length)%bs.length;
+  e.preventDefault();setSection(bs[j].dataset.sec);bs[j].focus();
+});
+/* tool groups: click uses the tool shown; hold, or the corner triangle, opens the others */
+let holdT=0,holdOpened=false;
+function openFly(gi,btn){
+  const f=$('fly'),g=GROUPS[gi];
+  f.innerHTML=g.map(t=>`<button role="menuitemradio" aria-checked="${t===state.tool}" data-pick="${t}">${TOOLDEF[t][3]}<span>${esc(TOOLDEF[t][0])}</span><span class="key">${TOOLDEF[t][2]}</span></button>`).join('');
+  const r=btn.closest('.tgrp').getBoundingClientRect();f.style.left=Math.max(8,r.left)+'px';f.style.top=(r.bottom+4)+'px';f.hidden=false;
+  const first=f.querySelector('[aria-checked="true"]')||f.querySelector('button');if(first) first.focus();
+}
+function closeFly(){const f=$('fly');if(f&&!f.hidden) f.hidden=true;}
+$('tools').addEventListener('pointerdown',e=>{
+  const b=e.target.closest('.tb[data-g]');holdOpened=false;clearTimeout(holdT);
+  if(b&&GROUPS[+b.dataset.g].length>1) holdT=setTimeout(()=>{holdOpened=true;openFly(+b.dataset.g,b);},380);
+});
+['pointerup','pointerleave','pointercancel'].forEach(ev=>$('tools').addEventListener(ev,()=>clearTimeout(holdT)));
+$('tools').addEventListener('click',e=>{
+  const m=e.target.closest('[data-more]');
+  if(m){e.stopPropagation();const f=$('fly');if(!f.hidden){closeFly();return;}openFly(+m.dataset.more,m);return;}
+  const b=e.target.closest('.tb[data-tool]');
+  if(b){if(holdOpened){holdOpened=false;return;}setTool(b.dataset.tool);}
+});
+$('tools').addEventListener('contextmenu',e=>{const b=e.target.closest('.tb[data-g]');if(b&&GROUPS[+b.dataset.g].length>1){e.preventDefault();openFly(+b.dataset.g,b);}});
+$('fly').addEventListener('click',e=>{const b=e.target.closest('[data-pick]');if(b){setTool(b.dataset.pick);}});
+$('fly').addEventListener('keydown',e=>{
+  const bs=[...$('fly').querySelectorAll('button')],i=bs.indexOf(document.activeElement);
+  if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();bs[(i+(e.key==='ArrowDown'?1:-1)+bs.length)%bs.length].focus();}
+  else if(e.key==='Escape'){closeFly();}
+});
+/* menus: Tracks and Download */
+function openMenu(id,btn){
+  const m=$(id),open=m.hidden;closeMenus();if(!open) return;
+  m.hidden=false;btn.setAttribute('aria-expanded','true');
+  const r=btn.getBoundingClientRect(),w=m.offsetWidth;m.style.top=(r.bottom+6)+'px';m.style.left=Math.max(8,Math.min(window.innerWidth-w-8,r.right-w))+'px';
+  if(id==='lib'){armed=null;renderLib();}
+}
+function closeMenus(){
+  for(const [id,b] of [['lib','libBtn'],['dlMenu','dlBtn']]){const m=$(id);if(m&&!m.hidden){m.hidden=true;$(b).setAttribute('aria-expanded','false');}}
+  armed=null;closeFly();
+}
+function closeLib(){closeMenus();}
+$('libBtn').addEventListener('click',e=>{e.stopPropagation();openMenu('lib',$('libBtn'));});
+$('dlBtn').addEventListener('click',e=>{e.stopPropagation();openMenu('dlMenu',$('dlBtn'));});
+$('dlMenu').addEventListener('click',e=>{const b=e.target.closest('[data-dl]');if(!b) return;closeMenus();({json:downloadJSON,svg:downloadSVG,pack:downloadPack})[b.dataset.dl]();});
+/* panel */
+function togglePanel(show){
+  const on=show!=null?show:document.body.classList.contains('nopanel');
+  document.body.classList.toggle('nopanel',!on);
+  const b=$('panelBtn');b.setAttribute('aria-expanded',String(on));const l=on?'Hide panel':'Show panel';b.setAttribute('aria-label',l);b.title=l;
+  try{localStorage.setItem('circuit.panel',on?'1':'0');}catch(_){}
+  render();
+}
+$('panelBtn').addEventListener('click',()=>togglePanel());
+try{if(localStorage.getItem('circuit.panel')==='0') togglePanel(false);}catch(_){}
+/* view settings */
+function syncView(){const r=state.doc.race||{};$('vNum').checked=r.numbers!==false;$('vNames').checked=r.names_on!==false;$('vArrow').checked=r.arrows!==false;$('vSnap').checked=state.snap;}
+$('viewSect').addEventListener('change',e=>{
+  const r=state.doc.race,id=e.target.id; if(!r) return;
+  if(id==='vSnap'){state.snap=e.target.checked;$('snapBtn').setAttribute('aria-pressed',String(state.snap));return;}
+  if(id==='vNum') r.numbers=e.target.checked; else if(id==='vNames') r.names_on=e.target.checked; else if(id==='vArrow') r.arrows=e.target.checked;
+  commit();render();
+});
 $('undoBtn').addEventListener('click',undo);
 $('redoBtn').addEventListener('click',redo);
 $('zoomIn').addEventListener('click',()=>zoomCenter(1.25));
 $('zoomOut').addEventListener('click',()=>zoomCenter(0.8));
 $('fitBtn').addEventListener('click',fit);
-$('snapBtn').addEventListener('click',()=>{state.snap=!state.snap;$('snapBtn').setAttribute('aria-pressed',String(state.snap));});
+$('snapBtn').addEventListener('click',()=>{state.snap=!state.snap;$('snapBtn').setAttribute('aria-pressed',String(state.snap));syncView();});
 
 /* theme */
 const SUN='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>';
@@ -2295,17 +2539,18 @@ window.addEventListener('keydown',e=>{
   if(e.key==='Alt'){state.alt=true;if(state.cursorS) updateHover(state.cursorS);render();return;}
   if(e.key===' '){e.preventDefault();if(!state.space){state.space=true;updateCursor();render();}return;}
   if(mod) return;
-  if(e.target&&e.target.closest&&e.target.closest('.lib')) return;
-  const map={v:'select',a:'direct',p:'pen',l:'line',r:'arc',c:'round',x:'split',t:'race',m:'measure',w:'width'};
+  if(e.target&&e.target.closest&&e.target.closest('.menu')) return;
+  const map={v:'select',a:'direct',p:'pen',l:'line',r:'arc',c:'round',x:'split',t:'race',m:'measure',w:'width',k:'kerb',h:'hand'};
   const k=e.key.toLowerCase();
   if(map[k]&&!e.altKey){setTool(map[k]);return;}
   if(e.key==='Escape'||e.key==='Enter'){
     if(state.penPath){state.penPath=null;}
-    else if(e.key==='Escape'){if(state.ruler) state.ruler=null; else {state.sel.nodes=new Set();state.sel.piece=null;}}
-    closeLib(); render(); return;
+    else if(e.key==='Escape'){if(state.ruler) state.ruler=null; else if(state.ksel!=null) state.ksel=null; else {state.sel.nodes=new Set();state.sel.piece=null;}}
+    closeMenus(); render(); return;
   }
   if(e.key==='Delete'||e.key==='Backspace'){
     e.preventDefault();
+    if(effTool()==='kerb'){kerbDelete();render();return;}
     if(effTool()==='width'){const r=state.doc.race;if(r&&state.wsel!=null&&r.widths[state.wsel]){r.widths.splice(state.wsel,1);state.wsel=null;commit();render();}return;}
     const s=selPath(); if(!s) return;
     const t=effTool();
@@ -2326,6 +2571,7 @@ window.addEventListener('keydown',e=>{
     idx.forEach(i=>s.nodes[i]&&moveNode(s.nodes[i],d));
     commit();render();return;
   }
+  if((e.key==='f'||e.key==='F')&&effTool()==='kerb'&&state.ksel!=null){const k=kerbList()[state.ksel];if(k){k.place=k.place==='road'?'beyond':'road';commit();render();}return;}
   if(e.key==='='||e.key==='+'){zoomCenter(1.25);return;}
   if(e.key==='-'){zoomCenter(0.8);return;}
 });
@@ -2386,7 +2632,7 @@ function raceSVG(W){
   }
   if(R.grid.length) out+=`  <g id="grid" fill="#D4231A">\n${R.grid.map(g=>`    <path id="grid-${g.n}" d="${rectD(g.pt,g.t,[g.t[1],-g.t[0]],2.4,1).trim()}" data-car="${f2(g.pt)}" data-heading="${f2(g.t)}"/>\n`).join('')}  </g>\n`;
   const kw=r.kerbs.width,pd=pts=>polyD(pts.map(q=>[+q[0].toFixed(2),+q[1].toFixed(2)]));
-  if(R.kerbs.length) out+=`  <g id="kerbs" fill="none" stroke="#D4231A" stroke-width="${kw}" stroke-linecap="butt" data-width="${kw}">\n${R.kerbs.map((k,i)=>`    <path id="kerb-${i+1}" d="${pd(bandPts(R,k.d0,k.d1,k.geo,(u,H)=>k.side*((k.side>0?H.out:H.in)+kw/2)))}" data-turn="T${k.turn}" data-side="${k.side<0?'inside':'outside'}"/>\n`).join('')}  </g>\n`;
+  if(R.kerbs.length) out+=`  <g id="kerbs" fill="none" stroke="#D4231A" stroke-width="${kw}" stroke-linecap="butt" data-width="${kw}">\n${R.kerbs.map((k,i)=>`    <path id="kerb-${i+1}" d="${pd(kerbPts(R,k,kw,0.5))}"${k.turn?` data-turn="T${k.turn}"`:''} data-side="${k.side==='L'?'left':'right'}" data-place="${k.place}"/>\n`).join('')}  </g>\n`;
   if(R.drs.length) out+=`  <g id="drs" fill="none" stroke="#15803D" stroke-width="${W*0.9}" stroke-opacity="0.4">\n${R.drs.map(z=>{let d1=z.dEnd;if(d1<z.dAct) d1+=R.L;return `    <path id="drs-${z.i+1}" d="${pd(bandPts(R,z.dAct,d1,1,()=>0))}" data-detection="${z.dDet.toFixed(1)}" data-activation="${z.dAct.toFixed(1)}" data-end="${z.dEnd.toFixed(1)}" data-lap="${R.L.toFixed(1)}"/>\n`;}).join('')}  </g>\n`;
   if(R.turns.length) out+=`  <g id="turns" font-family="sans-serif" font-size="${Math.max(8,W)}" font-weight="700" fill="#111111" text-anchor="middle">\n${R.turns.map(t=>{const q=V.add(t.pt,V.mul(t.out,W*1.6));return `    <text x="${q[0].toFixed(1)}" y="${q[1].toFixed(1)}">${esc(t.name||'T'+t.n)}</text>\n`;}).join('')}  </g>\n`;
   return out;
@@ -2443,15 +2689,15 @@ async function buildTrackPack(){
   if(state.dirty) commit();
   const R=state.race,r=state.doc.race,doc=state.doc;
   if(!R||!R.closed){toast('Make a closed loop the race track first.');return null;}
-  if(!r.start){toast('Place the start line first (Race tool).');return null;}
+  if(!r.start){toast('Place the start line first, in the Race section.');return null;}
   const r2=v=>Math.round(v*100)/100,r3=v=>Math.round(v*1000)/1000,P=q=>[r2(q[0]),r2(q[1])];
   const zAt=sv=>R.zAt?r2(R.zAt(sv)):0;
   const L=R.L,centre=[];
   for(let d=0;d<L;d+=1){const sv=R.sOf(d),at=lineAt(R.line,sv),t=R.travelTan(sv),h=R.hwT(sv);centre.push([r2(d),r2(at.pt[0]),r2(at.pt[1]),zAt(sv),r2(h.l),r2(h.r),r3(t[0]),r3(t[1])]);}
   const frac=d=>r3((((d%L)+L)%L)/L);
   const turns=R.turns.map(t=>({n:t.n,name:t.name||'',dir:t.dir.toLowerCase(),deg:Math.round(t.deg),minRadius:r2(t.minR),from:r2(t.dS),to:r2(t.dE)}));
-  const kerbs=R.kerbs.map(k=>({turn:k.turn,side:k.side<0?'inside':'outside',from:r2(k.d0),to:r2(k.d1),width:r.kerbs.width,
-    pts:bandPts(R,k.d0,k.d1,k.geo,(u,H)=>k.side*((k.side>0?H.out:H.in)+r.kerbs.width/2)).map(P)}));
+  const kerbs=R.kerbs.map(k=>({turn:k.turn,side:k.side==='L'?'left':'right',place:k.place==='road'?'on road':'beyond edge',from:r2(k.d0),to:r2(k.d1),width:r.kerbs.width,
+    pts:kerbPts(R,k,r.kerbs.width,0.5).map(P),inner:kerbPts(R,k,r.kerbs.width,0).map(P),outer:kerbPts(R,k,r.kerbs.width,1).map(P)}));
   const ROs=runoffShapes(R,r.runoff,doc.width).map(o=>({turn:o.turn,gravel:o.gravel?o.gravel.map(P):null,tarmac:o.tarmac?o.tarmac.map(P):null,barrier:r.runoff.barriers?o.edge.map(P):null}));
   const slot=(pt,t)=>{const pr=lineProject(R.line,pt);return {x:r2(pt[0]),y:r2(pt[1]),z:zAt(pr.s),heading:[r3(t[0]),r3(t[1])]};};
   const grid=R.grid.map(g=>({n:g.n,...slot(g.pt,g.t)}));
@@ -2513,23 +2759,23 @@ async function offer(filename,data,label){
     toast('That file couldn’t be saved here.');
   }
 }
-$('exportBtn').addEventListener('click',()=>{
+function downloadSVG(){
   const svg=buildSVG();
-  if(!svg){toast('Draw a track first, then export it.');return;}
+  if(!svg){toast('Draw a track first, then download it.');return;}
   offer(slug(state.doc.name)+'.svg',svg,'SVG');
-});
-$('saveFileBtn').addEventListener('click',()=>{
+}
+function downloadJSON(){
   const d=state.doc;
   const ref=state.ref&&state.ref.docId===d.id?state.ref.data:null;
   const out={format:'circuit-track',version:ref?3:2,name:d.name,width:d.width,race:d.race,paths:d.paths};
   if(ref) out.reference=ref;
   offer(slug(d.name)+'.json',ref?JSON.stringify(out):JSON.stringify(out,null,1),'track file');
-});
-$('openFileBtn').addEventListener('click',()=>$('fileIn').click());
-$('packBtn').addEventListener('click',async()=>{
+}
+$('openFileBtn').addEventListener('click',()=>{closeMenus();$('fileIn').click();});
+async function downloadPack(){
   try{const out=await buildTrackPack();if(!out) return;await offer(out.name,out.bytes,'Track Pack');}
   catch(err){toast('The Track Pack couldn’t be built. '+((err&&err.message)||''));}
-});
+}
 $('fileIn').addEventListener('change',async e=>{
   const f=e.target.files&&e.target.files[0]; e.target.value='';
   if(!f) return;
@@ -2763,7 +3009,7 @@ function renderRefPanel(){
   sect.hidden=false;
   if(R.missing){$('refList').innerHTML='';$('refNote').textContent='This track has reference layers, but they aren’t stored in this browser. Open its project file to bring them back.';return;}
   const anyLines=R.data.layers.some(l=>l.lines.length);
-  $('refList').innerHTML=(R.grid?`<div class="refrow"><span>Terrain</span><span class="src">${R.data.terrain.step} m grid</span></div>`:'')+R.data.layers.map(l=>`<label class="check refrow"><span class="check"><input type="checkbox" data-ref="${esc(l.id)}" ${R.show[l.id]?'checked':''}> ${esc(l.name)}</span><span class="src">${l.limit==='soft'?'estimate':'hard limit'}</span></label>`).join('')+(anyLines?`<div class="field"><span>Road lines</span><div class="seg" role="group" aria-label="Road line visibility"><button data-roadmode="subtle" aria-pressed="${roadMode==='subtle'}">Subtle</button><button data-roadmode="bold" aria-pressed="${roadMode==='bold'}">Very visible</button></div></div>`:'');
+  $('refList').innerHTML='<h3>Reference layers</h3>'+(R.grid?`<div class="refrow"><span>Terrain</span><span class="src">${R.data.terrain.step} m grid</span></div>`:'')+R.data.layers.map(l=>`<label class="check refrow"><span class="check"><input type="checkbox" data-ref="${esc(l.id)}" ${R.show[l.id]?'checked':''}> ${esc(l.name)}</span><span class="src">${l.limit==='soft'?'estimate':'hard limit'}</span></label>`).join('')+(anyLines?`<div class="field"><span>Road lines</span><div class="seg" role="group" aria-label="Road line visibility"><button data-roadmode="subtle" aria-pressed="${roadMode==='subtle'}">Subtle</button><button data-roadmode="bold" aria-pressed="${roadMode==='bold'}">Highlighted</button></div></div>`:'');
   $('refNote').textContent='Shown for guidance only. They can’t be selected or moved.'+(R.data.attribution?' '+R.data.attribution+'.':'')+(R.data.terrain&&R.data.terrain.attribution?' '+R.data.terrain.attribution+'.':'');
   applyRefVisibility();
 }
@@ -2833,7 +3079,7 @@ function loadDoc(doc,fitView,ref){
   state.doc=doc;
   if(ref) setRef(doc.id,ref); else loadRefFor(doc);
   state.sel={path:null,nodes:new Set(),piece:null};
-  state.penPath=null;state.ruler=null;state.wsel=null;
+  state.penPath=null;state.ruler=null;state.wsel=null;state.ksel=null;
   syncDocInputs(); resetHistory();
   if(fitView) requestAnimationFrame(fit); else render();
   renderLib();
@@ -2848,7 +3094,7 @@ function newTrack(){
   clearTimeout(saveT); if(!state.doc.example) saveNow();
   loadDoc(blankDoc(),false);
   state.view.z=0.6; const r=stage.getBoundingClientRect(); state.view.tx=r.width/2; state.view.ty=r.height/2;
-  setTool('pen'); closeLib(); $('trackName').focus(); $('trackName').select();
+  setSection('track'); setTool('pen'); closeMenus(); $('trackName').focus(); $('trackName').select();
 }
 async function deleteItem(id){
   if(lib.db){try{await lib.db.collection('tracks').doc(id).delete();}catch(_){toast('Couldn’t delete that track. Try again.');return;}}
@@ -2879,10 +3125,8 @@ $('libList').addEventListener('click',e=>{
   if(o){const it=lib.items.find(i=>i.id===o.dataset.open);if(it&&it.id!==state.doc.id) openItem(it); else closeLib();return;}
   if(d){const id=d.dataset.del;if(armed===id){armed=null;deleteItem(id);}else{armed=id;renderLib();}}
 });
-$('libBtn').addEventListener('click',e=>{e.stopPropagation();const l=$('lib');const open=l.hidden;l.hidden=!open;$('libBtn').setAttribute('aria-expanded',String(open));armed=null;renderLib();});
 $('newBtn').addEventListener('click',newTrack);
-function closeLib(){const l=$('lib');if(l&&!l.hidden){l.hidden=true;$('libBtn').setAttribute('aria-expanded','false');armed=null;}}
-document.addEventListener('pointerdown',e=>{if(!e.target.closest('.lib')&&!e.target.closest('#libBtn')) closeLib();});
+document.addEventListener('pointerdown',e=>{if(!e.target.closest('.menu')&&!e.target.closest('[data-menu]')&&!e.target.closest('.fly')&&!e.target.closest('.tmore')&&!e.target.closest('.tb[data-g]')) closeMenus();});
 
 async function initCapabilities(){
   const c=window.claude;
@@ -2916,7 +3160,7 @@ function initLocalLib(){
   }catch(_){}
   if(!doc){doc=exampleDoc();}
   state.doc=doc; syncDocInputs(); resetHistory(); loadRefFor(doc);
-  setTool('pen');
+  renderTools(); renderSecs(); setTool('pen');
   if(doc.paths.length===1) state.sel={path:doc.paths[0].id,nodes:new Set(),piece:null};
   requestAnimationFrame(()=>{fit();});
   initLocalLib();
